@@ -24,6 +24,9 @@
     };
   </script>
 
+  <!-- jsPDF CDN para exportación directa a PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <style>
     /* =========================================================================
        VARIABLES DE MARCA (ElNodoAzul por defecto / SUGATINA dinámico)
@@ -393,6 +396,55 @@
               </span>
             </div>
 
+            <!-- Bloque compacto: Datos para el Presupuesto del Cliente -->
+            <div class="rounded-2xl bg-brand-soft/50 border border-brand-soft p-4 space-y-3 text-xs">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                  <span class="w-6 h-6 rounded-lg bg-brand text-white flex items-center justify-center shrink-0">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </span>
+                  <h3 class="text-xs font-bold text-slate-900">Datos para el Presupuesto del Cliente</h3>
+                </div>
+                <div class="flex items-center gap-1.5 text-[11px]">
+                  <span class="text-slate-500">Marca activa:</span>
+                  <span id="quoteBrandIndicator" class="font-bold px-2.5 py-0.5 rounded-full bg-white text-brand-dark border border-brand-soft">ElNodoAzul</span>
+                  <span class="hidden sm:inline text-[10px] text-slate-400">(cambiala arriba)</span>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label for="quoteClient" class="block font-semibold text-slate-700 mb-1">Nombre del cliente</label>
+                  <input
+                    type="text"
+                    id="quoteClient"
+                    placeholder="Ej: María Gómez / Jardín N° 4"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white font-medium text-slate-800 placeholder:text-slate-400"
+                  />
+                </div>
+                <div>
+                  <label for="quoteProduct" class="block font-semibold text-slate-700 mb-1">Producto / trabajo cotizado</label>
+                  <input
+                    type="text"
+                    id="quoteProduct"
+                    placeholder="Ej: Apliques de flores / Cartel QR"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white font-medium text-slate-800 placeholder:text-slate-400"
+                  />
+                </div>
+                <div>
+                  <label for="quoteMaterialDisplay" class="block font-semibold text-slate-700 mb-1">Material para mostrar al cliente</label>
+                  <input
+                    type="text"
+                    id="quoteMaterialDisplay"
+                    placeholder="Ej: Goma EVA roja y blanca 1mm"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white font-medium text-slate-800 placeholder:text-slate-400"
+                  />
+                </div>
+              </div>
+            </div>
+
             <!-- Selector rápido de material -->
             <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 text-xs">
               <div class="sm:col-span-6">
@@ -535,16 +587,41 @@
                   <strong id="resWholesaleProfit" class="text-emerald-600">+ $ 0</strong>
                 </div>
               </div>
-              <button
-                type="button"
-                onclick="copyWhatsAppQuote('wholesale')"
-                class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition flex items-center justify-center gap-2"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                </svg>
-                Copiar Presupuesto Mayorista (WhatsApp)
-              </button>
+              <div class="grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onclick="copyWhatsAppQuote('wholesale')"
+                  class="py-2.5 px-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition flex items-center justify-center gap-1.5"
+                  title="Copiar presupuesto simple para WhatsApp"
+                >
+                  <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                  <span>WhatsApp</span>
+                </button>
+                <button
+                  type="button"
+                  onclick="downloadQuoteJPG('wholesale')"
+                  class="py-2.5 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-semibold transition flex items-center justify-center gap-1.5"
+                  title="Descargar comprobante en imagen JPG"
+                >
+                  <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>JPG</span>
+                </button>
+                <button
+                  type="button"
+                  onclick="downloadQuotePDF('wholesale')"
+                  class="py-2.5 px-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 text-xs font-semibold transition flex items-center justify-center gap-1.5"
+                  title="Descargar comprobante en PDF"
+                >
+                  <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span>PDF</span>
+                </button>
+              </div>
             </div>
 
             <!-- Minorista / Producto Terminado -->
@@ -564,16 +641,41 @@
                   <strong id="resRetailProfit" class="text-emerald-700">+ $ 0</strong>
                 </div>
               </div>
-              <button
-                type="button"
-                onclick="copyWhatsAppQuote('retail')"
-                class="w-full py-2.5 px-4 rounded-xl btn-brand text-xs font-semibold flex items-center justify-center gap-2 shadow-xs"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                </svg>
-                Copiar Presupuesto Minorista (WhatsApp)
-              </button>
+              <div class="grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onclick="copyWhatsAppQuote('retail')"
+                  class="py-2.5 px-2.5 rounded-xl btn-brand text-xs font-semibold flex items-center justify-center gap-1.5 shadow-xs"
+                  title="Copiar presupuesto simple para WhatsApp"
+                >
+                  <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2" />
+                  </svg>
+                  <span>WhatsApp</span>
+                </button>
+                <button
+                  type="button"
+                  onclick="downloadQuoteJPG('retail')"
+                  class="py-2.5 px-2.5 rounded-xl bg-white hover:bg-slate-50 text-brand-dark border border-brand-soft text-xs font-semibold transition flex items-center justify-center gap-1.5"
+                  title="Descargar comprobante en imagen JPG"
+                >
+                  <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>JPG</span>
+                </button>
+                <button
+                  type="button"
+                  onclick="downloadQuotePDF('retail')"
+                  class="py-2.5 px-2.5 rounded-xl bg-white hover:bg-slate-50 text-brand-dark border border-brand-soft text-xs font-semibold transition flex items-center justify-center gap-1.5"
+                  title="Descargar comprobante en PDF"
+                >
+                  <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  <span>PDF</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -1032,14 +1134,20 @@
       const STORAGE_KEY = 'ena_sugatina_laser_master_v1';
 
       const MATERIAL_PRESETS = {
-        eva_comun:   { label: 'Goma EVA Común 1mm (1/2 plancha)', cost: 600 },
-        eva_glitter: { label: 'Goma EVA Glitter 1mm (1/2 plancha)', cost: 1300 },
-        mdf_3:       { label: 'MDF 3mm (380×300mm)', cost: 1400 },
-        terciado_3:  { label: 'Terciado 3mm (380×300mm)', cost: 1800 },
-        chapadur_3:  { label: 'Chapadur 3mm (380×300mm)', cost: 1200 },
-        panolenci:   { label: 'Pañolenci 1mm (380×300mm)', cost: 900 },
-        cartulina:   { label: 'Cartulina 240g', cost: 400 },
-        custom:      { label: 'Material personalizado', cost: 1000 }
+        eva_comun:   { label: 'Goma EVA Común 1mm (1/2 plancha)', cleanName: 'Goma EVA Común 1mm', cost: 600 },
+        eva_glitter: { label: 'Goma EVA Glitter 1mm (1/2 plancha)', cleanName: 'Goma EVA Glitter 1mm', cost: 1300 },
+        mdf_3:       { label: 'MDF 3mm (380×300mm)', cleanName: 'MDF 3mm', cost: 1400 },
+        terciado_3:  { label: 'Terciado 3mm (380×300mm)', cleanName: 'Terciado 3mm', cost: 1800 },
+        chapadur_3:  { label: 'Chapadur 3mm (380×300mm)', cleanName: 'Chapadur 3mm', cost: 1200 },
+        panolenci:   { label: 'Pañolenci 1mm (380×300mm)', cleanName: 'Pañolenci 1mm', cost: 900 },
+        cartulina:   { label: 'Cartulina 240g', cleanName: 'Cartulina 240g', cost: 400 },
+        custom:      { label: 'Material personalizado', cleanName: 'Material a definir', cost: 1000 }
+      };
+
+      const DEFAULT_QUOTE = {
+        clientName: '',
+        productName: '',
+        materialDisplay: 'Goma EVA Común 1mm'
       };
 
       const DEFAULT_MACHINE = {
@@ -1626,6 +1734,7 @@
         activeTab: 'cotizador',
         machine: { ...DEFAULT_MACHINE },
         calc: { ...DEFAULT_CALC },
+        quote: { ...DEFAULT_QUOTE },
         quick: { ...DEFAULT_QUICK },
         market: JSON.parse(JSON.stringify(DEFAULT_MARKET)),
         paramCat: 'Todos',
@@ -1658,6 +1767,7 @@
             brand: state.brand,
             machine: state.machine,
             calc: state.calc,
+            quote: state.quote,
             quick: state.quick,
             market: state.market
           };
@@ -1675,6 +1785,7 @@
           if (parsed.brand) state.brand = parsed.brand;
           if (parsed.machine) state.machine = { ...DEFAULT_MACHINE, ...parsed.machine };
           if (parsed.calc) state.calc = { ...DEFAULT_CALC, ...parsed.calc };
+          if (parsed.quote) state.quote = { ...DEFAULT_QUOTE, ...parsed.quote };
           if (parsed.quick) state.quick = { ...DEFAULT_QUICK, ...parsed.quick };
           if (parsed.market) {
             state.market = {
@@ -1754,6 +1865,8 @@
 
         document.getElementById('brandBadge').textContent = brandDisplay;
         document.getElementById('footerBrandName').textContent = brandDisplay;
+        const quoteBrandEl = document.getElementById('quoteBrandIndicator');
+        if (quoteBrandEl) quoteBrandEl.textContent = brandDisplay;
         const printTitle = document.getElementById('printSheetTitle');
         if (printTitle) {
           printTitle.textContent = `Ficha Maestra de Parámetros — Creality Falcon A1 10W | ${brandDisplay}`;
@@ -1922,6 +2035,9 @@
         if (key !== 'custom' && MATERIAL_PRESETS[key]) {
           state.calc.matCost = MATERIAL_PRESETS[key].cost;
           document.getElementById('calcMatCost').value = state.calc.matCost;
+          state.quote.materialDisplay = MATERIAL_PRESETS[key].cleanName;
+          const matDispEl = document.getElementById('quoteMaterialDisplay');
+          if (matDispEl) matDispEl.value = state.quote.materialDisplay;
         }
         saveState();
         renderTab1();
@@ -1935,32 +2051,360 @@
         showToast('Configuración de amortización restablecida.', 'success');
       };
 
-      window.copyWhatsAppQuote = function (tier) {
+      /**
+       * Recopila los datos limpios del presupuesto para WhatsApp, JPG y PDF
+       */
+      function getQuotePayload(tier) {
         const b = getBudgetBreakdown();
         const isSug = state.brand === 'sugatina';
-        const brandName = isSug ? 'SUGATINA ✨' : 'ElNodoAzul 🔷';
-        const presetInfo = MATERIAL_PRESETS[state.calc.materialPreset] || MATERIAL_PRESETS.custom;
-
+        const brandName = isSug ? 'SUGATINA' : 'ElNodoAzul';
         const isWholesale = tier === 'wholesale';
         const total = isWholesale ? b.wholesaleTotal : b.retailTotal;
-        const unit = isWholesale ? b.wholesaleUnit : b.retailUnit;
         const deposit = total * 0.5;
-        const listLabel = isWholesale ? 'Lista Mayorista / Pack' : 'Producto Terminado / Minorista';
+        const presetInfo = MATERIAL_PRESETS[state.calc.materialPreset] || MATERIAL_PRESETS.custom;
 
+        const clientName = (state.quote.clientName || '').trim();
+        const productName = (state.quote.productName || '').trim() || 'Trabajo a medida';
+        const materialName = (state.quote.materialDisplay || '').trim() || presetInfo.cleanName;
+
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('es-AR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+        const quoteCode = `P-${String(now.getFullYear()).slice(-2)}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
+
+        return {
+          isSug,
+          brandName,
+          tierLabel: isWholesale ? 'MAYORISTA' : 'MINORISTA',
+          clientName,
+          productName,
+          materialName,
+          qty: b.qty,
+          total,
+          deposit,
+          dateStr,
+          quoteCode
+        };
+      }
+
+      function sanitizeFilenamePart(str) {
+        return (str || 'Cliente')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^a-zA-Z0-9]+/g, '_')
+          .replace(/^_+|_+$/g, '')
+          .slice(0, 32) || 'Cliente';
+      }
+
+      window.copyWhatsAppQuote = function (tier) {
+        const q = getQuotePayload(tier);
         const lines = [
-          `*PRESUPUESTO — ${brandName}*`,
-          `────────────────────`,
-          `• *Modalidad:* ${listLabel}`,
-          `• *Material:* ${presetInfo.label}`,
-          `• *Cantidad:* ${b.qty} ${b.qty === 1 ? 'unidad' : 'unidades'}`,
-          `• *Valor unitario:* ${formatARS(unit, 0)}`,
-          `• *TOTAL:* *${formatARS(total, 0)}*`,
-          `────────────────────`,
-          `📌 *Para confirmar y comenzar:* Seña del 50% (*${formatARS(deposit, 0)}*).`,
-          `⏳ Presupuesto válido por 7 días. ¡Cualquier ajuste de medidas o colores me avisás!`
+          `*PRESUPUESTO — ${q.brandName}*`,
+          `────────────────────`
         ];
 
-        copyToClipboard(lines.join('\n'), `Presupuesto (${isWholesale ? 'Mayorista' : 'Minorista'}) copiado para WhatsApp.`);
+        if (q.clientName) {
+          lines.push(`• *Cliente:* ${q.clientName}`);
+        }
+        lines.push(`• *Producto:* ${q.productName}`);
+        lines.push(`• *Material:* ${q.materialName}`);
+        lines.push(`• *Cantidad:* ${q.qty} ${q.qty === 1 ? 'pieza' : 'piezas'}`);
+        lines.push(`• *Precio total:* *${formatARS(q.total, 0)}*`);
+        lines.push(`────────────────────`);
+        lines.push(`Para confirmar: seña del 50% (*${formatARS(q.deposit, 0)}*)`);
+        lines.push(`Presupuesto válido por 2 días.`);
+
+        copyToClipboard(lines.join('\n'), `Presupuesto simple (${q.tierLabel}) copiado para WhatsApp.`);
+      };
+
+      /* -----------------------------------------------------------------------
+         6B. GENERACIÓN DE COMPROBANTE EN CANVAS ALTA RESOLUCIÓN (JPG & PDF)
+         ----------------------------------------------------------------------- */
+      function drawRoundedRect(ctx, x, y, w, h, r) {
+        const radius = Math.min(r, w / 2, h / 2);
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.arcTo(x + w, y, x + w, y + h, radius);
+        ctx.arcTo(x + w, y + h, x, y + h, radius);
+        ctx.arcTo(x, y + h, x, y, radius);
+        ctx.arcTo(x, y, x + w, y, radius);
+        ctx.closePath();
+      }
+
+      function wrapCanvasText(ctx, text, maxWidth) {
+        const words = String(text || '').split(/\s+/);
+        const lines = [];
+        let current = '';
+        words.forEach(word => {
+          const test = current ? `${current} ${word}` : word;
+          if (ctx.measureText(test).width > maxWidth && current) {
+            lines.push(current);
+            current = word;
+          } else {
+            current = test;
+          }
+        });
+        if (current) lines.push(current);
+        return lines.length ? lines : ['—'];
+      }
+
+      function buildQuoteCanvas(tier) {
+        const q = getQuotePayload(tier);
+        const W = 1080;
+        const H = 1150;
+        const canvas = document.createElement('canvas');
+        canvas.width = W;
+        canvas.height = H;
+        const ctx = canvas.getContext('2d');
+
+        // Paleta de marca activa
+        const palette = q.isSug
+          ? { primary: '#EA580C', dark: '#9A3412', soft: '#FFF7ED', border: '#FED7AA', textSoft: '#C2410C' }
+          : { primary: '#2563EB', dark: '#1E3A8A', soft: '#EFF6FF', border: '#BFDBFE', textSoft: '#1E40AF' };
+
+        const fontStack = 'Poppins, system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
+
+        // Fondo limpio
+        ctx.fillStyle = '#F8FAFC';
+        ctx.fillRect(0, 0, W, H);
+
+        // Tarjeta principal Swiss-grid
+        const pad = 48;
+        const cardX = pad;
+        const cardY = pad;
+        const cardW = W - pad * 2;
+        const cardH = H - pad * 2;
+
+        ctx.save();
+        ctx.shadowColor = 'rgba(15, 23, 42, 0.08)';
+        ctx.shadowBlur = 28;
+        ctx.shadowOffsetY = 10;
+        drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 32);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fill();
+        ctx.restore();
+
+        drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 32);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#E2E8F0';
+        ctx.stroke();
+
+        // Encabezado con color de marca (recortado dentro de los bordes superiores)
+        const headerH = 220;
+        ctx.save();
+        drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 32);
+        ctx.clip();
+
+        const grad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + headerH);
+        grad.addColorStop(0, palette.dark);
+        grad.addColorStop(1, palette.primary);
+        ctx.fillStyle = grad;
+        ctx.fillRect(cardX, cardY, cardW, headerH);
+
+        // Acento geométrico sutil en encabezado
+        ctx.fillStyle = 'rgba(255,255,255,0.07)';
+        ctx.beginPath();
+        ctx.arc(cardX + cardW - 70, cardY + 30, 150, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // Texto de encabezado izquierda (Marca)
+        const innerX = cardX + 56;
+        const innerW = cardW - 112;
+
+        ctx.fillStyle = 'rgba(255,255,255,0.82)';
+        ctx.font = `600 20px ${fontStack}`;
+        ctx.fillText('PRESUPUESTO', innerX, cardY + 76);
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `700 54px ${fontStack}`;
+        ctx.fillText(q.brandName, innerX, cardY + 142);
+
+        ctx.fillStyle = 'rgba(255,255,255,0.88)';
+        ctx.font = `400 22px ${fontStack}`;
+        ctx.fillText('Taller de Corte & Grabado Láser', innerX, cardY + 182);
+
+        // Etiqueta derecha (Fecha + N° Presupuesto)
+        ctx.textAlign = 'right';
+        drawRoundedRect(ctx, cardX + cardW - 290, cardY + 54, 234, 44, 22);
+        ctx.fillStyle = 'rgba(255,255,255,0.18)';
+        ctx.fill();
+
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = `600 18px ${fontStack}`;
+        ctx.fillText(q.quoteCode, cardX + cardW - 76, cardY + 83);
+
+        ctx.fillStyle = 'rgba(255,255,255,0.92)';
+        ctx.font = `500 21px ${fontStack}`;
+        ctx.fillText(`Fecha: ${q.dateStr}`, cardX + cardW - 56, cardY + 144);
+
+        ctx.fillStyle = 'rgba(255,255,255,0.75)';
+        ctx.font = `600 17px ${fontStack}`;
+        ctx.fillText(`LISTA ${q.tierLabel}`, cardX + cardW - 56, cardY + 178);
+        ctx.textAlign = 'left';
+
+        // Bloque de Datos del Cliente y Trabajo
+        let y = cardY + headerH + 46;
+        const rows = [
+          { label: 'CLIENTE', value: q.clientName || 'Consumidor Final' },
+          { label: 'PRODUCTO / TRABAJO', value: q.productName },
+          { label: 'MATERIAL', value: q.materialName },
+          { label: 'CANTIDAD DE PIEZAS', value: `${q.qty} ${q.qty === 1 ? 'pieza' : 'piezas'}` }
+        ];
+
+        rows.forEach((row, idx) => {
+          ctx.fillStyle = '#64748B';
+          ctx.font = `600 17px ${fontStack}`;
+          ctx.fillText(row.label, innerX, y);
+
+          ctx.fillStyle = '#0F172A';
+          ctx.font = `600 28px ${fontStack}`;
+          const wrapped = wrapCanvasText(ctx, row.value, innerW).slice(0, 2);
+          wrapped.forEach((line, lIdx) => {
+            ctx.fillText(line, innerX, y + 36 + lIdx * 34);
+          });
+
+          const blockHeight = 56 + (wrapped.length - 1) * 34;
+          if (idx < rows.length - 1) {
+            ctx.beginPath();
+            ctx.moveTo(innerX, y + blockHeight);
+            ctx.lineTo(innerX + innerW, y + blockHeight);
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = '#E2E8F0';
+            ctx.stroke();
+          }
+          y += blockHeight + 28;
+        });
+
+        // Recuadro destacado: PRECIO TOTAL
+        const totalBoxY = cardY + cardH - 365;
+        const totalBoxH = 148;
+
+        drawRoundedRect(ctx, innerX, totalBoxY, innerW, totalBoxH, 22);
+        ctx.fillStyle = palette.soft;
+        ctx.fill();
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = palette.primary;
+        ctx.stroke();
+
+        ctx.fillStyle = palette.textSoft;
+        ctx.font = `700 20px ${fontStack}`;
+        ctx.fillText('PRECIO TOTAL', innerX + 32, totalBoxY + 52);
+
+        ctx.fillStyle = palette.dark;
+        ctx.font = `700 62px ${fontStack}`;
+        ctx.fillText(formatARS(q.total, 0), innerX + 32, totalBoxY + 118);
+
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#475569';
+        ctx.font = `500 20px ${fontStack}`;
+        ctx.fillText('Pesos Argentinos (ARS)', innerX + innerW - 32, totalBoxY + 110);
+        ctx.textAlign = 'left';
+
+        // Bloque de Confirmación (Seña del 50%)
+        const confY = totalBoxY + totalBoxH + 24;
+        const confH = 92;
+
+        drawRoundedRect(ctx, innerX, confY, innerW, confH, 18);
+        ctx.fillStyle = '#F1F5F9';
+        ctx.fill();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = '#CBD5E1';
+        ctx.stroke();
+
+        ctx.fillStyle = '#334155';
+        ctx.font = `600 22px ${fontStack}`;
+        ctx.fillText('Para confirmar el pedido: seña del 50%', innerX + 28, confY + 54);
+
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#0F172A';
+        ctx.font = `700 32px ${fontStack}`;
+        ctx.fillText(formatARS(q.deposit, 0), innerX + innerW - 28, confY + 57);
+        ctx.textAlign = 'left';
+
+        // Pie claro: Validez por 2 días
+        const footerY = cardY + cardH - 40;
+        ctx.fillStyle = '#64748B';
+        ctx.font = `600 22px ${fontStack}`;
+        ctx.fillText('Presupuesto válido por 2 días.', innerX, footerY);
+
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#94A3B8';
+        ctx.font = `500 18px ${fontStack}`;
+        ctx.fillText(q.brandName, innerX + innerW, footerY);
+        ctx.textAlign = 'left';
+
+        return { canvas, payload: q };
+      }
+
+      window.downloadQuoteJPG = async function (tier) {
+        try {
+          if (document.fonts && document.fonts.ready) {
+            await document.fonts.ready;
+          }
+          const { canvas, payload } = buildQuoteCanvas(tier);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+          const clientPart = sanitizeFilenamePart(payload.clientName || payload.productName);
+          const filename = `Presupuesto_${payload.brandName}_${clientPart}.jpg`;
+
+          const link = document.createElement('a');
+          link.href = dataUrl;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          showToast(`Imagen JPG descargada: ${filename}`, 'success');
+        } catch (err) {
+          showToast('No se pudo generar el JPG. Verificá los permisos de descarga.', 'warn');
+        }
+      };
+
+      window.downloadQuotePDF = async function (tier) {
+        try {
+          if (!window.jspdf || !window.jspdf.jsPDF) {
+            showToast('Librería PDF aún cargando o sin conexión. Probá descargar JPG.', 'warn');
+            return;
+          }
+          if (document.fonts && document.fonts.ready) {
+            await document.fonts.ready;
+          }
+          const { canvas, payload } = buildQuoteCanvas(tier);
+          const imgData = canvas.toDataURL('image/jpeg', 0.95);
+
+          const { jsPDF } = window.jspdf;
+          const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+          const pageW = pdf.internal.pageSize.getWidth();
+          const pageH = pdf.internal.pageSize.getHeight();
+
+          // Centrar tarjeta nítida en hoja A4 con márgenes limpios
+          const margin = 12;
+          const maxW = pageW - margin * 2;
+          const maxH = pageH - margin * 2;
+          const ratio = canvas.width / canvas.height;
+
+          let drawW = maxW;
+          let drawH = drawW / ratio;
+          if (drawH > maxH) {
+            drawH = maxH;
+            drawW = drawH * ratio;
+          }
+          const offsetX = (pageW - drawW) / 2;
+          const offsetY = (pageH - drawH) / 2;
+
+          pdf.addImage(imgData, 'JPEG', offsetX, offsetY, drawW, drawH, undefined, 'FAST');
+
+          const clientPart = sanitizeFilenamePart(payload.clientName || payload.productName);
+          const filename = `Presupuesto_${payload.brandName}_${clientPart}.pdf`;
+          pdf.save(filename);
+
+          showToast(`Archivo PDF descargado: ${filename}`, 'success');
+        } catch (err) {
+          showToast('No se pudo generar el PDF. Probá nuevamente o descargá en JPG.', 'warn');
+        }
       };
 
       /* -----------------------------------------------------------------------
@@ -2081,7 +2525,7 @@
           ? '(incluyendo diseño básico)'
           : `(si necesitás que armemos el vector desde cero, se suma ${formatARS(state.quick.designFee, 0)} por única vez)`;
 
-        const text = `¡Hola! Desde *${brandName}* te paso una referencia rápida:\n\nUna pieza en *${mat.name}* en medida *${row.label}* ronda entre *${formatARS(row.simple.price, 0)}* (corte simple) y *${formatARS(row.complex.price, 0)}* (con calado fino), o hasta *${formatARS(row.engrave.price, 0)}* si lleva grabado relleno ${designLine}.\n\nSi te sirve el rango, confirmando la seña del 50% armamos el archivo a medida y te paso la vista previa exacta antes de cortar. ¿Qué cantidad necesitarías?`;
+        const text = `¡Hola! Desde *${brandName}* te paso una referencia rápida:\n\nUna pieza en *${mat.name}* en medida *${row.label}* ronda entre *${formatARS(row.simple.price, 0)}* (corte simple) y *${formatARS(row.complex.price, 0)}* (con calado fino), o hasta *${formatARS(row.engrave.price, 0)}* si lleva grabado relleno ${designLine}.\n\nSi te sirve el rango, confirmando la seña del 50% armamos el archivo a medida y te paso la vista previa exacta antes de cortar. Presupuesto orientativo válido por 2 días. ¿Qué cantidad necesitarías?`;
 
         document.getElementById('quickTemplatePreview').textContent = text;
       };
@@ -2408,6 +2852,7 @@
         if (key !== 'custom') {
           state.calc.matCost = MATERIAL_PRESETS[key].cost;
         }
+        state.quote.materialDisplay = materialLabel || MATERIAL_PRESETS[key].cleanName;
         syncInputsFromState();
         saveState();
         renderTab1();
@@ -2440,6 +2885,11 @@
         document.getElementById('calcQty').value = state.calc.qty;
         document.getElementById('calcWholesaleMult').value = state.calc.wholesaleMult;
         document.getElementById('calcRetailMult').value = state.calc.retailMult;
+
+        // Datos del cliente para presupuesto
+        document.getElementById('quoteClient').value = state.quote.clientName;
+        document.getElementById('quoteProduct').value = state.quote.productName;
+        document.getElementById('quoteMaterialDisplay').value = state.quote.materialDisplay;
 
         // Tabla rápida
         document.getElementById('quickMaterial').value = state.quick.material;
@@ -2474,31 +2924,19 @@
           });
         });
 
-        const calcBindings = [
-          ['calcMatCost', 'matCost'],
-          ['calcWastePct', 'wastePct'],
-          ['calcLaserMin', 'laserMin'],
-          ['calcLaborMin', 'laborMin'],
-          ['calcDesignCost', 'designCost'],
-          ['calcExtrasCost', 'extrasCost'],
-          ['calcQty', 'qty'],
-          ['calcWholesaleMult', 'wholesaleMult'],
-          ['calcRetailMult', 'retailMult']
+        // Datos del cliente para presupuesto
+        const quoteBindings = [
+          ['quoteClient', 'clientName'],
+          ['quoteProduct', 'productName'],
+          ['quoteMaterialDisplay', 'materialDisplay']
         ];
 
-        calcBindings.forEach(([id, key]) => {
+        quoteBindings.forEach(([id, key]) => {
           const el = document.getElementById(id);
+          if (!el) return;
           el.addEventListener('input', () => {
-            state.calc[key] = Math.max(0, parseFloat(el.value) || 0);
-            if (id === 'calcMatCost') {
-              const preset = MATERIAL_PRESETS[state.calc.materialPreset];
-              if (preset && preset.cost !== state.calc.matCost) {
-                state.calc.materialPreset = 'custom';
-                document.getElementById('calcMaterialPreset').value = 'custom';
-              }
-            }
+            state.quote[key] = el.value;
             saveState();
-            renderAll();
           });
         });
 
