@@ -1,0 +1,2540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calculadora & Guía Maestra Láser — ElNodoAzul | SUGATINA</title>
+
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Poppins', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* =========================================================================
+       VARIABLES DE MARCA (ElNodoAzul por defecto / SUGATINA dinámico)
+       ========================================================================= */
+    :root {
+      --brand-primary: #2563EB;
+      --brand-dark: #1E3A8A;
+      --brand-hover: #1D4ED8;
+      --brand-soft: #EFF6FF;
+      --brand-border: #BFDBFE;
+      --brand-ring: rgba(37, 99, 235, 0.22);
+      --brand-text-soft: #1E40AF;
+    }
+
+    [data-brand="sugatina"] {
+      --brand-primary: #EA580C;
+      --brand-dark: #9A3412;
+      --brand-hover: #C2410C;
+      --brand-soft: #FFF7ED;
+      --brand-border: #FED7AA;
+      --brand-ring: rgba(234, 88, 12, 0.22);
+      --brand-text-soft: #C2410C;
+    }
+
+    body {
+      background-color: #F8FAFC;
+      color: #0F172A;
+      font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Números tabulares para máxima legibilidad en tablas y KPIs */
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Utilidades conectadas a las variables de marca */
+    .bg-brand { background-color: var(--brand-primary); }
+    .bg-brand-dark { background-color: var(--brand-dark); }
+    .bg-brand-soft { background-color: var(--brand-soft); }
+    .text-brand { color: var(--brand-primary); }
+    .text-brand-dark { color: var(--brand-dark); }
+    .text-brand-soft { color: var(--brand-text-soft); }
+    .border-brand { border-color: var(--brand-primary); }
+    .border-brand-soft { border-color: var(--brand-border); }
+
+    .btn-brand {
+      background-color: var(--brand-primary);
+      color: #FFFFFF;
+      transition: background-color 150ms ease, transform 100ms ease, box-shadow 150ms ease;
+    }
+    .btn-brand:hover {
+      background-color: var(--brand-hover);
+    }
+    .btn-brand:active {
+      transform: scale(0.98);
+    }
+
+    /* Foco limpio de inputs */
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--brand-primary) !important;
+      box-shadow: 0 0 0 3px var(--brand-ring);
+    }
+
+    /* Sliders estilizados */
+    input[type="range"] {
+      accent-color: var(--brand-primary);
+    }
+
+    /* Scrollbar discreta */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #F1F5F9; }
+    ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+    /* =========================================================================
+       ESTILOS DE IMPRESIÓN (@media print) — FICHA LIMPIA DE TALLER
+       ========================================================================= */
+    @media print {
+      body {
+        background: #FFFFFF !important;
+        color: #0F172A !important;
+        font-size: 11px !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-only {
+        display: block !important;
+      }
+      .print-break-avoid {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+      header {
+        position: static !important;
+        box-shadow: none !important;
+        border-bottom: 2px solid #0F172A !important;
+      }
+      .card-print {
+        box-shadow: none !important;
+        border: 1px solid #CBD5E1 !important;
+      }
+      #paramsGrid {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 10px !important;
+      }
+    }
+  </style>
+</head>
+<body data-brand="elnodoazul" class="min-h-screen flex flex-col">
+
+  <!-- =========================================================================
+       HEADER SUPERIOR CON SELECTOR DE MARCA (ElNodoAzul | SUGATINA)
+       ========================================================================= -->
+  <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <!-- Identidad -->
+      <div class="flex items-center gap-3">
+        <div id="brandLogoBox" class="w-10 h-10 rounded-xl bg-brand-dark text-white flex items-center justify-center shrink-0 shadow-sm transition-colors">
+          <!-- Ícono SVG inline: Cubo / Precisión Láser -->
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
+          </svg>
+        </div>
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold tracking-tight text-slate-900 leading-tight">
+              Calculadora & Guía Maestra Láser
+            </h1>
+            <span id="brandBadge" class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-brand-soft text-brand-soft border border-brand-soft">
+              ElNodoAzul
+            </span>
+          </div>
+          <p class="text-xs text-slate-500 mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+            <span>Creality Falcon A1 10W (381 × 305 mm)</span>
+            <span class="hidden sm:inline text-slate-300">•</span>
+            <span class="font-medium text-slate-600">Costos ARS & Parámetros de Taller</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Controles Derecha: Switcher de Marca + Badge Estado -->
+      <div class="flex items-center justify-between sm:justify-end gap-2.5 no-print">
+        <div class="inline-flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200" role="group" aria-label="Selector de marca">
+          <button
+            type="button"
+            id="btnBrandBlue"
+            onclick="setBrand('elnodoazul')"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 bg-white text-blue-700 shadow-xs"
+          >
+            <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+            ElNodoAzul
+          </button>
+          <button
+            type="button"
+            id="btnBrandOrange"
+            onclick="setBrand('sugatina')"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-slate-600 hover:text-orange-600"
+          >
+            <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+            SUGATINA
+          </button>
+        </div>
+
+        <span class="hidden md:inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          Guardado automático
+        </span>
+      </div>
+    </div>
+
+    <!-- =======================================================================
+         NAVEGACIÓN PRINCIPAL (4 PESTAÑAS)
+         ======================================================================= -->
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 border-t border-slate-100 no-print" aria-label="Secciones principales">
+      <div class="flex overflow-x-auto gap-1 sm:gap-2 -mb-px py-1.5">
+        <button
+          type="button"
+          id="tabBtn-cotizador"
+          onclick="switchTab('cotizador')"
+          class="tab-btn shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 bg-brand-soft text-brand-soft border border-brand-soft"
+        >
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+          </svg>
+          <span>1. Cotizador & Amortización</span>
+        </button>
+
+        <button
+          type="button"
+          id="tabBtn-rapida"
+          onclick="switchTab('rapida')"
+          class="tab-btn shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 text-slate-600 hover:bg-slate-100 border border-transparent"
+        >
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          <span>2. Tabla Rápida (Sin Archivo)</span>
+        </button>
+
+        <button
+          type="button"
+          id="tabBtn-mercado"
+          onclick="switchTab('mercado')"
+          class="tab-btn shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 text-slate-600 hover:bg-slate-100 border border-transparent"
+        >
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" />
+          </svg>
+          <span>3. CO2 vs. Falcon A1 (Mercado)</span>
+        </button>
+
+        <button
+          type="button"
+          id="tabBtn-parametros"
+          onclick="switchTab('parametros')"
+          class="tab-btn shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 text-slate-600 hover:bg-slate-100 border border-transparent"
+        >
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+          </svg>
+          <span>4. Guía de Parámetros</span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- =========================================================================
+       CONTENIDO PRINCIPAL
+       ========================================================================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-5 sm:py-6 space-y-6">
+
+    <!-- =======================================================================
+         PESTAÑA 1: COTIZADOR & AMORTIZACIÓN REAL (FALCON A1 10W)
+         ======================================================================= -->
+    <section id="panel-cotizador" class="tab-panel space-y-5">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+
+        <!-- PANEL IZQUIERDO: CONFIGURACIÓN DE AMORTIZACIÓN Y COSTO DE MÁQUINA -->
+        <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+          <!-- Cabecera colapsable en móvil -->
+          <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between gap-2 bg-slate-50/70">
+            <button
+              type="button"
+              onclick="toggleMachineConfig()"
+              class="flex items-center gap-2 text-left flex-1 lg:cursor-default"
+            >
+              <span class="w-8 h-8 rounded-lg bg-brand-soft text-brand flex items-center justify-center shrink-0">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </span>
+              <div>
+                <h2 class="text-sm font-bold text-slate-900 leading-snug">Amortización & Máquina</h2>
+                <p class="text-[11px] text-slate-500">Creality Falcon A1 10W</p>
+              </div>
+              <svg id="machineConfigChevron" class="w-4 h-4 text-slate-400 ml-auto lg:hidden transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              onclick="resetMachineDefaults()"
+              title="Restablecer valores por defecto"
+              class="text-[11px] font-semibold text-slate-500 hover:text-slate-800 px-2.5 py-1 rounded-lg hover:bg-slate-200/70 transition shrink-0"
+            >
+              Restablecer
+            </button>
+          </div>
+
+          <!-- Cuerpo configuración -->
+          <div id="machineConfigBody" class="p-5 space-y-4">
+            <!-- KPIs en tiempo real -->
+            <div class="grid grid-cols-2 gap-2.5">
+              <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+                <span class="block text-[10px] font-semibold uppercase tracking-wider text-slate-500">Técnico puro</span>
+                <div id="kpiPureHour" class="text-base font-bold text-slate-900 tabular-nums mt-0.5">$ 790,00/h</div>
+                <div id="kpiPureMin" class="text-[11px] font-medium text-slate-500 tabular-nums">$ 13,17/min</div>
+              </div>
+              <div class="p-3 rounded-xl bg-brand-soft border border-brand-soft">
+                <span class="block text-[10px] font-semibold uppercase tracking-wider text-brand-soft">Operativo seguro</span>
+                <div id="kpiSafeHour" class="text-base font-bold text-brand-dark tabular-nums mt-0.5">$ 987,50/h</div>
+                <div id="kpiSafeMin" class="text-[11px] font-semibold text-brand tabular-nums">$ 16,46/min</div>
+              </div>
+            </div>
+
+            <p class="text-[11px] leading-relaxed text-slate-600 bg-slate-50 border border-slate-200/80 rounded-xl p-3">
+              <strong class="text-slate-800">¿Por qué usar el costo seguro?</strong> Amortiza reposición del módulo 10W, lentes, mantenimiento y errores de prueba para que la máquina se pague sola sin descapitalizarte.
+            </p>
+
+            <!-- Inputs de configuración -->
+            <div class="space-y-3 text-xs">
+              <div>
+                <label for="cfgMachineValue" class="block font-medium text-slate-700 mb-1">Valor reposición máquina (ARS)</label>
+                <input type="number" id="cfgMachineValue" min="0" step="10000" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-medium" />
+              </div>
+
+              <div class="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label for="cfgLifeHours" class="block font-medium text-slate-700 mb-1">Vida útil segura (hs)</label>
+                  <input type="number" id="cfgLifeHours" min="100" step="100" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-medium" />
+                </div>
+                <div>
+                  <label for="cfgMaint100h" class="block font-medium text-slate-700 mb-1">Mant. c/100 hs (ARS)</label>
+                  <input type="number" id="cfgMaint100h" min="0" step="1000" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-medium" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label for="cfgPowerKw" class="block font-medium text-slate-700 mb-1">Consumo total (kW)</label>
+                  <input type="number" id="cfgPowerKw" min="0" step="0.05" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-medium" />
+                </div>
+                <div>
+                  <label for="cfgElectricRate" class="block font-medium text-slate-700 mb-1">Tarifa (ARS/kWh)</label>
+                  <input type="number" id="cfgElectricRate" min="0" step="10" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-medium" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label for="cfgSafetyPct" class="block font-medium text-slate-700 mb-1">Margen seg. máq. (%)</label>
+                  <input type="number" id="cfgSafetyPct" min="0" max="100" step="5" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-medium" />
+                </div>
+                <div>
+                  <label for="cfgLaborRate" class="block font-medium text-slate-700 mb-1">Mano de obra (ARS/h)</label>
+                  <input type="number" id="cfgLaborRate" min="0" step="250" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-medium" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Desglose técnico rápido -->
+            <div class="pt-3 border-t border-slate-100 text-[11px] text-slate-500 space-y-1 tabular-nums">
+              <div class="flex justify-between">
+                <span>Amortización equipo/h:</span>
+                <span id="brkAmortH" class="font-semibold text-slate-700">$ 500,00</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Lentes y consumibles/h:</span>
+                <span id="brkMaintH" class="font-semibold text-slate-700">$ 250,00</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Electricidad (Láser+Aire+PC)/h:</span>
+                <span id="brkElecH" class="font-semibold text-slate-700">$ 40,00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL DERECHO: CALCULADORA DE PRESUPUESTO -->
+        <div class="lg:col-span-8 space-y-5">
+          <!-- Tarjeta de Datos del Trabajo -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-5">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-3 border-b border-slate-100">
+              <div>
+                <h2 class="text-base font-bold text-slate-900">Calculadora de Presupuesto</h2>
+                <p class="text-xs text-slate-500">Apliques por mayor, tandas optimizadas o producto terminado</p>
+              </div>
+              <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-700 self-start sm:self-auto">
+                Tiempo real auto: +25% frenados
+              </span>
+            </div>
+
+            <!-- Selector rápido de material -->
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 text-xs">
+              <div class="sm:col-span-6">
+                <label for="calcMaterialPreset" class="block font-semibold text-slate-700 mb-1">Material base (precarga costo editable)</label>
+                <select id="calcMaterialPreset" onchange="applyMaterialPreset()" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white font-medium text-slate-800">
+                  <option value="eva_comun">Goma EVA Común 1mm (1/2 plancha 380×300mm — $ 600)</option>
+                  <option value="eva_glitter">Goma EVA Glitter 1mm (1/2 plancha — $ 1.300)</option>
+                  <option value="mdf_3">MDF 3mm (plancha 380×300mm aprox — $ 1.400)</option>
+                  <option value="terciado_3">Terciado 3mm (plancha 380×300mm — $ 1.800)</option>
+                  <option value="chapadur_3">Chapadur 3mm (plancha 380×300mm — $ 1.200)</option>
+                  <option value="panolenci">Pañolenci 1mm (paño 380×300mm — $ 900)</option>
+                  <option value="cartulina">Cartulina 240g (hoja — $ 400)</option>
+                  <option value="custom">Personalizado (ingresar costo manual)</option>
+                </select>
+              </div>
+              <div class="sm:col-span-3">
+                <label for="calcMatCost" class="block font-semibold text-slate-700 mb-1">Costo material (ARS)</label>
+                <input type="number" id="calcMatCost" min="0" step="50" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+              </div>
+              <div class="sm:col-span-3">
+                <label for="calcWastePct" class="block font-semibold text-slate-700 mb-1">Merma / desperdicio (%)</label>
+                <input type="number" id="calcWastePct" min="0" max="100" step="5" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+              </div>
+            </div>
+
+            <!-- Tiempos y Extras -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+              <div>
+                <label for="calcLaserMin" class="block font-semibold text-slate-700 mb-1">Tiempo Falcon (min)</label>
+                <input type="number" id="calcLaserMin" min="0" step="1" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+                <span id="realLaserMinHint" class="block text-[10px] text-brand font-medium mt-1 tabular-nums">Real (+25%): 7,5 min</span>
+              </div>
+              <div>
+                <label for="calcLaborMin" class="block font-semibold text-slate-700 mb-1">Mano de obra (min)</label>
+                <input type="number" id="calcLaborMin" min="0" step="1" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+                <span class="block text-[10px] text-slate-400 mt-1">Carga, limpieza, pegado</span>
+              </div>
+              <div>
+                <label for="calcDesignCost" class="block font-semibold text-slate-700 mb-1">Diseño / vector (ARS)</label>
+                <input type="number" id="calcDesignCost" min="0" step="250" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+                <span class="block text-[10px] text-slate-400 mt-1">Opcional fijo</span>
+              </div>
+              <div>
+                <label for="calcExtrasCost" class="block font-semibold text-slate-700 mb-1">Insumos extra (ARS)</label>
+                <input type="number" id="calcExtrasCost" min="0" step="100" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+                <span class="block text-[10px] text-slate-400 mt-1">Silicona, bolsitas, etc.</span>
+              </div>
+            </div>
+
+            <!-- Cantidad + Multiplicadores -->
+            <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 pt-3 border-t border-slate-100 text-xs items-end">
+              <div class="sm:col-span-4">
+                <label for="calcQty" class="block font-semibold text-slate-700 mb-1">Cantidad de piezas en la tanda</label>
+                <input type="number" id="calcQty" min="1" step="1" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-slate-50 font-bold text-slate-900 tabular-nums text-sm" />
+              </div>
+
+              <div class="sm:col-span-4 bg-slate-50 border border-slate-200 rounded-xl p-2.5">
+                <div class="flex items-center justify-between mb-1">
+                  <label for="calcWholesaleMult" class="font-semibold text-slate-700">Mayorista</label>
+                  <span id="wholesaleMultLabel" class="font-bold text-brand tabular-nums">1.8x (+80%)</span>
+                </div>
+                <input type="range" id="calcWholesaleMult" min="1.2" max="3.5" step="0.1" class="w-full cursor-pointer" />
+              </div>
+
+              <div class="sm:col-span-4 bg-slate-50 border border-slate-200 rounded-xl p-2.5">
+                <div class="flex items-center justify-between mb-1">
+                  <label for="calcRetailMult" class="font-semibold text-slate-700">Minorista</label>
+                  <span id="retailMultLabel" class="font-bold text-brand tabular-nums">2.5x (+150%)</span>
+                </div>
+                <input type="range" id="calcRetailMult" min="1.5" max="5.0" step="0.1" class="w-full cursor-pointer" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Costo Real y Desglose Proporcional -->
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Costo Real Total de Producción</span>
+                <div class="flex items-baseline gap-3 mt-0.5">
+                  <span id="resTotalCost" class="text-2xl font-bold text-slate-900 tabular-nums">$ 0</span>
+                  <span class="text-xs text-slate-500 tabular-nums">Costo unitario: <strong id="resUnitCost" class="text-slate-800">$ 0</strong></span>
+                </div>
+              </div>
+              <span id="resQtySummary" class="text-xs font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-700 tabular-nums">
+                Pack × 20 u.
+              </span>
+            </div>
+
+            <!-- Barra apilada proporcional -->
+            <div class="space-y-2">
+              <div class="h-3 w-full rounded-full bg-slate-100 overflow-hidden flex">
+                <div id="barMat" class="bg-blue-500 h-full transition-all duration-300" style="width: 35%"></div>
+                <div id="barMac" class="bg-amber-500 h-full transition-all duration-300" style="width: 10%"></div>
+                <div id="barLab" class="bg-emerald-500 h-full transition-all duration-300" style="width: 55%"></div>
+                <div id="barExt" class="bg-purple-500 h-full transition-all duration-300" style="width: 0%"></div>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] tabular-nums">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0"></span>
+                  <span class="text-slate-600">Material:</span>
+                  <strong id="valMatCost" class="text-slate-900 ml-auto">$ 0</strong>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0"></span>
+                  <span class="text-slate-600">Máquina:</span>
+                  <strong id="valMacCost" class="text-slate-900 ml-auto">$ 0</strong>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+                  <span class="text-slate-600">Mano obra:</span>
+                  <strong id="valLabCost" class="text-slate-900 ml-auto">$ 0</strong>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-purple-500 shrink-0"></span>
+                  <span class="text-slate-600">Extras:</span>
+                  <strong id="valExtCost" class="text-slate-900 ml-auto">$ 0</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjetas de Precio Sugerido: Mayorista & Minorista -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Mayorista -->
+            <div class="bg-white rounded-2xl border-2 border-slate-200 hover:border-brand transition p-5 flex flex-col justify-between gap-4 shadow-xs">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold uppercase tracking-wider text-slate-600">Precio Mayorista (Pack)</span>
+                  <span id="badgeWholesaleMult" class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 tabular-nums">1.8x</span>
+                </div>
+                <div id="resWholesaleTotal" class="text-3xl font-bold text-slate-900 tabular-nums">$ 0</div>
+                <div class="flex items-center justify-between text-xs pt-1 border-t border-slate-100 tabular-nums">
+                  <span class="text-slate-500">Valor unitario:</span>
+                  <strong id="resWholesaleUnit" class="text-slate-900 text-sm">$ 0 / u.</strong>
+                </div>
+                <div class="flex items-center justify-between text-xs tabular-nums">
+                  <span class="text-slate-500">Ganancia neta limpia:</span>
+                  <strong id="resWholesaleProfit" class="text-emerald-600">+ $ 0</strong>
+                </div>
+              </div>
+              <button
+                type="button"
+                onclick="copyWhatsAppQuote('wholesale')"
+                class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition flex items-center justify-center gap-2"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                </svg>
+                Copiar Presupuesto Mayorista (WhatsApp)
+              </button>
+            </div>
+
+            <!-- Minorista / Producto Terminado -->
+            <div class="bg-brand-soft/60 rounded-2xl border-2 border-brand p-5 flex flex-col justify-between gap-4 shadow-xs">
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold uppercase tracking-wider text-brand-dark">Minorista / Terminado</span>
+                  <span id="badgeRetailMult" class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-white text-brand border border-brand-soft tabular-nums">2.5x</span>
+                </div>
+                <div id="resRetailTotal" class="text-3xl font-bold text-brand-dark tabular-nums">$ 0</div>
+                <div class="flex items-center justify-between text-xs pt-1 border-t border-brand-soft tabular-nums">
+                  <span class="text-slate-600">Valor unitario:</span>
+                  <strong id="resRetailUnit" class="text-slate-900 text-sm">$ 0 / u.</strong>
+                </div>
+                <div class="flex items-center justify-between text-xs tabular-nums">
+                  <span class="text-slate-600">Ganancia neta limpia:</span>
+                  <strong id="resRetailProfit" class="text-emerald-700">+ $ 0</strong>
+                </div>
+              </div>
+              <button
+                type="button"
+                onclick="copyWhatsAppQuote('retail')"
+                class="w-full py-2.5 px-4 rounded-xl btn-brand text-xs font-semibold flex items-center justify-center gap-2 shadow-xs"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                </svg>
+                Copiar Presupuesto Minorista (WhatsApp)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         PESTAÑA 2: TABLA PRÁCTICA RÁPIDA "SIN ARCHIVO" (WHATSAPP EN 30 SEG)
+         ======================================================================= -->
+    <section id="panel-rapida" class="tab-panel hidden space-y-5">
+      <!-- Controles superiores -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-4">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-brand">Modo WhatsApp en 30 segundos</span>
+            <h2 class="text-lg font-bold text-slate-900">Tabla Práctica Rápida — Sin Archivo Vectorial</h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Cotizá rangos orientativos cuando el cliente solo manda una foto o idea, sin regalar tiempo vectorizando antes de la seña.
+            </p>
+          </div>
+          <span class="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 self-start">
+            Vinculada en vivo a tu Pestaña 1
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2 border-t border-slate-100 text-xs">
+          <div>
+            <label for="quickMaterial" class="block font-semibold text-slate-700 mb-1">Material</label>
+            <select id="quickMaterial" onchange="renderQuickTable()" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white font-medium">
+              <option value="mdf_3">MDF 3 mm</option>
+              <option value="terciado_3">Terciado 3 mm</option>
+              <option value="eva_comun">Goma EVA Común 1 mm</option>
+              <option value="eva_glitter">Goma EVA Glitter 1 mm</option>
+              <option value="panolenci">Pañolenci 1 mm</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="quickPriceList" class="block font-semibold text-slate-700 mb-1">Lista de precios</label>
+            <select id="quickPriceList" onchange="renderQuickTable()" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white font-medium">
+              <option value="retail">Minorista / Producto Terminado</option>
+              <option value="wholesale">Mayorista (Por tanda / Pack)</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="quickDesignFee" class="block font-semibold text-slate-700 mb-1">Diseño / vectorización (ARS)</label>
+            <input type="number" id="quickDesignFee" min="0" step="250" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+          </div>
+
+          <div class="flex items-end">
+            <label class="w-full flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer select-none">
+              <input type="checkbox" id="quickIncludeDesign" onchange="renderQuickTable()" class="w-4 h-4 rounded accent-blue-600" />
+              <span class="text-xs font-medium text-slate-700 leading-tight">Sumar diseño en los precios de la tabla</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alerta Grabado Relleno -->
+      <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-3 text-xs text-amber-900">
+        <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <div>
+          <strong class="font-bold">Atención al Grabado de Relleno en Diodo 10W:</strong> En la Falcon A1, rellenar áreas grandes (~40% de la pieza) es lo que más minutos de máquina consume (mucho más que cortar el borde). Por eso el grabado siempre se cotiza aparte o en la tercera columna.
+        </div>
+      </div>
+
+      <!-- Tabla Dinámica -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-[11px] uppercase tracking-wider text-slate-600">
+                <th class="py-3.5 px-4 font-bold">Rango de Tamaño</th>
+                <th class="py-3.5 px-4 font-bold">
+                  Solo Corte Simple
+                  <span class="block text-[10px] font-normal normal-case text-slate-400">Silueta exterior / pocos calados (×1.0)</span>
+                </th>
+                <th class="py-3.5 px-4 font-bold">
+                  Corte Complejo / Calado Fino
+                  <span class="block text-[10px] font-normal normal-case text-slate-400">Mandalas, letras caladas (×1.75 tiempo)</span>
+                </th>
+                <th class="py-3.5 px-4 font-bold bg-amber-50/70 text-amber-900">
+                  Corte + Grabado Relleno (~40%)
+                  <span class="block text-[10px] font-normal normal-case text-amber-700">Alto tiempo en diodo 10W</span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="quickTableBody" class="divide-y divide-slate-100 text-xs sm:text-sm tabular-nums">
+              <!-- Filas generadas dinámicamente -->
+            </tbody>
+          </table>
+        </div>
+        <div id="quickTableFooterNote" class="px-4 py-3 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-600 flex flex-wrap items-center justify-between gap-2">
+          <!-- Nota dinámica -->
+        </div>
+      </div>
+
+      <!-- 3 Preguntas Rápidas + Plantilla WhatsApp -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-3">
+          <h3 class="text-sm font-bold text-slate-900">Las 3 preguntas rápidas antes de cotizar por WhatsApp</h3>
+          <ol class="space-y-2.5 text-xs text-slate-700">
+            <li class="flex items-start gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-brand-soft text-brand font-bold flex items-center justify-center shrink-0 text-[11px]">1</span>
+              <span><strong>Medida aproximada y cantidad:</strong> ¿Cuántos cm de ancho/alto mide y cuántas unidades necesitás? (En packs chicos siempre conviene cotizar tanda mínima).</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-brand-soft text-brand font-bold flex items-center justify-center shrink-0 text-[11px]">2</span>
+              <span><strong>Tipo de trabajo:</strong> ¿Es silueta simple, tiene muchos calados internos o lleva grabado de texto/logo relleno?</span>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="w-5 h-5 rounded-full bg-brand-soft text-brand font-bold flex items-center justify-center shrink-0 text-[11px]">3</span>
+              <span><strong>Archivo y seña del 50%:</strong> ¿Ya tenés el archivo vectorizado (<code>.svg</code> / <code>.dxf</code>) o lo diseñamos nosotros? El dibujo se arma <em>únicamente</em> tras confirmar la seña del 50%.</span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="lg:col-span-6 bg-white rounded-2xl border border-slate-200 shadow-xs p-5 flex flex-col justify-between gap-3">
+          <div class="space-y-2.5">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <h3 class="text-sm font-bold text-slate-900">Plantilla de respuesta orientativa rápida</h3>
+              <select id="quickTemplateSize" onchange="updateQuickTemplatePreview()" class="text-xs px-2.5 py-1 rounded-lg border border-slate-300 bg-slate-50 font-medium">
+                <option value="0">Chica (10 × 10 cm)</option>
+                <option value="1" selected>Mediana (15 × 15 cm)</option>
+                <option value="2">Grande (20 × 20 cm)</option>
+                <option value="3">Máx. cama (30 × 25 cm)</option>
+              </select>
+            </div>
+            <div id="quickTemplatePreview" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed whitespace-pre-line font-normal">
+              <!-- Texto dinámico -->
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onclick="copyQuickWhatsAppTemplate()"
+            class="w-full py-2.5 px-4 rounded-xl btn-brand text-xs font-semibold flex items-center justify-center gap-2 shadow-xs"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
+            Copiar respuesta rápida para WhatsApp
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         PESTAÑA 3: REFERENCIA DE MERCADO — CO2 INDUSTRIAL VS. FALCON A1 (10W)
+         ======================================================================= -->
+    <section id="panel-mercado" class="tab-panel hidden space-y-5">
+      <!-- Simulador Comparativo -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-5">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 pb-3 border-b border-slate-100">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-brand">Posicionamiento Estratégico</span>
+            <h2 class="text-lg font-bold text-slate-900">CO2 Industrial (60–100W) vs. Falcon A1 (10W)</h2>
+            <p class="text-xs text-slate-500 mt-0.5">
+              Entendé dónde ganás plata real amortizando tu láser de diodo sin quedar fuera de precio contra talleres CO2.
+            </p>
+          </div>
+        </div>
+
+        <!-- Controles del simulador -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 text-xs">
+          <div class="md:col-span-6">
+            <label for="simScenario" class="block font-semibold text-slate-700 mb-1">Elegí un escenario real de taller</label>
+            <select id="simScenario" onchange="renderMarketSimulator()" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white font-semibold text-slate-800">
+              <option value="mdf_crudo">MDF 3mm (15 × 15 cm) — Corte crudo a terceros</option>
+              <option value="eva_pack">Pack 20 apliques Goma EVA color (1 mm)</option>
+              <option value="mdf_terminado">Producto terminado MDF 3mm + Diseño y ensamblado</option>
+            </select>
+          </div>
+
+          <div class="md:col-span-3">
+            <label for="co2RateMin" class="block font-semibold text-slate-700 mb-1">Tarifa mercado CO2 (ARS/min)</label>
+            <input type="number" id="co2RateMin" min="100" max="2000" step="25" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+            <span class="text-[10px] text-slate-400">Ref. internet: $250 – $500/min</span>
+          </div>
+
+          <div class="md:col-span-3">
+            <label for="co2MinDrop" class="block font-semibold text-slate-700 mb-1">Bajada mínima CO2 (ARS)</label>
+            <input type="number" id="co2MinDrop" min="0" step="500" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+            <span class="text-[10px] text-slate-400">Ref. internet: $3.500 – $6.000</span>
+          </div>
+        </div>
+
+        <!-- Comparación Visual Lado a Lado -->
+        <div id="marketComparisonGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Renderizado por JS -->
+        </div>
+
+        <!-- Estrategia Ganadora Banner -->
+        <div id="marketStrategyBanner" class="rounded-2xl p-4 border text-xs leading-relaxed">
+          <!-- Renderizado por JS -->
+        </div>
+      </div>
+
+      <!-- Semáforo Estratégico (3 Columnas) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- VERDE -->
+        <div class="bg-white rounded-2xl border border-emerald-200 shadow-xs p-5 space-y-2.5">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+            <h3 class="text-sm font-bold text-emerald-900">VERDE — Alta Rentabilidad</h3>
+          </div>
+          <p class="text-[11px] font-medium text-emerald-700">Donde tu Falcon A1 10W brilla y rinde al máximo:</p>
+          <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+            <li>Apliques por mayor en Goma EVA lisa y con glitter.</li>
+            <li>Cortes limpios y sellados en pañolenci y cartulina.</li>
+            <li>Grabados personalizados en madera, pizarra o PETG.</li>
+            <li><strong>Productos híbridos Impresión 3D + Láser</strong> (cajas, carteles QR, tableros didácticos).</li>
+          </ul>
+        </div>
+
+        <!-- AMARILLO -->
+        <div class="bg-white rounded-2xl border border-amber-200 shadow-xs p-5 space-y-2.5">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+            <h3 class="text-sm font-bold text-amber-900">AMARILLO — Con Valor Agregado</h3>
+          </div>
+          <p class="text-[11px] font-medium text-amber-700">Rentable si vendés producto terminado, no corte solo:</p>
+          <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+            <li>MDF 3 mm / Terciado 3 mm como carteles, bases o trofeos.</li>
+            <li>Cajas a medida, recuerdos, toppers y juegos didácticos.</li>
+            <li>Cobrás diseño, armado, pintura y entrega lista para usar; el láser solo se amortiza internamente.</li>
+          </ul>
+        </div>
+
+        <!-- ROJO -->
+        <div class="bg-white rounded-2xl border border-rose-200 shadow-xs p-5 space-y-2.5">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+            <h3 class="text-sm font-bold text-rose-900">ROJO — No Competir</h3>
+          </div>
+          <p class="text-[11px] font-medium text-rose-700">Terreno exclusivo de máquinas CO2 industriales:</p>
+          <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
+            <li>Servicio de corte crudo por minuto a terceros que ya traen el archivo listo.</li>
+            <li>Planchas grandes o tandas masivas de MDF 3–6 mm sin valor agregado.</li>
+            <li>Corte de acrílico transparente (el diodo azul lo atraviesa sin cortarlo).</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Tabla de Precios de Referencia en Internet (Argentina — Editables) -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-100 flex flex-wrap items-center justify-between gap-2 bg-slate-50/70">
+          <div>
+            <h3 class="text-sm font-bold text-slate-900">Precios de Referencia en Internet (Argentina)</h3>
+            <p class="text-[11px] text-slate-500">Valores orientativos editables (se guardan en tu navegador para actualizar con la inflación).</p>
+          </div>
+          <button
+            type="button"
+            onclick="resetMarketRefs()"
+            class="text-[11px] font-semibold text-slate-500 hover:text-slate-800 px-2.5 py-1 rounded-lg hover:bg-slate-200/70 transition"
+          >
+            Restablecer referencias
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-200 text-[11px] uppercase tracking-wider text-slate-600">
+                <th class="py-3 px-4 font-bold">Concepto de Mercado</th>
+                <th class="py-3 px-4 font-bold">Rango Mínimo (ARS)</th>
+                <th class="py-3 px-4 font-bold">Rango Máximo (ARS)</th>
+                <th class="py-3 px-4 font-bold">Nota práctica para tu taller</th>
+              </tr>
+            </thead>
+            <tbody id="marketRefTableBody" class="divide-y divide-slate-100 tabular-nums">
+              <!-- Filas editables generadas por JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         PESTAÑA 4: GUÍA MAESTRA DE PARÁMETROS — CREALITY FALCON A1 (10W)
+         ======================================================================= -->
+    <section id="panel-parametros" class="tab-panel hidden space-y-5">
+      <!-- Encabezado exclusivo impresión -->
+      <div class="hidden print-only border-b border-slate-300 pb-2 mb-3">
+        <h2 id="printSheetTitle" class="text-lg font-bold text-slate-900">Ficha Maestra de Parámetros — Creality Falcon A1 10W | ElNodoAzul</h2>
+        <p class="text-xs text-slate-600">Referencia rápida de velocidad (mm/min), potencia (%), pasadas y cuidado del módulo láser.</p>
+      </div>
+
+      <!-- Barra de Controles (Buscador, Filtros, Toggle, Imprimir) -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-4 no-print">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-brand">Hoja de Referencia de Taller</span>
+            <h2 class="text-lg font-bold text-slate-900">Guía Maestra de Parámetros — Falcon A1 10W</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Rangos calibrados para acabados limpios protegiendo la vida útil del diodo.</p>
+          </div>
+          <button
+            type="button"
+            onclick="window.print()"
+            class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition flex items-center justify-center gap-2 shrink-0"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            Imprimir Ficha de Taller
+          </button>
+        </div>
+
+        <!-- Buscador + Toggle Operación -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 text-xs">
+          <div class="md:col-span-7 relative">
+            <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input
+              type="text"
+              id="paramSearch"
+              oninput="renderParameters()"
+              placeholder="Buscar material, color o espesor (ej: blanco, glitter, MDF, verde lima, PETG)..."
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 font-medium"
+            />
+          </div>
+
+          <div class="md:col-span-5 flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200">
+            <button type="button" onclick="setParamModeFilter('all')" id="modeBtn-all" class="flex-1 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-900 shadow-xs transition">Todos</button>
+            <button type="button" onclick="setParamModeFilter('corte')" id="modeBtn-corte" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition">Solo Corte</button>
+            <button type="button" onclick="setParamModeFilter('grabado')" id="modeBtn-grabado" class="flex-1 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition">Solo Grabado</button>
+          </div>
+        </div>
+
+        <!-- Filtros por categoría -->
+        <div id="paramCategoryPills" class="flex flex-wrap gap-1.5">
+          <!-- Generado por JS -->
+        </div>
+      </div>
+
+      <!-- Banner Compacto: Regla de los Colores para Láser Azul (455 nm) -->
+      <div class="bg-slate-900 text-white rounded-2xl p-4 sm:p-5 shadow-xs print-break-avoid">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div class="space-y-1 max-w-xl">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-400"></span>
+              <h3 class="text-sm font-bold tracking-tight">Regla de los Colores para Láser Azul (455 nm)</h3>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Los colores oscuros y cálidos <strong>absorben</strong> la luz azul y cortan rapidísimo en 1 pasada. El blanco, celeste claro y azul Francia <strong>reflejan</strong> el haz: necesitan más energía, 2 pasadas o cortar <strong>boca abajo en espejo</strong> (en glitter).
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] shrink-0">
+            <div class="bg-white/10 rounded-xl px-3 py-2 border border-white/10">
+              <div class="flex items-center gap-1 mb-1">
+                <span class="w-2.5 h-2.5 rounded-full bg-neutral-950 border border-white/40"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-lime-400"></span>
+                <strong class="ml-1 text-emerald-300">Rápidos</strong>
+              </div>
+              <span class="text-slate-300">1 pasada, baja potencia</span>
+            </div>
+            <div class="bg-white/10 rounded-xl px-3 py-2 border border-white/10">
+              <div class="flex items-center gap-1 mb-1">
+                <span class="w-2.5 h-2.5 rounded-full bg-pink-400"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-purple-400"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+                <strong class="ml-1 text-amber-300">Medios / Glitter</strong>
+              </div>
+              <span class="text-slate-300">Potencia media / espejo</span>
+            </div>
+            <div class="bg-white/10 rounded-xl px-3 py-2 border border-white/10">
+              <div class="flex items-center gap-1 mb-1">
+                <span class="w-2.5 h-2.5 rounded-full bg-white"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-sky-300"></span>
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                <strong class="ml-1 text-rose-300">Difíciles</strong>
+              </div>
+              <span class="text-slate-300">Reflejan azul → 2 pasadas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contador de resultados -->
+      <div class="flex items-center justify-between text-xs text-slate-500 px-1 no-print">
+        <span id="paramCountLabel">Mostrando 0 configuraciones</span>
+        <span>Todos los valores asumiendo foco manual exacto</span>
+      </div>
+
+      <!-- Grilla de Tarjetas de Materiales -->
+      <div id="paramsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        <!-- Tarjetas generadas dinámicamente -->
+      </div>
+
+      <!-- 4 Reglas de Oro para Cuidar el Módulo Láser 10W -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-4 print-break-avoid">
+        <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+          <span class="w-7 h-7 rounded-lg bg-brand-soft text-brand flex items-center justify-center shrink-0">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </span>
+          <div>
+            <h3 class="text-sm font-bold text-slate-900">4 Reglas de Oro para Cuidar tu Módulo Láser 10W</h3>
+            <p class="text-[11px] text-slate-500">Hábitos simples que duplican la vida útil del diodo y mantienen cortes consistentes</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
+            <div class="font-bold text-slate-900">1. Máximo 85–90% en tandas</div>
+            <p class="text-slate-600 leading-relaxed">Evitá trabajar al 100% continuo durante horas. Si una madera exige mucho, hacé 2 pasadas al 85% más rápido.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
+            <div class="font-bold text-slate-900">2. Lente siempre impecable</div>
+            <p class="text-slate-600 leading-relaxed">Tras cortar MDF o Chapadur, limpiá la lente protectora con hisopo y alcohol isopropílico. *(Nunca uses alcohol en la tapa naranja acrílica)*.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
+            <div class="font-bold text-slate-900">3. Air Assist 100% al cortar</div>
+            <p class="text-slate-600 leading-relaxed">Enfría el corte al instante, evita llamas, reduce hollín y empuja el humo lejos de la óptica del láser.</p>
+          </div>
+          <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
+            <div class="font-bold text-slate-900">4. Foco manual + 1 prueba</div>
+            <p class="text-slate-600 leading-relaxed">Usá el bloque de enfoque en cada cambio de espesor y cortá una piecita de prueba en una esquina antes de mandar la plancha entera.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER DISCRETO -->
+  <footer class="border-t border-slate-200 bg-white mt-auto py-3 px-4 text-center text-[11px] text-slate-500 no-print">
+    <span>Herramienta de Taller <strong id="footerBrandName" class="text-slate-700">ElNodoAzul</strong> • Creality Falcon A1 10W • Todos los valores en ARS son editables y se guardan localmente.</span>
+  </footer>
+
+  <!-- TOAST NOTIFICATION (Reemplaza cualquier alert/confirm) -->
+  <div
+    id="toastContainer"
+    class="fixed bottom-5 right-5 z-50 pointer-events-none flex flex-col gap-2 max-w-sm"
+    aria-live="polite"
+  ></div>
+
+  <!-- =========================================================================
+       LÓGICA JAVASCRIPT (AUTOCONTENIDA, REACTIVA Y PERSISTENTE)
+       ========================================================================= -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* -----------------------------------------------------------------------
+         1. CONSTANTES Y VALORES POR DEFECTO
+         ----------------------------------------------------------------------- */
+      const STORAGE_KEY = 'ena_sugatina_laser_master_v1';
+
+      const MATERIAL_PRESETS = {
+        eva_comun:   { label: 'Goma EVA Común 1mm (1/2 plancha)', cost: 600 },
+        eva_glitter: { label: 'Goma EVA Glitter 1mm (1/2 plancha)', cost: 1300 },
+        mdf_3:       { label: 'MDF 3mm (380×300mm)', cost: 1400 },
+        terciado_3:  { label: 'Terciado 3mm (380×300mm)', cost: 1800 },
+        chapadur_3:  { label: 'Chapadur 3mm (380×300mm)', cost: 1200 },
+        panolenci:   { label: 'Pañolenci 1mm (380×300mm)', cost: 900 },
+        cartulina:   { label: 'Cartulina 240g', cost: 400 },
+        custom:      { label: 'Material personalizado', cost: 1000 }
+      };
+
+      const DEFAULT_MACHINE = {
+        machineValue: 750000,
+        lifeHours: 1500,
+        maint100h: 25000,
+        powerKw: 0.20,
+        electricRate: 200,
+        safetyPct: 25,
+        laborRate: 4500
+      };
+
+      const DEFAULT_CALC = {
+        materialPreset: 'eva_comun',
+        matCost: 600,
+        wastePct: 20,
+        laserMin: 6,
+        laborMin: 15,
+        designCost: 0,
+        extrasCost: 0,
+        qty: 20,
+        wholesaleMult: 1.8,
+        retailMult: 2.5
+      };
+
+      const DEFAULT_QUICK = {
+        material: 'mdf_3',
+        priceList: 'retail',
+        designFee: 3500,
+        includeDesign: false,
+        templateSizeIdx: 1
+      };
+
+      const DEFAULT_MARKET = {
+        scenario: 'mdf_crudo',
+        co2RateMin: 350,
+        co2MinDrop: 4500,
+        refs: [
+          {
+            id: 'bajada_co2',
+            name: 'Bajada mínima corte CO2',
+            min: 3500,
+            max: 6000,
+            note: 'Piso mínimo que cobran talleres CO2 aunque el corte dure 1 minuto.'
+          },
+          {
+            id: 'minuto_co2',
+            name: 'Minuto de láser CO2 (60–100W)',
+            min: 250,
+            max: 500,
+            note: 'Solo aplica a servicio puro de corte CO2; NO copiarlo a un diodo 10W.'
+          },
+          {
+            id: 'vec_simple',
+            name: 'Vectorización / Diseño simple',
+            min: 2500,
+            max: 4000,
+            note: 'Siluetas, nombres, ajustes de medidas. Seña 50% antes de dibujar.'
+          },
+          {
+            id: 'vec_compleja',
+            name: 'Vectorización / Diseño complejo',
+            min: 5000,
+            max: 9000,
+            note: 'Cajas a medida, encastres, redibujado desde foto con detalle.'
+          },
+          {
+            id: 'eva_pack20',
+            name: 'Apliques Goma EVA (Pack × 20 u.)',
+            min: 4500,
+            max: 8500,
+            note: 'Varía según tamaño, si es lisa o glitter, y si lleva doble capa.'
+          },
+          {
+            id: 'grabado_pers',
+            name: 'Grabado personalizado (Madera / Pizarra / PETG)',
+            min: 3000,
+            max: 6500,
+            note: 'Alto margen en regalos, posavasos, mates y piezas impresas en 3D.'
+          }
+        ]
+      };
+
+      /* -----------------------------------------------------------------------
+         2. CATÁLOGO COMPLETO DE PARÁMETROS — CREALITY FALCON A1 (10W)
+         ----------------------------------------------------------------------- */
+      const PARAM_CATALOG = [
+        // MADERAS (MDF / TERCIADO / CHAPADUR)
+        {
+          id: 'mdf3_cut',
+          cat: 'Maderas (MDF/Terciado)',
+          name: 'MDF 3 mm',
+          thickness: '3 mm',
+          mode: 'corte',
+          swatches: ['#C49A6C'],
+          speed: '220 – 300',
+          power: '85 – 90%',
+          passes: '1 – 2',
+          air: '100%',
+          care: 'Exigente',
+          presetKey: 'mdf_3',
+          tip: 'Preferir 2 pasadas a 350–400 mm/min al 85% para cuidar el diodo y quemar menos el borde.'
+        },
+        {
+          id: 'mdf3_eng',
+          cat: 'Maderas (MDF/Terciado)',
+          name: 'MDF 3 mm',
+          thickness: '3 mm',
+          mode: 'grabado',
+          swatches: ['#C49A6C'],
+          speed: '4000 – 5500',
+          power: '30 – 45%',
+          passes: '1',
+          air: '30 – 50%',
+          care: 'Óptimo',
+          presetKey: 'mdf_3',
+          tip: 'Grabado de relleno: usar Air Assist bajo (30–50%) logra un marrón más oscuro y con mayor contraste.'
+        },
+        {
+          id: 'mdf2_cut',
+          cat: 'Maderas (MDF/Terciado)',
+          name: 'MDF 2 mm / Fibrofácil fino',
+          thickness: '2 mm',
+          mode: 'corte',
+          swatches: ['#D2B087'],
+          speed: '350 – 450',
+          power: '80 – 85%',
+          passes: '1',
+          air: '100%',
+          care: 'Moderado',
+          presetKey: 'mdf_3',
+          tip: 'Corta muy limpio en 1 sola pasada. Ideal para toppers, señalética fina y capas livianas.'
+        },
+        {
+          id: 'mdf2_eng',
+          cat: 'Maderas (MDF/Terciado)',
+          name: 'MDF 2 mm / Fibrofácil fino',
+          thickness: '2 mm',
+          mode: 'grabado',
+          swatches: ['#D2B087'],
+          speed: '4500 – 5500',
+          power: '25 – 35%',
+          passes: '1',
+          air: '30 – 50%',
+          care: 'Óptimo',
+          presetKey: 'mdf_3',
+          tip: 'Al ser fino, evitá exceso de potencia para que el calor no curve la plancha.'
+        },
+        {
+          id: 'terciado3_cut',
+          cat: 'Maderas (MDF/Terciado)',
+          name: 'Terciado 3 mm (Álamo / Pino / Guatambú blando)',
+          thickness: '3 mm',
+          mode: 'corte',
+          swatches: ['#DFC5A0', '#B99262'],
+          speed: '250 – 350',
+          power: '85 – 90%',
+          passes: '1 – 2',
+          air: '100%',
+          care: 'Exigente',
+          presetKey: 'terciado_3',
+          tip: 'Ojo con nudos y vetas de pegamento interior; conviene 2 pasadas a 400 mm/min al 85%.'
+        },
+        {
+          id: 'terciado3_eng',
+          cat: 'Maderas (MDF/Terciado)',
+          name: 'Terciado 3 mm (Álamo / Pino)',
+          thickness: '3 mm',
+          mode: 'grabado',
+          swatches: ['#DFC5A0'],
+          speed: '4000 – 5000',
+          power: '25 – 40%',
+          passes: '1',
+          air: '30 – 50%',
+          care: 'Óptimo',
+          presetKey: 'terciado_3',
+          tip: 'La veta natural da gran contraste; lijar suave con lija 320 al terminar quita el halo de humo.'
+        },
+        {
+          id: 'chapadur3_cut',
+          cat: 'Maderas (MDF/Terciado)',
+          name: 'Chapadur 3 mm',
+          thickness: '3 mm',
+          mode: 'corte',
+          swatches: ['#7A5033'],
+          speed: '220 – 280',
+          power: '85 – 90%',
+          passes: '2',
+          air: '100%',
+          care: 'Exigente',
+          presetKey: 'chapadur_3',
+          tip: 'Muy resinoso: limpiar lente protectora apenas terminés y mantener tapa cerrada + extractor al máximo.'
+        },
+        {
+          id: 'chapadur3_eng',
+          cat: 'Maderas (MDF/Terciado)',
+          name: 'Chapadur 3 mm',
+          thickness: '3 mm',
+          mode: 'grabado',
+          swatches: ['#7A5033'],
+          speed: '4000 – 5000',
+          power: '30 – 45%',
+          passes: '1',
+          air: '40 – 50%',
+          care: 'Óptimo',
+          presetKey: 'chapadur_3',
+          tip: 'Grabar del lado liso; genera humo denso, mantener buena ventilación.'
+        },
+
+        // GOMA EVA COMÚN
+        {
+          id: 'eva1_negro_cut',
+          cat: 'Goma EVA Común',
+          name: 'Goma EVA Común 1 mm — Negro',
+          thickness: '1 mm',
+          mode: 'corte',
+          swatches: ['#111827'],
+          speed: '3000 – 3500',
+          power: '30 – 35%',
+          passes: '1',
+          air: '100%',
+          care: 'Óptimo',
+          presetKey: 'eva_comun',
+          tip: 'Absorbe casi el 100% del haz azul. Sujetar bordes con imanes para que el Air Assist no vuele piezas chicas.'
+        },
+        {
+          id: 'eva1_negro_eng',
+          cat: 'Goma EVA Común',
+          name: 'Goma EVA Común 1 mm — Negro',
+          thickness: '1 mm',
+          mode: 'grabado',
+          swatches: ['#111827'],
+          speed: '5000 – 6000',
+          power: '12 – 18%',
+          passes: '1',
+          air: '50%',
+          care: 'Óptimo',
+          presetKey: 'eva_comun',
+          tip: 'Deja bajo-relieve sutil para detalles de ojos, nervaduras o líneas guía de pegado.'
+        },
+        {
+          id: 'eva1_calidos_cut',
+          cat: 'Goma EVA Común',
+          name: 'Goma EVA Común 1 mm — Oscuros / Cálidos',
+          thickness: '1 mm',
+          mode: 'corte',
+          swatches: ['#78350F', '#DC2626', '#F97316', '#EAB308', '#84CC16', '#15803D'],
+          speed: '2400 – 3000',
+          power: '35 – 40%',
+          passes: '1',
+          air: '100%',
+          care: 'Óptimo',
+          presetKey: 'eva_comun',
+          tip: 'Marrón, Rojo, Naranja, Amarillo, Verde Lima y Verde Oscuro. Nunca usar 2 pasadas porque derrite el borde.'
+        },
+        {
+          id: 'eva1_calidos_eng',
+          cat: 'Goma EVA Común',
+          name: 'Goma EVA Común 1 mm — Oscuros / Cálidos',
+          thickness: '1 mm',
+          mode: 'grabado',
+          swatches: ['#78350F', '#DC2626', '#EAB308', '#84CC16'],
+          speed: '4500 – 5500',
+          power: '15 – 22%',
+          passes: '1',
+          air: '50%',
+          care: 'Óptimo',
+          presetKey: 'eva_comun',
+          tip: 'Ideal para marcar líneas de expresión en apliques escolares y personajes.'
+        },
+        {
+          id: 'eva1_pastel_cut',
+          cat: 'Goma EVA Común',
+          name: 'Goma EVA Común 1 mm — Medios / Pastel',
+          thickness: '1 mm',
+          mode: 'corte',
+          swatches: ['#F472B6', '#C084FC', '#7C3AED', '#FDBA74'],
+          speed: '1800 – 2200',
+          power: '45 – 50%',
+          passes: '1',
+          air: '100%',
+          care: 'Óptimo',
+          presetKey: 'eva_comun',
+          tip: 'Rosa, Lila, Violeta y Piel. Si un tono pastel muy claro queda agarrado, bajar velocidad a 1600 mm/min.'
+        },
+        {
+          id: 'eva1_pastel_eng',
+          cat: 'Goma EVA Común',
+          name: 'Goma EVA Común 1 mm — Medios / Pastel',
+          thickness: '1 mm',
+          mode: 'grabado',
+          swatches: ['#F472B6', '#C084FC', '#FDBA74'],
+          speed: '4000 – 5000',
+          power: '20 – 28%',
+          passes: '1',
+          air: '50%',
+          care: 'Óptimo',
+          presetKey: 'eva_comun',
+          tip: 'Relieve limpio sin oscurecer demasiado el borde.'
+        },
+        {
+          id: 'eva1_blanco_cut',
+          cat: 'Goma EVA Común',
+          name: 'Goma EVA Común 1 mm — Blanco / Celeste / Azul Francia',
+          thickness: '1 mm',
+          mode: 'corte',
+          swatches: ['#FFFFFF', '#BAE6FD', '#2563EB'],
+          speed: '900 – 1200',
+          power: '65 – 70%',
+          passes: '2',
+          air: '100%',
+          care: 'Moderado',
+          presetKey: 'eva_comun',
+          tip: 'Aplastar bien con imanes (sin panza), usar panal de abeja abajo y verificar lente protectora impecable.'
+        },
+        {
+          id: 'eva1_blanco_eng',
+          cat: 'Goma EVA Común',
+          name: 'Goma EVA Común 1 mm — Blanco / Celeste claro',
+          thickness: '1 mm',
+          mode: 'grabado',
+          swatches: ['#FFFFFF', '#BAE6FD'],
+          speed: '3500 – 4500',
+          power: '30 – 40%',
+          passes: '1',
+          air: '50%',
+          care: 'Óptimo',
+          presetKey: 'eva_comun',
+          tip: 'Al reflejar el azul, probar en una esquina antes de grabar tandas completas.'
+        },
+        {
+          id: 'eva2_calidos_cut',
+          cat: 'Goma EVA Común',
+          name: 'Goma EVA Común 2 mm — Oscuros / Cálidos',
+          thickness: '2 mm',
+          mode: 'corte',
+          swatches: ['#111827', '#DC2626', '#78350F', '#15803D'],
+          speed: '1600 – 2000',
+          power: '45 – 55%',
+          passes: '1',
+          air: '100%',
+          care: 'Óptimo',
+          presetKey: 'eva_comun',
+          tip: 'Ajustar el foco manual a 2 mm exactos para evitar corte en bisel.'
+        },
+        {
+          id: 'eva2_calidos_eng',
+          cat: 'Goma EVA Común',
+          name: 'Goma EVA Común 2 mm — Oscuros / Cálidos',
+          thickness: '2 mm',
+          mode: 'grabado',
+          swatches: ['#111827', '#DC2626', '#78350F'],
+          speed: '4500 – 5500',
+          power: '15 – 22%',
+          passes: '1',
+          air: '50%',
+          care: 'Óptimo',
+          presetKey: 'eva_comun',
+          tip: 'Excelente profundidad de grabado en 2 mm sin atravesar la pieza.'
+        },
+        {
+          id: 'eva2_blanco_cut',
+          cat: 'Goma EVA Común',
+          name: 'Goma EVA Común 2 mm — Blanco / Celeste claro',
+          thickness: '2 mm',
+          mode: 'corte',
+          swatches: ['#FFFFFF', '#BAE6FD'],
+          speed: '700 – 900',
+          power: '75 – 85%',
+          passes: '2',
+          air: '100%',
+          care: 'Exigente',
+          presetKey: 'eva_comun',
+          tip: 'El más resistente en goma EVA: panal abajo, imanes bien cerca del corte y Air Assist al 100%.'
+        },
+
+        // GOMA EVA CON GLITTER
+        {
+          id: 'glit_osc_cut',
+          cat: 'Goma EVA Glitter',
+          name: 'EVA Glitter — Negro / Rojo / Marrón / Dorado / Verde / Fucsia',
+          thickness: '1 – 1.8 mm',
+          mode: 'corte',
+          swatches: ['#111827', '#DC2626', '#D97706', '#16A34A', '#DB2777'],
+          speed: '1800 – 2400',
+          power: '45 – 55%',
+          passes: '1',
+          air: '100%',
+          care: 'Óptimo',
+          presetKey: 'eva_glitter',
+          tip: 'Tip PRO: Cortar BOCA ABAJO en modo espejo para que el glitter no rebote el haz y salga un borde perfecto.'
+        },
+        {
+          id: 'glit_osc_eng',
+          cat: 'Goma EVA Glitter',
+          name: 'EVA Glitter — Oscuros / Cálidos (Boca arriba)',
+          thickness: '1 – 1.8 mm',
+          mode: 'grabado',
+          swatches: ['#111827', '#DC2626', '#D97706', '#DB2777'],
+          speed: '4000 – 5000',
+          power: '20 – 30%',
+          passes: '1',
+          air: '50%',
+          care: 'Óptimo',
+          presetKey: 'eva_glitter',
+          tip: 'Grabado boca arriba sobre el glitter; retira suavemente el brillo dejando textura mate.'
+        },
+        {
+          id: 'glit_med_cut',
+          cat: 'Goma EVA Glitter',
+          name: 'EVA Glitter — Rosa / Plateado / Violeta / Azul',
+          thickness: '1 – 1.8 mm',
+          mode: 'corte',
+          swatches: ['#F472B6', '#94A3B8', '#8B5CF6', '#2563EB'],
+          speed: '1400 – 1800',
+          power: '55 – 65%',
+          passes: '1 – 2',
+          air: '100%',
+          care: 'Moderado',
+          presetKey: 'eva_glitter',
+          tip: 'Modo espejo boca abajo mejora muchísimo el corte porque el dorso liso absorbe mejor el láser.'
+        },
+        {
+          id: 'glit_med_eng',
+          cat: 'Goma EVA Glitter',
+          name: 'EVA Glitter — Rosa / Plateado / Violeta / Azul',
+          thickness: '1 – 1.8 mm',
+          mode: 'grabado',
+          swatches: ['#F472B6', '#94A3B8', '#8B5CF6'],
+          speed: '3800 – 4500',
+          power: '25 – 35%',
+          passes: '1',
+          air: '50%',
+          care: 'Óptimo',
+          presetKey: 'eva_glitter',
+          tip: 'Mantener el foco bien medido por el espesor extra de la capa de brillo.'
+        },
+        {
+          id: 'glit_bla_cut',
+          cat: 'Goma EVA Glitter',
+          name: 'EVA Glitter — Blanco / Tornasolado / Celeste',
+          thickness: '1 – 1.8 mm',
+          mode: 'corte',
+          swatches: ['#FFFFFF', '#E0F2FE', '#F5D0FE'],
+          speed: '1000 – 1200',
+          power: '55 – 70%',
+          passes: '2',
+          air: '100%',
+          care: 'Moderado',
+          presetKey: 'eva_glitter',
+          tip: 'Cortar boca abajo en espejo y pasar un trapito húmedo suave por los bordes si queda hollín.'
+        },
+        {
+          id: 'glit_bla_eng',
+          cat: 'Goma EVA Glitter',
+          name: 'EVA Glitter — Blanco / Tornasolado / Celeste',
+          thickness: '1 – 1.8 mm',
+          mode: 'grabado',
+          swatches: ['#FFFFFF', '#E0F2FE'],
+          speed: '3000 – 4000',
+          power: '35 – 45%',
+          passes: '1',
+          air: '50%',
+          care: 'Óptimo',
+          presetKey: 'eva_glitter',
+          tip: 'Marca suave para líneas guía; evitar pasadas repetidas que amarilleen el blanco.'
+        },
+
+        // TELAS & CARTULINA
+        {
+          id: 'pano_col_cut',
+          cat: 'Telas & Cartulina',
+          name: 'Pañolenci / Fieltro 1 mm — Colores',
+          thickness: '1 mm',
+          mode: 'corte',
+          swatches: ['#DC2626', '#16A34A', '#2563EB', '#111827'],
+          speed: '3000 – 3500',
+          power: '75 – 85%',
+          passes: '1',
+          air: '100%',
+          care: 'Moderado',
+          presetKey: 'panolenci',
+          tip: 'El láser sella el borde y evita que se deshilache. Tensar bien con imanes para que el aire no mueva el paño.'
+        },
+        {
+          id: 'pano_col_eng',
+          cat: 'Telas & Cartulina',
+          name: 'Pañolenci / Fieltro 1 mm — Colores (Grabado suave)',
+          thickness: '1 mm',
+          mode: 'grabado',
+          swatches: ['#DC2626', '#16A34A', '#111827'],
+          speed: '5000 – 6000',
+          power: '15 – 22%',
+          passes: '1',
+          air: '50%',
+          care: 'Óptimo',
+          presetKey: 'panolenci',
+          tip: 'Deja textura marcada en la fibra sintética sin perforar la tela.'
+        },
+        {
+          id: 'pano_bla_cut',
+          cat: 'Telas & Cartulina',
+          name: 'Pañolenci / Fieltro 1 mm — Blanco / Pastel',
+          thickness: '1 mm',
+          mode: 'corte',
+          swatches: ['#FFFFFF', '#FCE7F3', '#FEF3C7'],
+          speed: '1800 – 2200',
+          power: '85 – 90%',
+          passes: '1',
+          air: '100%',
+          care: 'Exigente',
+          presetKey: 'panolenci',
+          tip: 'Limpiar la chapa base antes de apoyar para que no se manche el blanco por debajo.'
+        },
+        {
+          id: 'cart_col_cut',
+          cat: 'Telas & Cartulina',
+          name: 'Cartulina 180–300g / Papel Kraft (Color)',
+          thickness: '0.2 – 0.4 mm',
+          mode: 'corte',
+          swatches: ['#B45309', '#DC2626', '#1E3A8A', '#111827'],
+          speed: '1800 – 2500',
+          power: '35 – 45%',
+          passes: '1',
+          air: '100%',
+          care: 'Óptimo',
+          presetKey: 'cartulina',
+          tip: 'Sujetar en las 4 esquinas con imanes o cinta de papel suave; Air Assist al 100% evita bordes chamuscados.'
+        },
+        {
+          id: 'cart_bla_cut',
+          cat: 'Telas & Cartulina',
+          name: 'Cartulina 180–300g — Blanca',
+          thickness: '0.2 – 0.4 mm',
+          mode: 'corte',
+          swatches: ['#FFFFFF'],
+          speed: '1200 – 1600',
+          power: '50 – 60%',
+          passes: '1',
+          air: '100%',
+          care: 'Óptimo',
+          presetKey: 'cartulina',
+          tip: 'Si se tuesta el dorso, apoyar sobre panal o levantarla ligeramente de la chapa metálica.'
+        },
+        {
+          id: 'cart_eng',
+          cat: 'Telas & Cartulina',
+          name: 'Cartulina / Kraft — Grabado / Marcado de Doblez',
+          thickness: '0.2 – 0.4 mm',
+          mode: 'grabado',
+          swatches: ['#B45309', '#FFFFFF'],
+          speed: '4000 – 5000',
+          power: '12 – 18%',
+          passes: '1',
+          air: '50%',
+          care: 'Óptimo',
+          presetKey: 'cartulina',
+          tip: 'Ideal para líneas de pliegue en packaging, cajas y tarjetas sin cortar el papel.'
+        },
+
+        // 3D / PETG
+        {
+          id: 'petg_eng',
+          cat: '3D / PETG',
+          name: 'Filamento PETG (Impresión 3D) — Oscuro / Opaco vs. Blanco',
+          thickness: 'Pieza 3D',
+          mode: 'grabado',
+          swatches: ['#1F2937', '#2563EB', '#FFFFFF'],
+          speed: '4000 – 5000',
+          power: '20 – 35%',
+          passes: '1',
+          air: '100%',
+          care: 'Óptimo',
+          presetKey: 'custom',
+          tip: 'SOLO GRABADO (no cortar). En PETG blanco aplicar capa fina de témpera negra lavable y lavar al terminar; usar mínimo 3–4 capas sólidas superiores.'
+        }
+      ];
+
+      /* -----------------------------------------------------------------------
+         3. ESTADO GLOBAL DE LA APP
+         ----------------------------------------------------------------------- */
+      let state = {
+        brand: 'elnodoazul',
+        activeTab: 'cotizador',
+        machine: { ...DEFAULT_MACHINE },
+        calc: { ...DEFAULT_CALC },
+        quick: { ...DEFAULT_QUICK },
+        market: JSON.parse(JSON.stringify(DEFAULT_MARKET)),
+        paramCat: 'Todos',
+        paramMode: 'all',
+        machineConfigOpenMobile: true
+      };
+
+      /* -----------------------------------------------------------------------
+         4. UTILIDADES DE FORMATO, PERSISTENCIA Y PORTAPAPELES
+         ----------------------------------------------------------------------- */
+      function formatARS(num, decimals = 0) {
+        const val = isFinite(num) ? num : 0;
+        return '$ ' + val.toLocaleString('es-AR', {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals
+        });
+      }
+
+      function formatNum(num, decimals = 1) {
+        const val = isFinite(num) ? num : 0;
+        return val.toLocaleString('es-AR', {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals
+        });
+      }
+
+      function saveState() {
+        try {
+          const toSave = {
+            brand: state.brand,
+            machine: state.machine,
+            calc: state.calc,
+            quick: state.quick,
+            market: state.market
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
+        } catch (err) {
+          // Modo iframe restringido o navegación privada: operar en memoria sin romper
+        }
+      }
+
+      function loadState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (parsed.brand) state.brand = parsed.brand;
+          if (parsed.machine) state.machine = { ...DEFAULT_MACHINE, ...parsed.machine };
+          if (parsed.calc) state.calc = { ...DEFAULT_CALC, ...parsed.calc };
+          if (parsed.quick) state.quick = { ...DEFAULT_QUICK, ...parsed.quick };
+          if (parsed.market) {
+            state.market = {
+              ...JSON.parse(JSON.stringify(DEFAULT_MARKET)),
+              ...parsed.market,
+              refs: Array.isArray(parsed.market.refs) && parsed.market.refs.length
+                ? parsed.market.refs
+                : JSON.parse(JSON.stringify(DEFAULT_MARKET.refs))
+            };
+          }
+        } catch (err) {
+          // Si localStorage falla o está corrupto, continuar con valores por defecto
+        }
+      }
+
+      /**
+       * Copia texto de manera 100% compatible con iframes (Google Sites)
+       * usando textarea oculto + document.execCommand('copy')
+       */
+      function copyToClipboard(text, successMsg) {
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.left = '-9999px';
+          ta.style.top = '0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          const ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          if (ok) {
+            showToast(successMsg || 'Copiado al portapapeles', 'success');
+          } else {
+            showToast('No se pudo copiar automáticamente. Seleccioná y copiá el texto.', 'warn');
+          }
+        } catch (err) {
+          showToast('Error al copiar al portapapeles.', 'warn');
+        }
+      }
+
+      function showToast(message, type = 'success') {
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+
+        const toast = document.createElement('div');
+        const colors = type === 'success'
+          ? 'bg-slate-900 text-white border-slate-700'
+          : 'bg-amber-600 text-white border-amber-500';
+
+        toast.className = `pointer-events-auto px-4 py-3 rounded-xl border shadow-lg text-xs font-medium flex items-center gap-2.5 transition-all duration-200 ${colors}`;
+        toast.innerHTML = `
+          <svg class="w-4 h-4 shrink-0 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+          <span>${message}</span>
+        `;
+
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(6px)';
+          setTimeout(() => toast.remove(), 220);
+        }, 2800);
+      }
+
+      /* -----------------------------------------------------------------------
+         5. CAMBIO DE MARCA Y NAVEGACIÓN DE PESTAÑAS
+         ----------------------------------------------------------------------- */
+      window.setBrand = function (brand) {
+        state.brand = brand === 'sugatina' ? 'sugatina' : 'elnodoazul';
+        document.body.setAttribute('data-brand', state.brand);
+
+        const isSug = state.brand === 'sugatina';
+        const brandDisplay = isSug ? 'SUGATINA' : 'ElNodoAzul';
+
+        document.getElementById('brandBadge').textContent = brandDisplay;
+        document.getElementById('footerBrandName').textContent = brandDisplay;
+        const printTitle = document.getElementById('printSheetTitle');
+        if (printTitle) {
+          printTitle.textContent = `Ficha Maestra de Parámetros — Creality Falcon A1 10W | ${brandDisplay}`;
+        }
+
+        const btnBlue = document.getElementById('btnBrandBlue');
+        const btnOrange = document.getElementById('btnBrandOrange');
+
+        if (isSug) {
+          btnOrange.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 bg-white text-orange-600 shadow-xs';
+          btnBlue.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-slate-600 hover:text-blue-700';
+        } else {
+          btnBlue.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 bg-white text-blue-700 shadow-xs';
+          btnOrange.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-slate-600 hover:text-orange-600';
+        }
+
+        saveState();
+        updateQuickTemplatePreview();
+      };
+
+      window.switchTab = function (tabId) {
+        state.activeTab = tabId;
+        const tabs = ['cotizador', 'rapida', 'mercado', 'parametros'];
+
+        tabs.forEach(t => {
+          const panel = document.getElementById(`panel-${t}`);
+          const btn = document.getElementById(`tabBtn-${t}`);
+          if (!panel || !btn) return;
+
+          if (t === tabId) {
+            panel.classList.remove('hidden');
+            btn.className = 'tab-btn shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 bg-brand-soft text-brand-soft border border-brand-soft';
+          } else {
+            panel.classList.add('hidden');
+            btn.className = 'tab-btn shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition flex items-center gap-2 text-slate-600 hover:bg-slate-100 border border-transparent';
+          }
+        });
+
+        // Recalcular vistas dependientes al entrar
+        if (tabId === 'rapida') renderQuickTable();
+        if (tabId === 'mercado') renderMarketSimulator();
+      };
+
+      window.toggleMachineConfig = function () {
+        if (window.innerWidth >= 1024) return; // Siempre visible en desktop
+        const body = document.getElementById('machineConfigBody');
+        const chev = document.getElementById('machineConfigChevron');
+        body.classList.toggle('hidden');
+        chev.classList.toggle('rotate-180');
+      };
+
+      /* -----------------------------------------------------------------------
+         6. CÁLCULOS DE AMORTIZACIÓN Y PRESUPUESTO (PESTAÑA 1)
+         ----------------------------------------------------------------------- */
+      function getMachineMetrics() {
+        const m = state.machine;
+        const amortH = m.lifeHours > 0 ? m.machineValue / m.lifeHours : 0;
+        const maintH = m.maint100h / 100;
+        const elecH = m.powerKw * m.electricRate;
+        const pureHour = amortH + maintH + elecH;
+        const pureMin = pureHour / 60;
+        const safeHour = pureHour * (1 + (m.safetyPct / 100));
+        const safeMin = safeHour / 60;
+
+        return { amortH, maintH, elecH, pureHour, pureMin, safeHour, safeMin };
+      }
+
+      function getBudgetBreakdown() {
+        const metrics = getMachineMetrics();
+        const c = state.calc;
+        const qty = Math.max(1, parseInt(c.qty, 10) || 1);
+
+        // Material + merma
+        const materialTotal = c.matCost * (1 + (c.wastePct / 100));
+        // Tiempo Falcon + 25% real por frenados del cabezal
+        const realLaserMin = c.laserMin * 1.25;
+        const machineTotal = realLaserMin * metrics.safeMin;
+        // Mano de obra activa
+        const laborTotal = (c.laborMin / 60) * state.machine.laborRate;
+        // Extras (diseño + insumos)
+        const extrasTotal = c.designCost + c.extrasCost;
+
+        const totalCost = materialTotal + machineTotal + laborTotal + extrasTotal;
+        const unitCost = totalCost / qty;
+
+        const wholesaleTotal = totalCost * c.wholesaleMult;
+        const wholesaleUnit = wholesaleTotal / qty;
+        const wholesaleProfit = wholesaleTotal - totalCost;
+
+        const retailTotal = totalCost * c.retailMult;
+        const retailUnit = retailTotal / qty;
+        const retailProfit = retailTotal - totalCost;
+
+        return {
+          qty,
+          realLaserMin,
+          materialTotal,
+          machineTotal,
+          laborTotal,
+          extrasTotal,
+          totalCost,
+          unitCost,
+          wholesaleTotal,
+          wholesaleUnit,
+          wholesaleProfit,
+          retailTotal,
+          retailUnit,
+          retailProfit
+        };
+      }
+
+      function renderTab1() {
+        const metrics = getMachineMetrics();
+        const b = getBudgetBreakdown();
+
+        // KPIs Máquina
+        document.getElementById('kpiPureHour').textContent = `${formatARS(metrics.pureHour, 2)}/h`;
+        document.getElementById('kpiPureMin').textContent = `${formatARS(metrics.pureMin, 2)}/min`;
+        document.getElementById('kpiSafeHour').textContent = `${formatARS(metrics.safeHour, 2)}/h`;
+        document.getElementById('kpiSafeMin').textContent = `${formatARS(metrics.safeMin, 2)}/min`;
+
+        document.getElementById('brkAmortH').textContent = formatARS(metrics.amortH, 2);
+        document.getElementById('brkMaintH').textContent = formatARS(metrics.maintH, 2);
+        document.getElementById('brkElecH').textContent = formatARS(metrics.elecH, 2);
+
+        // Hint tiempo real
+        document.getElementById('realLaserMinHint').textContent = `Real (+25%): ${formatNum(b.realLaserMin, 1)} min`;
+
+        // Multiplicadores
+        const wPct = Math.round((state.calc.wholesaleMult - 1) * 100);
+        const rPct = Math.round((state.calc.retailMult - 1) * 100);
+        document.getElementById('wholesaleMultLabel').textContent = `${state.calc.wholesaleMult.toFixed(1)}x (+${wPct}%)`;
+        document.getElementById('retailMultLabel').textContent = `${state.calc.retailMult.toFixed(1)}x (+${rPct}%)`;
+        document.getElementById('badgeWholesaleMult').textContent = `${state.calc.wholesaleMult.toFixed(1)}x`;
+        document.getElementById('badgeRetailMult').textContent = `${state.calc.retailMult.toFixed(1)}x`;
+
+        // Costo Real & Barra Proporcional
+        document.getElementById('resTotalCost').textContent = formatARS(b.totalCost, 0);
+        document.getElementById('resUnitCost').textContent = formatARS(b.unitCost, 0);
+        document.getElementById('resQtySummary').textContent = `Pack × ${b.qty} u.`;
+
+        const safeDiv = b.totalCost > 0 ? b.totalCost : 1;
+        document.getElementById('barMat').style.width = `${(b.materialTotal / safeDiv) * 100}%`;
+        document.getElementById('barMac').style.width = `${(b.machineTotal / safeDiv) * 100}%`;
+        document.getElementById('barLab').style.width = `${(b.laborTotal / safeDiv) * 100}%`;
+        document.getElementById('barExt').style.width = `${(b.extrasTotal / safeDiv) * 100}%`;
+
+        document.getElementById('valMatCost').textContent = formatARS(b.materialTotal, 0);
+        document.getElementById('valMacCost').textContent = formatARS(b.machineTotal, 0);
+        document.getElementById('valLabCost').textContent = formatARS(b.laborTotal, 0);
+        document.getElementById('valExtCost').textContent = formatARS(b.extrasTotal, 0);
+
+        // Precios Finales
+        document.getElementById('resWholesaleTotal').textContent = formatARS(b.wholesaleTotal, 0);
+        document.getElementById('resWholesaleUnit').textContent = `${formatARS(b.wholesaleUnit, 0)} / u.`;
+        document.getElementById('resWholesaleProfit').textContent = `+ ${formatARS(b.wholesaleProfit, 0)}`;
+
+        document.getElementById('resRetailTotal').textContent = formatARS(b.retailTotal, 0);
+        document.getElementById('resRetailUnit').textContent = `${formatARS(b.retailUnit, 0)} / u.`;
+        document.getElementById('resRetailProfit').textContent = `+ ${formatARS(b.retailProfit, 0)}`;
+      }
+
+      window.applyMaterialPreset = function () {
+        const key = document.getElementById('calcMaterialPreset').value;
+        state.calc.materialPreset = key;
+        if (key !== 'custom' && MATERIAL_PRESETS[key]) {
+          state.calc.matCost = MATERIAL_PRESETS[key].cost;
+          document.getElementById('calcMatCost').value = state.calc.matCost;
+        }
+        saveState();
+        renderTab1();
+      };
+
+      window.resetMachineDefaults = function () {
+        state.machine = { ...DEFAULT_MACHINE };
+        syncInputsFromState();
+        saveState();
+        renderAll();
+        showToast('Configuración de amortización restablecida.', 'success');
+      };
+
+      window.copyWhatsAppQuote = function (tier) {
+        const b = getBudgetBreakdown();
+        const isSug = state.brand === 'sugatina';
+        const brandName = isSug ? 'SUGATINA ✨' : 'ElNodoAzul 🔷';
+        const presetInfo = MATERIAL_PRESETS[state.calc.materialPreset] || MATERIAL_PRESETS.custom;
+
+        const isWholesale = tier === 'wholesale';
+        const total = isWholesale ? b.wholesaleTotal : b.retailTotal;
+        const unit = isWholesale ? b.wholesaleUnit : b.retailUnit;
+        const deposit = total * 0.5;
+        const listLabel = isWholesale ? 'Lista Mayorista / Pack' : 'Producto Terminado / Minorista';
+
+        const lines = [
+          `*PRESUPUESTO — ${brandName}*`,
+          `────────────────────`,
+          `• *Modalidad:* ${listLabel}`,
+          `• *Material:* ${presetInfo.label}`,
+          `• *Cantidad:* ${b.qty} ${b.qty === 1 ? 'unidad' : 'unidades'}`,
+          `• *Valor unitario:* ${formatARS(unit, 0)}`,
+          `• *TOTAL:* *${formatARS(total, 0)}*`,
+          `────────────────────`,
+          `📌 *Para confirmar y comenzar:* Seña del 50% (*${formatARS(deposit, 0)}*).`,
+          `⏳ Presupuesto válido por 7 días. ¡Cualquier ajuste de medidas o colores me avisás!`
+        ];
+
+        copyToClipboard(lines.join('\n'), `Presupuesto (${isWholesale ? 'Mayorista' : 'Minorista'}) copiado para WhatsApp.`);
+      };
+
+      /* -----------------------------------------------------------------------
+         7. PESTAÑA 2: TABLA PRÁCTICA RÁPIDA "SIN ARCHIVO"
+         ----------------------------------------------------------------------- */
+      // Configuración realista por material para Falcon A1 10W (tiempo base en 10×10cm corte simple)
+      const QUICK_MAT_DATA = {
+        mdf_3:       { name: 'MDF 3 mm', sheetCost: 1400, baseSimpleMin10: 3.5, engraveMinPer100cm2: 14 },
+        terciado_3:  { name: 'Terciado 3 mm', sheetCost: 1800, baseSimpleMin10: 3.2, engraveMinPer100cm2: 13 },
+        eva_comun:   { name: 'Goma EVA Común 1 mm', sheetCost: 600, baseSimpleMin10: 0.9, engraveMinPer100cm2: 8 },
+        eva_glitter: { name: 'Goma EVA Glitter 1 mm', sheetCost: 1300, baseSimpleMin10: 1.5, engraveMinPer100cm2: 10 },
+        panolenci:   { name: 'Pañolenci 1 mm', sheetCost: 900, baseSimpleMin10: 1.0, engraveMinPer100cm2: 8 }
+      };
+
+      const QUICK_SIZES = [
+        { label: 'Chica', dims: '10 × 10 cm', areaCm2: 100, perimFactor: 1.0, laborMin: 8 },
+        { label: 'Mediana', dims: '15 × 15 cm', areaCm2: 225, perimFactor: 1.5, laborMin: 11 },
+        { label: 'Grande', dims: '20 × 20 cm', areaCm2: 400, perimFactor: 2.0, laborMin: 15 },
+        { label: 'Máx. cama Falcon A1', dims: '30 × 25 cm', areaCm2: 750, perimFactor: 2.8, laborMin: 20 }
+      ];
+
+      let lastQuickRows = [];
+
+      window.renderQuickTable = function () {
+        const matKey = document.getElementById('quickMaterial').value;
+        const priceList = document.getElementById('quickPriceList').value;
+        const designFee = parseFloat(document.getElementById('quickDesignFee').value) || 0;
+        const includeDesign = document.getElementById('quickIncludeDesign').checked;
+
+        state.quick.material = matKey;
+        state.quick.priceList = priceList;
+        state.quick.designFee = designFee;
+        state.quick.includeDesign = includeDesign;
+        saveState();
+
+        const mat = QUICK_MAT_DATA[matKey] || QUICK_MAT_DATA.mdf_3;
+        const metrics = getMachineMetrics();
+        const mult = priceList === 'wholesale' ? state.calc.wholesaleMult : state.calc.retailMult;
+        const bedAreaCm2 = 38 * 30; // 1140 cm²
+
+        const tbody = document.getElementById('quickTableBody');
+        tbody.innerHTML = '';
+        lastQuickRows = [];
+
+        QUICK_SIZES.forEach((sz, idx) => {
+          // Costo de fracción de plancha + 25% merma mínima de recorte
+          const areaFraction = Math.min(1, (sz.areaCm2 / bedAreaCm2) * 1.25);
+          const matCost = mat.sheetCost * areaFraction;
+
+          // 3 Complejidades
+          const simpleMin = Math.max(1, mat.baseSimpleMin10 * sz.perimFactor * 1.25);
+          const complexMin = simpleMin * 1.75;
+          const engraveExtraMin = (sz.areaCm2 / 100) * mat.engraveMinPer100cm2 * 0.40 * 1.25; // ~40% área rellena
+          const engraveTotalMin = simpleMin + engraveExtraMin;
+
+          const calcFinalPrice = (mins, laborExtraFactor) => {
+            const machineCost = mins * metrics.safeMin;
+            const laborCost = ((sz.laborMin * laborExtraFactor) / 60) * state.machine.laborRate;
+            const baseCost = matCost + machineCost + laborCost;
+            let price = baseCost * mult;
+            if (includeDesign) price += designFee;
+            // Redondear prolijo a múltiplos de 50 ARS
+            return Math.ceil(price / 50) * 50;
+          };
+
+          const pSimple = calcFinalPrice(simpleMin, 1.0);
+          const pComplex = calcFinalPrice(complexMin, 1.25);
+          const pEngrave = calcFinalPrice(engraveTotalMin, 1.35);
+
+          lastQuickRows.push({
+            label: `${sz.label} (${sz.dims})`,
+            simple: { min: simpleMin, price: pSimple },
+            complex: { min: complexMin, price: pComplex },
+            engrave: { min: engraveTotalMin, price: pEngrave }
+          });
+
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-50/80 transition';
+          tr.innerHTML = `
+            <td class="py-3.5 px-4">
+              <div class="font-bold text-slate-900">${sz.label}</div>
+              <div class="text-[11px] text-slate-500">${sz.dims}</div>
+            </td>
+            <td class="py-3.5 px-4">
+              <div class="font-bold text-slate-900 text-sm">${formatARS(pSimple, 0)}</div>
+              <div class="text-[11px] text-slate-500">~${Math.round(simpleMin)} min Falcon A1</div>
+            </td>
+            <td class="py-3.5 px-4">
+              <div class="font-bold text-brand-dark text-sm">${formatARS(pComplex, 0)}</div>
+              <div class="text-[11px] text-slate-500">~${Math.round(complexMin)} min Falcon A1</div>
+            </td>
+            <td class="py-3.5 px-4 bg-amber-50/40">
+              <div class="font-bold text-amber-900 text-sm">${formatARS(pEngrave, 0)}</div>
+              <div class="text-[11px] text-amber-700 font-medium">~${Math.round(engraveTotalMin)} min (corte + relleno)</div>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        const footerNote = document.getElementById('quickTableFooterNote');
+        footerNote.innerHTML = `
+          <span>Material: <strong>${mat.name}</strong> • Lista: <strong>${priceList === 'wholesale' ? `Mayorista (${state.calc.wholesaleMult.toFixed(1)}x)` : `Minorista (${state.calc.retailMult.toFixed(1)}x)`}</strong></span>
+          <span>${includeDesign ? `Incluye ${formatARS(designFee, 0)} de diseño/vectorización.` : `Sin vectorización incluida (sumar + ${formatARS(designFee, 0)} si el cliente no trae archivo, bonificable en packs grandes).`}</span>
+        `;
+
+        updateQuickTemplatePreview();
+      };
+
+      window.updateQuickTemplatePreview = function () {
+        const idx = parseInt(document.getElementById('quickTemplateSize').value, 10) || 0;
+        state.quick.templateSizeIdx = idx;
+        const row = lastQuickRows[idx];
+        if (!row) return;
+
+        const mat = QUICK_MAT_DATA[state.quick.material] || QUICK_MAT_DATA.mdf_3;
+        const brandName = state.brand === 'sugatina' ? 'SUGATINA' : 'ElNodoAzul';
+        const designLine = state.quick.includeDesign
+          ? '(incluyendo diseño básico)'
+          : `(si necesitás que armemos el vector desde cero, se suma ${formatARS(state.quick.designFee, 0)} por única vez)`;
+
+        const text = `¡Hola! Desde *${brandName}* te paso una referencia rápida:\n\nUna pieza en *${mat.name}* en medida *${row.label}* ronda entre *${formatARS(row.simple.price, 0)}* (corte simple) y *${formatARS(row.complex.price, 0)}* (con calado fino), o hasta *${formatARS(row.engrave.price, 0)}* si lleva grabado relleno ${designLine}.\n\nSi te sirve el rango, confirmando la seña del 50% armamos el archivo a medida y te paso la vista previa exacta antes de cortar. ¿Qué cantidad necesitarías?`;
+
+        document.getElementById('quickTemplatePreview').textContent = text;
+      };
+
+      window.copyQuickWhatsAppTemplate = function () {
+        const txt = document.getElementById('quickTemplatePreview').textContent;
+        copyToClipboard(txt, 'Respuesta rápida orientativa copiada para WhatsApp.');
+      };
+
+      /* -----------------------------------------------------------------------
+         8. PESTAÑA 3: SIMULADOR CO2 VS. FALCON A1 + REFERENCIAS EDITABLES
+         ----------------------------------------------------------------------- */
+      window.renderMarketSimulator = function () {
+        const scenario = document.getElementById('simScenario').value;
+        const co2Rate = parseFloat(document.getElementById('co2RateMin').value) || 350;
+        const co2MinDrop = parseFloat(document.getElementById('co2MinDrop').value) || 4500;
+
+        state.market.scenario = scenario;
+        state.market.co2RateMin = co2Rate;
+        state.market.co2MinDrop = co2MinDrop;
+        saveState();
+
+        const metrics = getMachineMetrics();
+        const grid = document.getElementById('marketComparisonGrid');
+        const banner = document.getElementById('marketStrategyBanner');
+
+        let html = '';
+        let bannerHtml = '';
+        let bannerClasses = '';
+
+        if (scenario === 'mdf_crudo') {
+          const co2Min = 1.5;
+          const co2CutPrice = co2Min * co2Rate;
+          const falconMin = 7;
+          const falconInternal = falconMin * metrics.safeMin;
+          const falconTrap = falconMin * co2Rate;
+
+          html = `
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-800">Taller CO2 Industrial (60–100W)</span>
+                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">Servicio de corte</span>
+              </div>
+              <div class="text-2xl font-bold text-slate-900 tabular-nums">${formatARS(co2CutPrice, 0)} <span class="text-xs font-medium text-slate-500">(${co2Min} min corte puro)</span></div>
+              <p class="text-xs text-slate-600">Corta MDF 3 mm a gran velocidad. Si es 1 sola pieza, suelen aplicar su <strong>bajada mínima de ${formatARS(co2MinDrop, 0)}</strong>.</p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-rose-900">Tu Falcon A1 (10W) — Error común</span>
+                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">No cobrar $/min CO2</span>
+              </div>
+              <div class="text-2xl font-bold text-rose-700 tabular-nums">${formatARS(falconTrap, 0)} <span class="text-xs font-medium text-rose-600">si cobrás ${formatARS(co2Rate, 0)}/min (${falconMin} min)</span></div>
+              <p class="text-xs text-rose-900/90">Tu costo real interno amortizado es solo <strong>${formatARS(falconInternal, 0)}</strong> (${formatARS(metrics.safeMin, 2)}/min). Si vendés minuto puro al valor CO2 quedás carísimo; si bajás al precio CO2, ocupás la máquina 7 min por muy poca plata.</p>
+            </div>
+          `;
+          bannerClasses = 'bg-rose-50 border-rose-200 text-rose-950';
+          bannerHtml = `<strong>Conclusión estratégica:</strong> En corte crudo de MDF a terceros no compitas por minuto contra un CO2. Ofrecé el <strong>producto terminado</strong> (con diseño, pintura, grabado o piezas 3D) o redirigí tu tiempo de máquina a rubros de alto margen como apliques y personalizados.`;
+        } else if (scenario === 'eva_pack') {
+          const co2Min = 3;
+          const co2Total = Math.max(co2MinDrop, co2Min * co2Rate + 720);
+          const falconMin = 7.5;
+          const falconMachineCost = falconMin * metrics.safeMin;
+          const falconTotalCost = 720 + falconMachineCost + ((15 / 60) * state.machine.laborRate);
+          const packPrice = Math.ceil((falconTotalCost * state.calc.wholesaleMult) / 100) * 100;
+
+          html = `
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-800">Corte CO2 / Manual a tijera</span>
+                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">Referencia</span>
+              </div>
+              <div class="text-2xl font-bold text-slate-900 tabular-nums">${formatARS(co2Total, 0)} <span class="text-xs font-medium text-slate-500">(bajada mín. CO2 + mat.)</span></div>
+              <p class="text-xs text-slate-600">Un CO2 suele cobrar bajada mínima alta y pocos talleres toman goma EVA chica. A tijera, 20 apliques llevan 45–60 min con bordes irregulares.</p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-300 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-emerald-900">Tu Falcon A1 (10W) — Zona Ganadora</span>
+                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Alta rentabilidad</span>
+              </div>
+              <div class="text-2xl font-bold text-emerald-800 tabular-nums">${formatARS(packPrice, 0)} <span class="text-xs font-medium text-emerald-700">(${formatARS(packPrice / 20, 0)} / aplique)</span></div>
+              <p class="text-xs text-emerald-900">Corta toda la media plancha en <strong>${falconMin} min</strong> con costo de máquina de apenas <strong>${formatARS(falconMachineCost, 0)}</strong>. Entregás precisión perfecta y ganás margen real en packs mayoristas.</p>
+            </div>
+          `;
+          bannerClasses = 'bg-emerald-50 border-emerald-200 text-emerald-950';
+          bannerHtml = `<strong>Estrategia ganadora:</strong> Acá tu Falcon A1 10W es imbatible. Amortizás la máquina internamente (${formatARS(metrics.safeMin, 2)}/min), ahorrás casi una hora de tijera por plancha y cobrás por <strong>calidad, prolijidad y volumen en packs cerrados</strong>.`;
+        } else {
+          const falconMin = 12;
+          const falconMachineCost = falconMin * metrics.safeMin;
+          const matAndFinish = 1800; // MDF + pintura/armado
+          const labor = (25 / 60) * state.machine.laborRate;
+          const totalCost = matAndFinish + falconMachineCost + labor;
+          const retailPrice = Math.ceil((totalCost * state.calc.retailMult) / 100) * 100;
+
+          html = `
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-slate-800">Si solo vendieras corte crudo</span>
+                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">Commodity</span>
+              </div>
+              <div class="text-2xl font-bold text-slate-900 tabular-nums">${formatARS(co2MinDrop, 0)} <span class="text-xs font-medium text-slate-500">guerra de precio</span></div>
+              <p class="text-xs text-slate-600">El cliente compara únicamente quién corta más barato el MDF en crudo sin valorar tu tiempo de diseño.</p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-brand-soft/80 border border-brand-soft space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-brand-dark">Producto Terminado (Falcon A1 + Diseño)</span>
+                <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-white text-brand border border-brand-soft">Valor agregado</span>
+              </div>
+              <div class="text-2xl font-bold text-brand-dark tabular-nums">${formatARS(retailPrice, 0)} <span class="text-xs font-medium text-brand">costo total ${formatARS(totalCost, 0)}</span></div>
+              <p class="text-xs text-slate-700">Aunque la máquina tarde <strong>${falconMin} min</strong> (amortización real: <strong>${formatARS(falconMachineCost, 0)}</strong>), el cliente paga un cartel, caja o display listo para usar, no minutos de láser.</p>
+            </div>
+          `;
+          bannerClasses = 'bg-brand-soft border-brand-soft text-slate-900';
+          bannerHtml = `<strong>Clave para MDF y Terciado:</strong> La amortización de 12 minutos en tu Falcon A1 representa menos del <strong>${Math.round((falconMachineCost / totalCost) * 100)}%</strong> del costo total. Cuando sumás diseño, ensamblado o piezas impresas en 3D, el tiempo de corte deja de ser un límite.`;
+        }
+
+        grid.innerHTML = html;
+        banner.className = `rounded-2xl p-4 border text-xs leading-relaxed ${bannerClasses}`;
+        banner.innerHTML = bannerHtml;
+      };
+
+      function renderMarketRefTable() {
+        const tbody = document.getElementById('marketRefTableBody');
+        tbody.innerHTML = '';
+
+        state.market.refs.forEach((ref, idx) => {
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-50/70';
+          tr.innerHTML = `
+            <td class="py-3 px-4 font-semibold text-slate-800">${ref.name}</td>
+            <td class="py-2.5 px-4">
+              <input
+                type="number"
+                min="0"
+                step="100"
+                value="${ref.min}"
+                onchange="updateMarketRef(${idx}, 'min', this.value)"
+                class="w-28 px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white font-semibold text-slate-800 tabular-nums"
+              />
+            </td>
+            <td class="py-2.5 px-4">
+              <input
+                type="number"
+                min="0"
+                step="100"
+                value="${ref.max}"
+                onchange="updateMarketRef(${idx}, 'max', this.value)"
+                class="w-28 px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white font-semibold text-slate-800 tabular-nums"
+              />
+            </td>
+            <td class="py-3 px-4 text-slate-600">${ref.note}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      window.updateMarketRef = function (idx, field, value) {
+        if (!state.market.refs[idx]) return;
+        state.market.refs[idx][field] = Math.max(0, parseFloat(value) || 0);
+        saveState();
+      };
+
+      window.resetMarketRefs = function () {
+        state.market.refs = JSON.parse(JSON.stringify(DEFAULT_MARKET.refs));
+        saveState();
+        renderMarketRefTable();
+        showToast('Referencias de mercado restablecidas.', 'success');
+      };
+
+      /* -----------------------------------------------------------------------
+         9. PESTAÑA 4: GUÍA MAESTRA DE PARÁMETROS (FILTROS, TARJETAS Y SALTO)
+         ----------------------------------------------------------------------- */
+      const PARAM_CATEGORIES = [
+        'Todos',
+        'Maderas (MDF/Terciado)',
+        'Goma EVA Común',
+        'Goma EVA Glitter',
+        'Telas & Cartulina',
+        '3D / PETG'
+      ];
+
+      function renderParamCategoryPills() {
+        const container = document.getElementById('paramCategoryPills');
+        container.innerHTML = '';
+
+        PARAM_CATEGORIES.forEach(cat => {
+          const active = state.paramCat === cat;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.textContent = cat;
+          btn.className = active
+            ? 'px-3 py-1.5 rounded-xl text-xs font-semibold bg-brand text-white shadow-xs transition'
+            : 'px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition';
+          btn.onclick = () => {
+            state.paramCat = cat;
+            renderParamCategoryPills();
+            renderParameters();
+          };
+          container.appendChild(btn);
+        });
+      }
+
+      window.setParamModeFilter = function (mode) {
+        state.paramMode = mode;
+        ['all', 'corte', 'grabado'].forEach(m => {
+          const btn = document.getElementById(`modeBtn-${m}`);
+          if (!btn) return;
+          btn.className = m === mode
+            ? 'flex-1 py-1.5 rounded-lg text-xs font-semibold bg-white text-slate-900 shadow-xs transition'
+            : 'flex-1 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition';
+        });
+        renderParameters();
+      };
+
+      window.renderParameters = function () {
+        const query = (document.getElementById('paramSearch').value || '').trim().toLowerCase();
+        const grid = document.getElementById('paramsGrid');
+        grid.innerHTML = '';
+
+        const filtered = PARAM_CATALOG.filter(item => {
+          const matchCat = state.paramCat === 'Todos' || item.cat === state.paramCat;
+          const matchMode = state.paramMode === 'all' || item.mode === state.paramMode;
+          const haystack = `${item.name} ${item.cat} ${item.thickness} ${item.mode} ${item.tip}`.toLowerCase();
+          const matchQuery = !query || haystack.includes(query);
+          return matchCat && matchMode && matchQuery;
+        });
+
+        document.getElementById('paramCountLabel').textContent = `Mostrando ${filtered.length} de ${PARAM_CATALOG.length} configuraciones`;
+
+        if (filtered.length === 0) {
+          grid.innerHTML = `
+            <div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">
+              No se encontraron parámetros para "${query}". Probá buscando "MDF", "blanco", "glitter" o "pañolenci".
+            </div>
+          `;
+          return;
+        }
+
+        filtered.forEach(item => {
+          const modeBadge = item.mode === 'corte'
+            ? '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-rose-50 text-rose-700 border border-rose-200">Corte</span>'
+            : '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-700 border border-indigo-200">Grabado</span>';
+
+          let careBadge = '';
+          if (item.care === 'Óptimo') {
+            careBadge = '<span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">Diodo: Óptimo</span>';
+          } else if (item.care === 'Moderado') {
+            careBadge = '<span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">Diodo: Moderado</span>';
+          } else {
+            careBadge = '<span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">Diodo: Exigente</span>';
+          }
+
+          const swatchesHtml = item.swatches.map(hex => {
+            const borderCls = hex.toUpperCase() === '#FFFFFF' ? 'border-slate-300' : 'border-black/15';
+            return `<span class="w-3.5 h-3.5 rounded-full border ${borderCls} inline-block shrink-0 shadow-2xs" style="background-color:${hex}"></span>`;
+          }).join('');
+
+          const card = document.createElement('article');
+          card.className = 'bg-white rounded-2xl border border-slate-200 shadow-xs p-4 flex flex-col justify-between gap-3 card-print print-break-avoid hover:border-slate-300 transition';
+          card.innerHTML = `
+            <div class="space-y-3">
+              <!-- Top badges -->
+              <div class="flex items-start justify-between gap-2">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  ${modeBadge}
+                  <span class="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 text-slate-600">${item.thickness}</span>
+                </div>
+                ${careBadge}
+              </div>
+
+              <!-- Title + Color dots -->
+              <div>
+                <div class="flex items-center gap-1.5 mb-1">${swatchesHtml}</div>
+                <h3 class="text-sm font-bold text-slate-900 leading-snug">${item.name}</h3>
+                <span class="text-[11px] text-slate-400 font-medium">${item.cat}</span>
+              </div>
+
+              <!-- Grid de Parámetros -->
+              <div class="grid grid-cols-2 gap-2 text-xs tabular-nums">
+                <div class="p-2 rounded-xl bg-slate-50 border border-slate-200/70">
+                  <span class="block text-[10px] text-slate-500">Velocidad</span>
+                  <strong class="text-slate-900">${item.speed} <span class="text-[10px] font-normal text-slate-500">mm/min</span></strong>
+                </div>
+                <div class="p-2 rounded-xl bg-slate-50 border border-slate-200/70">
+                  <span class="block text-[10px] text-slate-500">Potencia</span>
+                  <strong class="text-brand-dark">${item.power}</strong>
+                </div>
+                <div class="p-2 rounded-xl bg-slate-50 border border-slate-200/70">
+                  <span class="block text-[10px] text-slate-500">Pasadas</span>
+                  <strong class="text-slate-900">${item.passes}</strong>
+                </div>
+                <div class="p-2 rounded-xl bg-slate-50 border border-slate-200/70">
+                  <span class="block text-[10px] text-slate-500">Air Assist</span>
+                  <strong class="text-slate-900">${item.air}</strong>
+                </div>
+              </div>
+
+              <!-- Tip de acabado -->
+              <p class="text-[11px] leading-relaxed text-slate-600 bg-slate-50/80 rounded-xl p-2.5 border border-slate-100">
+                <strong class="text-slate-800">Tip:</strong> ${item.tip}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onclick="useParamInCalculator('${item.presetKey}', '${item.name.replace(/'/g, "\\'")}')"
+              class="no-print w-full py-2 px-3 rounded-xl bg-brand-soft hover:bg-brand hover:text-white text-brand-soft text-xs font-semibold border border-brand-soft transition flex items-center justify-center gap-1.5"
+            >
+              <span>Usar en Cotizador</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </button>
+          `;
+          grid.appendChild(card);
+        });
+      };
+
+      window.useParamInCalculator = function (presetKey, materialLabel) {
+        const key = MATERIAL_PRESETS[presetKey] ? presetKey : 'custom';
+        state.calc.materialPreset = key;
+        if (key !== 'custom') {
+          state.calc.matCost = MATERIAL_PRESETS[key].cost;
+        }
+        syncInputsFromState();
+        saveState();
+        renderTab1();
+        switchTab('cotizador');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        showToast(`Material precargado en el cotizador: ${materialLabel}`, 'success');
+      };
+
+      /* -----------------------------------------------------------------------
+         10. SINCRONIZACIÓN DE INPUTS Y EVENTOS REACTIVOS
+         ----------------------------------------------------------------------- */
+      function syncInputsFromState() {
+        // Máquina
+        document.getElementById('cfgMachineValue').value = state.machine.machineValue;
+        document.getElementById('cfgLifeHours').value = state.machine.lifeHours;
+        document.getElementById('cfgMaint100h').value = state.machine.maint100h;
+        document.getElementById('cfgPowerKw').value = state.machine.powerKw;
+        document.getElementById('cfgElectricRate').value = state.machine.electricRate;
+        document.getElementById('cfgSafetyPct').value = state.machine.safetyPct;
+        document.getElementById('cfgLaborRate').value = state.machine.laborRate;
+
+        // Cotizador
+        document.getElementById('calcMaterialPreset').value = state.calc.materialPreset;
+        document.getElementById('calcMatCost').value = state.calc.matCost;
+        document.getElementById('calcWastePct').value = state.calc.wastePct;
+        document.getElementById('calcLaserMin').value = state.calc.laserMin;
+        document.getElementById('calcLaborMin').value = state.calc.laborMin;
+        document.getElementById('calcDesignCost').value = state.calc.designCost;
+        document.getElementById('calcExtrasCost').value = state.calc.extrasCost;
+        document.getElementById('calcQty').value = state.calc.qty;
+        document.getElementById('calcWholesaleMult').value = state.calc.wholesaleMult;
+        document.getElementById('calcRetailMult').value = state.calc.retailMult;
+
+        // Tabla rápida
+        document.getElementById('quickMaterial').value = state.quick.material;
+        document.getElementById('quickPriceList').value = state.quick.priceList;
+        document.getElementById('quickDesignFee').value = state.quick.designFee;
+        document.getElementById('quickIncludeDesign').checked = state.quick.includeDesign;
+        document.getElementById('quickTemplateSize').value = state.quick.templateSizeIdx;
+
+        // Mercado
+        document.getElementById('simScenario').value = state.market.scenario;
+        document.getElementById('co2RateMin').value = state.market.co2RateMin;
+        document.getElementById('co2MinDrop').value = state.market.co2MinDrop;
+      }
+
+      function bindReactiveInputs() {
+        const machineBindings = [
+          ['cfgMachineValue', 'machineValue'],
+          ['cfgLifeHours', 'lifeHours'],
+          ['cfgMaint100h', 'maint100h'],
+          ['cfgPowerKw', 'powerKw'],
+          ['cfgElectricRate', 'electricRate'],
+          ['cfgSafetyPct', 'safetyPct'],
+          ['cfgLaborRate', 'laborRate']
+        ];
+
+        machineBindings.forEach(([id, key]) => {
+          const el = document.getElementById(id);
+          el.addEventListener('input', () => {
+            state.machine[key] = Math.max(0, parseFloat(el.value) || 0);
+            saveState();
+            renderAll();
+          });
+        });
+
+        const calcBindings = [
+          ['calcMatCost', 'matCost'],
+          ['calcWastePct', 'wastePct'],
+          ['calcLaserMin', 'laserMin'],
+          ['calcLaborMin', 'laborMin'],
+          ['calcDesignCost', 'designCost'],
+          ['calcExtrasCost', 'extrasCost'],
+          ['calcQty', 'qty'],
+          ['calcWholesaleMult', 'wholesaleMult'],
+          ['calcRetailMult', 'retailMult']
+        ];
+
+        calcBindings.forEach(([id, key]) => {
+          const el = document.getElementById(id);
+          el.addEventListener('input', () => {
+            state.calc[key] = Math.max(0, parseFloat(el.value) || 0);
+            if (id === 'calcMatCost') {
+              const preset = MATERIAL_PRESETS[state.calc.materialPreset];
+              if (preset && preset.cost !== state.calc.matCost) {
+                state.calc.materialPreset = 'custom';
+                document.getElementById('calcMaterialPreset').value = 'custom';
+              }
+            }
+            saveState();
+            renderAll();
+          });
+        });
+
+        // Quick design fee
+        document.getElementById('quickDesignFee').addEventListener('input', () => {
+          renderQuickTable();
+        });
+
+        // Market CO2 inputs
+        ['co2RateMin', 'co2MinDrop'].forEach(id => {
+          document.getElementById(id).addEventListener('input', () => {
+            renderMarketSimulator();
+          });
+        });
+      }
+
+      function renderAll() {
+        renderTab1();
+        renderQuickTable();
+        renderMarketSimulator();
+      }
+
+      /* -----------------------------------------------------------------------
+         11. INICIALIZACIÓN AL CARGAR LA PÁGINA
+         ----------------------------------------------------------------------- */
+      window.addEventListener('DOMContentLoaded', () => {
+        loadState();
+        syncInputsFromState();
+        bindReactiveInputs();
+        setBrand(state.brand);
+        renderParamCategoryPills();
+        renderParameters();
+        renderMarketRefTable();
+        renderAll();
+      });
+    })();
+  </script>
+</body>
+</html>
