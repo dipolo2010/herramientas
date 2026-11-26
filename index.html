@@ -24,12 +24,9 @@
     };
   </script>
 
-  <!-- jsPDF CDN para exportación directa a PDF -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
   <style>
     /* =========================================================================
-       VARIABLES DE MARCA (ElNodoAzul por defecto / SUGATINA dinámico)
+       VARIABLES DE MARCA (ElNodoAzul Azul / SUGATINA Rosado Fuerte Magenta)
        ========================================================================= */
     :root {
       --brand-primary: #2563EB;
@@ -42,13 +39,13 @@
     }
 
     [data-brand="sugatina"] {
-      --brand-primary: #EA580C;
-      --brand-dark: #9A3412;
-      --brand-hover: #C2410C;
-      --brand-soft: #FFF7ED;
-      --brand-border: #FED7AA;
-      --brand-ring: rgba(234, 88, 12, 0.22);
-      --brand-text-soft: #C2410C;
+      --brand-primary: #DB2777;
+      --brand-dark: #831843;
+      --brand-hover: #BE185D;
+      --brand-soft: #FDF2F8;
+      --brand-border: #FBCFE8;
+      --brand-ring: rgba(219, 39, 119, 0.22);
+      --brand-text-soft: #9D174D;
     }
 
     body {
@@ -58,7 +55,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Números tabulares para máxima legibilidad en tablas y KPIs */
     .tabular-nums {
       font-variant-numeric: tabular-nums;
     }
@@ -85,14 +81,12 @@
       transform: scale(0.98);
     }
 
-    /* Foco limpio de inputs */
     input:focus, select:focus {
       outline: none;
       border-color: var(--brand-primary) !important;
       box-shadow: 0 0 0 3px var(--brand-ring);
     }
 
-    /* Sliders estilizados */
     input[type="range"] {
       accent-color: var(--brand-primary);
     }
@@ -142,14 +136,13 @@
 <body data-brand="elnodoazul" class="min-h-screen flex flex-col">
 
   <!-- =========================================================================
-       HEADER SUPERIOR CON SELECTOR DE MARCA (ElNodoAzul | SUGATINA)
+       HEADER SUPERIOR CON SELECTOR DE MARCA Y SUBTÍTULO DINÁMICO
        ========================================================================= -->
   <header class="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-slate-200 shadow-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <!-- Identidad -->
       <div class="flex items-center gap-3">
         <div id="brandLogoBox" class="w-10 h-10 rounded-xl bg-brand-dark text-white flex items-center justify-center shrink-0 shadow-sm transition-colors">
-          <!-- Ícono SVG inline: Cubo / Precisión Láser -->
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
             <path stroke-linecap="round" stroke-linejoin="round" d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12" />
@@ -165,9 +158,9 @@
             </span>
           </div>
           <p class="text-xs text-slate-500 mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5">
-            <span>Creality Falcon A1 10W (381 × 305 mm)</span>
+            <span id="brandSubtitleHeader" class="font-semibold text-brand-dark">Servicio de diseño industrial</span>
             <span class="hidden sm:inline text-slate-300">•</span>
-            <span class="font-medium text-slate-600">Costos ARS & Parámetros de Taller</span>
+            <span>Creality Falcon A1 10W (381 × 305 mm)</span>
           </p>
         </div>
       </div>
@@ -186,11 +179,11 @@
           </button>
           <button
             type="button"
-            id="btnBrandOrange"
+            id="btnBrandPink"
             onclick="setBrand('sugatina')"
-            class="px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-slate-600 hover:text-orange-600"
+            class="px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-slate-600 hover:text-pink-600"
           >
-            <span class="w-2 h-2 rounded-full bg-orange-500"></span>
+            <span class="w-2 h-2 rounded-full bg-pink-600"></span>
             SUGATINA
           </button>
         </div>
@@ -271,7 +264,6 @@
 
         <!-- PANEL IZQUIERDO: CONFIGURACIÓN DE AMORTIZACIÓN Y COSTO DE MÁQUINA -->
         <div class="lg:col-span-4 bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-          <!-- Cabecera colapsable en móvil -->
           <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between gap-2 bg-slate-50/70">
             <button
               type="button"
@@ -303,19 +295,18 @@
             </button>
           </div>
 
-          <!-- Cuerpo configuración -->
           <div id="machineConfigBody" class="p-5 space-y-4">
             <!-- KPIs en tiempo real -->
             <div class="grid grid-cols-2 gap-2.5">
               <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
                 <span class="block text-[10px] font-semibold uppercase tracking-wider text-slate-500">Técnico puro</span>
-                <div id="kpiPureHour" class="text-base font-bold text-slate-900 tabular-nums mt-0.5">$ 790,00/h</div>
-                <div id="kpiPureMin" class="text-[11px] font-medium text-slate-500 tabular-nums">$ 13,17/min</div>
+                <div id="kpiPureHour" class="text-base font-bold text-slate-900 tabular-nums mt-0.5">$ 0/h</div>
+                <div id="kpiPureMin" class="text-[11px] font-medium text-slate-500 tabular-nums">$ 0/min</div>
               </div>
               <div class="p-3 rounded-xl bg-brand-soft border border-brand-soft">
                 <span class="block text-[10px] font-semibold uppercase tracking-wider text-brand-soft">Operativo seguro</span>
-                <div id="kpiSafeHour" class="text-base font-bold text-brand-dark tabular-nums mt-0.5">$ 987,50/h</div>
-                <div id="kpiSafeMin" class="text-[11px] font-semibold text-brand tabular-nums">$ 16,46/min</div>
+                <div id="kpiSafeHour" class="text-base font-bold text-brand-dark tabular-nums mt-0.5">$ 0/h</div>
+                <div id="kpiSafeMin" class="text-[11px] font-semibold text-brand tabular-nums">$ 0/min</div>
               </div>
             </div>
 
@@ -368,15 +359,15 @@
             <div class="pt-3 border-t border-slate-100 text-[11px] text-slate-500 space-y-1 tabular-nums">
               <div class="flex justify-between">
                 <span>Amortización equipo/h:</span>
-                <span id="brkAmortH" class="font-semibold text-slate-700">$ 500,00</span>
+                <span id="brkAmortH" class="font-semibold text-slate-700">$ 0</span>
               </div>
               <div class="flex justify-between">
                 <span>Lentes y consumibles/h:</span>
-                <span id="brkMaintH" class="font-semibold text-slate-700">$ 250,00</span>
+                <span id="brkMaintH" class="font-semibold text-slate-700">$ 0</span>
               </div>
               <div class="flex justify-between">
                 <span>Electricidad (Láser+Aire+PC)/h:</span>
-                <span id="brkElecH" class="font-semibold text-slate-700">$ 40,00</span>
+                <span id="brkElecH" class="font-semibold text-slate-700">$ 0</span>
               </div>
             </div>
           </div>
@@ -386,18 +377,25 @@
         <div class="lg:col-span-8 space-y-5">
           <!-- Tarjeta de Datos del Trabajo -->
           <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-5">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 pb-3 border-b border-slate-100">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5 pb-3 border-b border-slate-100">
               <div>
                 <h2 class="text-base font-bold text-slate-900">Calculadora de Presupuesto</h2>
-                <p class="text-xs text-slate-500">Apliques por mayor, tandas optimizadas o producto terminado</p>
+                <p class="text-xs text-slate-500">Placas enteras, proveedores, apliques por mayor o producto terminado</p>
               </div>
-              <span class="inline-flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1 rounded-full bg-slate-100 text-slate-700 self-start sm:self-auto">
-                Tiempo real auto: +25% frenados
-              </span>
+              <button
+                type="button"
+                onclick="openMaterialsModal()"
+                class="px-3.5 py-2 rounded-xl btn-brand text-xs font-semibold flex items-center justify-center gap-1.5 shadow-xs shrink-0"
+              >
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Añadir / Gestionar Materiales y Proveedores</span>
+              </button>
             </div>
 
-            <!-- Bloque compacto: Datos para el Presupuesto del Cliente -->
-            <div class="rounded-2xl bg-brand-soft/50 border border-brand-soft p-4 space-y-3 text-xs">
+            <!-- Bloque: Datos para el Presupuesto del Cliente -->
+            <div class="rounded-2xl bg-brand-soft/60 border border-brand-soft p-4 space-y-3 text-xs">
               <div class="flex flex-wrap items-center justify-between gap-2">
                 <div class="flex items-center gap-2">
                   <span class="w-6 h-6 rounded-lg bg-brand text-white flex items-center justify-center shrink-0">
@@ -408,9 +406,8 @@
                   <h3 class="text-xs font-bold text-slate-900">Datos para el Presupuesto del Cliente</h3>
                 </div>
                 <div class="flex items-center gap-1.5 text-[11px]">
-                  <span class="text-slate-500">Marca activa:</span>
+                  <span class="text-slate-500">Marca:</span>
                   <span id="quoteBrandIndicator" class="font-bold px-2.5 py-0.5 rounded-full bg-white text-brand-dark border border-brand-soft">ElNodoAzul</span>
-                  <span class="hidden sm:inline text-[10px] text-slate-400">(cambiala arriba)</span>
                 </div>
               </div>
 
@@ -425,48 +422,84 @@
                   />
                 </div>
                 <div>
-                  <label for="quoteProduct" class="block font-semibold text-slate-700 mb-1">Producto / trabajo cotizado</label>
+                  <label for="quoteProduct" class="block font-semibold text-slate-700 mb-1">Producto / Trabajo a cotizar</label>
                   <input
                     type="text"
                     id="quoteProduct"
-                    placeholder="Ej: Apliques de flores / Cartel QR"
+                    placeholder="Ej: Pack apliques / Cartel corpóreo QR"
                     class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white font-medium text-slate-800 placeholder:text-slate-400"
                   />
                 </div>
                 <div>
-                  <label for="quoteMaterialDisplay" class="block font-semibold text-slate-700 mb-1">Material para mostrar al cliente</label>
+                  <label for="quoteMaterialDisplay" class="block font-semibold text-slate-700 mb-1">Material visible para el cliente</label>
                   <input
                     type="text"
                     id="quoteMaterialDisplay"
-                    placeholder="Ej: Goma EVA roja y blanca 1mm"
+                    placeholder="Ej: MDF 3mm / Goma EVA roja 1mm"
                     class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white font-medium text-slate-800 placeholder:text-slate-400"
                   />
                 </div>
               </div>
             </div>
 
-            <!-- Selector rápido de material -->
-            <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 text-xs">
-              <div class="sm:col-span-6">
-                <label for="calcMaterialPreset" class="block font-semibold text-slate-700 mb-1">Material base (precarga costo editable)</label>
-                <select id="calcMaterialPreset" onchange="applyMaterialPreset()" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white font-medium text-slate-800">
-                  <option value="eva_comun">Goma EVA Común 1mm (1/2 plancha 380×300mm — $ 600)</option>
-                  <option value="eva_glitter">Goma EVA Glitter 1mm (1/2 plancha — $ 1.300)</option>
-                  <option value="mdf_3">MDF 3mm (plancha 380×300mm aprox — $ 1.400)</option>
-                  <option value="terciado_3">Terciado 3mm (plancha 380×300mm — $ 1.800)</option>
-                  <option value="chapadur_3">Chapadur 3mm (plancha 380×300mm — $ 1.200)</option>
-                  <option value="panolenci">Pañolenci 1mm (paño 380×300mm — $ 900)</option>
-                  <option value="cartulina">Cartulina 240g (hoja — $ 400)</option>
-                  <option value="custom">Personalizado (ingresar costo manual)</option>
-                </select>
+            <!-- Selector de Material (Placas Enteras) + Cálculo Proporcional de Recorte -->
+            <div class="space-y-3 text-xs">
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                <div class="sm:col-span-6">
+                  <label for="calcMaterialSelect" class="block font-semibold text-slate-700 mb-1">Material del catálogo (placas enteras)</label>
+                  <select id="calcMaterialSelect" onchange="onSelectCatalogMaterial()" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white font-medium text-slate-800">
+                    <!-- Opciones dinámicas desde state.materials -->
+                  </select>
+                </div>
+                <div class="sm:col-span-3">
+                  <label for="calcMatCost" class="block font-semibold text-slate-700 mb-1">Costo material (ARS)</label>
+                  <input type="number" id="calcMatCost" min="0" step="10" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+                </div>
+                <div class="sm:col-span-3">
+                  <label for="calcWastePct" class="block font-semibold text-slate-700 mb-1">Merma / desperdicio (%)</label>
+                  <input type="number" id="calcWastePct" min="0" max="100" step="5" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+                </div>
               </div>
-              <div class="sm:col-span-3">
-                <label for="calcMatCost" class="block font-semibold text-slate-700 mb-1">Costo material (ARS)</label>
-                <input type="number" id="calcMatCost" min="0" step="50" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
-              </div>
-              <div class="sm:col-span-3">
-                <label for="calcWastePct" class="block font-semibold text-slate-700 mb-1">Merma / desperdicio (%)</label>
-                <input type="number" id="calcWastePct" min="0" max="100" step="5" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+
+              <!-- Info de Placa Entera + Proveedor + Medidas de Recorte en cm -->
+              <div id="selectedMaterialInfoBox" class="rounded-2xl bg-slate-50 border border-slate-200 p-3.5 space-y-3">
+                <div class="flex flex-wrap items-center justify-between gap-2 text-[11px]">
+                  <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-slate-600">
+                    <span>Proveedor: <strong id="infoMatProvider" class="text-slate-900">—</strong></span>
+                    <span class="text-slate-300">|</span>
+                    <span>Placa entera: <strong id="infoMatDims" class="text-slate-900 tabular-nums">—</strong></span>
+                    <span class="text-slate-300">|</span>
+                    <span>Precio placa: <strong id="infoMatPrice" class="text-slate-900 tabular-nums">—</strong></span>
+                    <span class="text-slate-300">|</span>
+                    <span>Precio/m²: <strong id="infoMatPerM2" class="text-brand-dark tabular-nums">—</strong></span>
+                  </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 pt-2 border-t border-slate-200/80">
+                  <div class="flex items-end gap-2">
+                    <div>
+                      <label for="calcCutW" class="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Recorte Ancho (cm)</label>
+                      <input type="number" id="calcCutW" min="0.5" step="0.5" class="w-24 px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white tabular-nums font-semibold text-xs" />
+                    </div>
+                    <span class="pb-2 text-slate-400 font-bold">×</span>
+                    <div>
+                      <label for="calcCutH" class="block text-[10px] font-semibold uppercase tracking-wider text-slate-500 mb-1">Recorte Alto (cm)</label>
+                      <input type="number" id="calcCutH" min="0.5" step="0.5" class="w-24 px-2.5 py-1.5 rounded-lg border border-slate-300 bg-white tabular-nums font-semibold text-xs" />
+                    </div>
+                  </div>
+
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <button type="button" onclick="applyQuickCutSize(38, 30)" class="px-2.5 py-1.5 rounded-lg bg-white hover:bg-brand-soft text-slate-700 hover:text-brand-dark border border-slate-300 text-[11px] font-semibold transition">
+                      Cama Falcon 38×30
+                    </button>
+                    <button type="button" onclick="applyQuickCutSize(38, 15)" class="px-2.5 py-1.5 rounded-lg bg-white hover:bg-brand-soft text-slate-700 hover:text-brand-dark border border-slate-300 text-[11px] font-semibold transition">
+                      1/2 Cama 38×15
+                    </button>
+                    <button type="button" onclick="applyFullSheetCutSize()" class="px-2.5 py-1.5 rounded-lg bg-white hover:bg-brand-soft text-slate-700 hover:text-brand-dark border border-slate-300 text-[11px] font-semibold transition">
+                      Plancha entera
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -625,7 +658,7 @@
             </div>
 
             <!-- Minorista / Producto Terminado -->
-            <div class="bg-brand-soft/60 rounded-2xl border-2 border-brand p-5 flex flex-col justify-between gap-4 shadow-xs">
+            <div class="bg-brand-soft/70 rounded-2xl border-2 border-brand p-5 flex flex-col justify-between gap-4 shadow-xs">
               <div class="space-y-2">
                 <div class="flex items-center justify-between">
                   <span class="text-xs font-bold uppercase tracking-wider text-brand-dark">Minorista / Terminado</span>
@@ -686,7 +719,6 @@
          PESTAÑA 2: TABLA PRÁCTICA RÁPIDA "SIN ARCHIVO" (WHATSAPP EN 30 SEG)
          ======================================================================= -->
     <section id="panel-rapida" class="tab-panel hidden space-y-5">
-      <!-- Controles superiores -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-4">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div>
@@ -707,9 +739,9 @@
             <select id="quickMaterial" onchange="renderQuickTable()" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white font-medium">
               <option value="mdf_3">MDF 3 mm</option>
               <option value="terciado_3">Terciado 3 mm</option>
-              <option value="eva_comun">Goma EVA Común 1 mm</option>
-              <option value="eva_glitter">Goma EVA Glitter 1 mm</option>
-              <option value="panolenci">Pañolenci 1 mm</option>
+              <option value="eva_comun_1">Goma EVA Común 1 mm</option>
+              <option value="eva_glitter_1">Goma EVA Glitter 1 mm</option>
+              <option value="panolenci_1">Pañolenci 1 mm</option>
             </select>
           </div>
 
@@ -728,7 +760,7 @@
 
           <div class="flex items-end">
             <label class="w-full flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer select-none">
-              <input type="checkbox" id="quickIncludeDesign" onchange="renderQuickTable()" class="w-4 h-4 rounded accent-blue-600" />
+              <input type="checkbox" id="quickIncludeDesign" onchange="renderQuickTable()" class="w-4 h-4 rounded" />
               <span class="text-xs font-medium text-slate-700 leading-tight">Sumar diseño en los precios de la tabla</span>
             </label>
           </div>
@@ -771,9 +803,7 @@
             </tbody>
           </table>
         </div>
-        <div id="quickTableFooterNote" class="px-4 py-3 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-600 flex flex-wrap items-center justify-between gap-2">
-          <!-- Nota dinámica -->
-        </div>
+        <div id="quickTableFooterNote" class="px-4 py-3 bg-slate-50 border-t border-slate-200 text-[11px] text-slate-600 flex flex-wrap items-center justify-between gap-2"></div>
       </div>
 
       <!-- 3 Preguntas Rápidas + Plantilla WhatsApp -->
@@ -807,9 +837,7 @@
                 <option value="3">Máx. cama (30 × 25 cm)</option>
               </select>
             </div>
-            <div id="quickTemplatePreview" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed whitespace-pre-line font-normal">
-              <!-- Texto dinámico -->
-            </div>
+            <div id="quickTemplatePreview" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed whitespace-pre-line font-normal"></div>
           </div>
 
           <button
@@ -830,7 +858,6 @@
          PESTAÑA 3: REFERENCIA DE MERCADO — CO2 INDUSTRIAL VS. FALCON A1 (10W)
          ======================================================================= -->
     <section id="panel-mercado" class="tab-panel hidden space-y-5">
-      <!-- Simulador Comparativo -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-5">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 pb-3 border-b border-slate-100">
           <div>
@@ -842,7 +869,6 @@
           </div>
         </div>
 
-        <!-- Controles del simulador -->
         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 text-xs">
           <div class="md:col-span-6">
             <label for="simScenario" class="block font-semibold text-slate-700 mb-1">Elegí un escenario real de taller</label>
@@ -866,20 +892,12 @@
           </div>
         </div>
 
-        <!-- Comparación Visual Lado a Lado -->
-        <div id="marketComparisonGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Renderizado por JS -->
-        </div>
-
-        <!-- Estrategia Ganadora Banner -->
-        <div id="marketStrategyBanner" class="rounded-2xl p-4 border text-xs leading-relaxed">
-          <!-- Renderizado por JS -->
-        </div>
+        <div id="marketComparisonGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        <div id="marketStrategyBanner" class="rounded-2xl p-4 border text-xs leading-relaxed"></div>
       </div>
 
-      <!-- Semáforo Estratégico (3 Columnas) -->
+      <!-- Semáforo Estratégico -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- VERDE -->
         <div class="bg-white rounded-2xl border border-emerald-200 shadow-xs p-5 space-y-2.5">
           <div class="flex items-center gap-2">
             <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
@@ -888,13 +906,12 @@
           <p class="text-[11px] font-medium text-emerald-700">Donde tu Falcon A1 10W brilla y rinde al máximo:</p>
           <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
             <li>Apliques por mayor en Goma EVA lisa y con glitter.</li>
-            <li>Cortes limpios y sellados en pañolenci y cartulina.</li>
-            <li>Grabados personalizados en madera, pizarra o PETG.</li>
-            <li><strong>Productos híbridos Impresión 3D + Láser</strong> (cajas, carteles QR, tableros didácticos).</li>
+            <li>Cortes limpios y sellados en pañolenci, cartulina y cuero.</li>
+            <li>Grabados personalizados en madera, acrílico, cuero o PETG.</li>
+            <li><strong>Productos híbridos Impresión 3D + Láser</strong> (cajas, carteles QR, souvenirs y didácticos).</li>
           </ul>
         </div>
 
-        <!-- AMARILLO -->
         <div class="bg-white rounded-2xl border border-amber-200 shadow-xs p-5 space-y-2.5">
           <div class="flex items-center gap-2">
             <span class="w-3 h-3 rounded-full bg-amber-500"></span>
@@ -908,7 +925,6 @@
           </ul>
         </div>
 
-        <!-- ROJO -->
         <div class="bg-white rounded-2xl border border-rose-200 shadow-xs p-5 space-y-2.5">
           <div class="flex items-center gap-2">
             <span class="w-3 h-3 rounded-full bg-rose-500"></span>
@@ -918,7 +934,7 @@
           <ul class="text-xs text-slate-700 space-y-1.5 list-disc pl-4">
             <li>Servicio de corte crudo por minuto a terceros que ya traen el archivo listo.</li>
             <li>Planchas grandes o tandas masivas de MDF 3–6 mm sin valor agregado.</li>
-            <li>Corte de acrílico transparente (el diodo azul lo atraviesa sin cortarlo).</li>
+            <li>Corte de acrílico transparente, blanco o azul (el diodo 455 nm no los corta).</li>
           </ul>
         </div>
       </div>
@@ -949,31 +965,29 @@
                 <th class="py-3 px-4 font-bold">Nota práctica para tu taller</th>
               </tr>
             </thead>
-            <tbody id="marketRefTableBody" class="divide-y divide-slate-100 tabular-nums">
-              <!-- Filas editables generadas por JS -->
-            </tbody>
+            <tbody id="marketRefTableBody" class="divide-y divide-slate-100 tabular-nums"></tbody>
           </table>
         </div>
       </div>
     </section>
 
     <!-- =======================================================================
-         PESTAÑA 4: GUÍA MAESTRA DE PARÁMETROS — CREALITY FALCON A1 (10W)
+         PESTAÑA 4: GUÍA MAESTRA EXHAUSTIVA DE PARÁMETROS — FALCON A1 (10W)
          ======================================================================= -->
     <section id="panel-parametros" class="tab-panel hidden space-y-5">
       <!-- Encabezado exclusivo impresión -->
       <div class="hidden print-only border-b border-slate-300 pb-2 mb-3">
-        <h2 id="printSheetTitle" class="text-lg font-bold text-slate-900">Ficha Maestra de Parámetros — Creality Falcon A1 10W | ElNodoAzul</h2>
-        <p class="text-xs text-slate-600">Referencia rápida de velocidad (mm/min), potencia (%), pasadas y cuidado del módulo láser.</p>
+        <h2 id="printSheetTitle" class="text-lg font-bold text-slate-900">Ficha Maestra de Parámetros — Creality Falcon A1 10W | ElNodoAzul — Servicio de diseño industrial</h2>
+        <p class="text-xs text-slate-600">Referencia rápida de velocidad (mm/min), potencia (%), pasadas y cuidado del módulo láser azul 455 nm.</p>
       </div>
 
-      <!-- Barra de Controles (Buscador, Filtros, Toggle, Imprimir) -->
+      <!-- Barra de Controles -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-4 no-print">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
-            <span class="text-[11px] font-bold uppercase tracking-wider text-brand">Hoja de Referencia de Taller</span>
-            <h2 class="text-lg font-bold text-slate-900">Guía Maestra de Parámetros — Falcon A1 10W</h2>
-            <p class="text-xs text-slate-500 mt-0.5">Rangos calibrados para acabados limpios protegiendo la vida útil del diodo.</p>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-brand">Tabla Técnica Completa de Taller</span>
+            <h2 class="text-lg font-bold text-slate-900">Guía Maestra de Parámetros — Falcon A1 10W (455 nm)</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Todas las variantes del mercado compatibles con láser de diodo 10W: Goma EVA, Cartulinas, MDF, Terciado, Chapadur, Acrílicos, Cueros, Telas y 3D.</p>
           </div>
           <button
             type="button"
@@ -997,7 +1011,7 @@
               type="text"
               id="paramSearch"
               oninput="renderParameters()"
-              placeholder="Buscar material, color o espesor (ej: blanco, glitter, MDF, verde lima, PETG)..."
+              placeholder="Buscar material, espesor o color (ej: blanco, glitter, 5mm, acrílico, cuero, PVC, kraft, espejo)..."
               class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 bg-slate-50 font-medium"
             />
           </div>
@@ -1010,9 +1024,7 @@
         </div>
 
         <!-- Filtros por categoría -->
-        <div id="paramCategoryPills" class="flex flex-wrap gap-1.5">
-          <!-- Generado por JS -->
-        </div>
+        <div id="paramCategoryPills" class="flex flex-wrap gap-1.5"></div>
       </div>
 
       <!-- Banner Compacto: Regla de los Colores para Láser Azul (455 nm) -->
@@ -1024,7 +1036,7 @@
               <h3 class="text-sm font-bold tracking-tight">Regla de los Colores para Láser Azul (455 nm)</h3>
             </div>
             <p class="text-xs text-slate-300 leading-relaxed">
-              Los colores oscuros y cálidos <strong>absorben</strong> la luz azul y cortan rapidísimo en 1 pasada. El blanco, celeste claro y azul Francia <strong>reflejan</strong> el haz: necesitan más energía, 2 pasadas o cortar <strong>boca abajo en espejo</strong> (en glitter).
+              Los colores oscuros y cálidos <strong>absorben</strong> la luz azul y cortan rápido. El blanco, celeste claro y azul Francia <strong>reflejan</strong> el haz (requieren 2 pasadas o témpera negra para grabar acrílico/PETG). En glitter, espejados y chapadur blanco, cortá <strong>boca abajo en espejo</strong>.
             </p>
           </div>
 
@@ -1037,7 +1049,7 @@
                 <span class="w-2.5 h-2.5 rounded-full bg-lime-400"></span>
                 <strong class="ml-1 text-emerald-300">Rápidos</strong>
               </div>
-              <span class="text-slate-300">1 pasada, baja potencia</span>
+              <span class="text-slate-300">Absorben azul → 1 pasada</span>
             </div>
             <div class="bg-white/10 rounded-xl px-3 py-2 border border-white/10">
               <div class="flex items-center gap-1 mb-1">
@@ -1055,7 +1067,7 @@
                 <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
                 <strong class="ml-1 text-rose-300">Difíciles</strong>
               </div>
-              <span class="text-slate-300">Reflejan azul → 2 pasadas</span>
+              <span class="text-slate-300">Reflejan → 2 pasadas / no corta acrílico</span>
             </div>
           </div>
         </div>
@@ -1068,9 +1080,7 @@
       </div>
 
       <!-- Grilla de Tarjetas de Materiales -->
-      <div id="paramsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        <!-- Tarjetas generadas dinámicamente -->
-      </div>
+      <div id="paramsGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
 
       <!-- 4 Reglas de Oro para Cuidar el Módulo Láser 10W -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-xs p-5 space-y-4 print-break-avoid">
@@ -1089,19 +1099,19 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
             <div class="font-bold text-slate-900">1. Máximo 85–90% en tandas</div>
-            <p class="text-slate-600 leading-relaxed">Evitá trabajar al 100% continuo durante horas. Si una madera exige mucho, hacé 2 pasadas al 85% más rápido.</p>
+            <p class="text-slate-600 leading-relaxed">Evitá trabajar al 100% continuo durante horas. Si una madera o acrílico exige mucho, hacé más pasadas al 85%.</p>
           </div>
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
             <div class="font-bold text-slate-900">2. Lente siempre impecable</div>
-            <p class="text-slate-600 leading-relaxed">Tras cortar MDF o Chapadur, limpiá la lente protectora con hisopo y alcohol isopropílico. *(Nunca uses alcohol en la tapa naranja acrílica)*.</p>
+            <p class="text-slate-600 leading-relaxed">Tras cortar MDF, Chapadur o cuero, limpiá la lente protectora con hisopo y alcohol isopropílico. (Nunca uses alcohol en la tapa naranja).</p>
           </div>
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
-            <div class="font-bold text-slate-900">3. Air Assist 100% al cortar</div>
-            <p class="text-slate-600 leading-relaxed">Enfría el corte al instante, evita llamas, reduce hollín y empuja el humo lejos de la óptica del láser.</p>
+            <div class="font-bold text-slate-900">3. Air Assist 100% + Cero PVC</div>
+            <p class="text-slate-600 leading-relaxed">Usá aire al 100% en cortes para evitar llamas y hollín. NUNCA cortes vinilo ni ecocuero de PVC (libera gas cloro corrosivo y tóxico).</p>
           </div>
           <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-1">
             <div class="font-bold text-slate-900">4. Foco manual + 1 prueba</div>
-            <p class="text-slate-600 leading-relaxed">Usá el bloque de enfoque en cada cambio de espesor y cortá una piecita de prueba en una esquina antes de mandar la plancha entera.</p>
+            <p class="text-slate-600 leading-relaxed">Usá el bloque de enfoque en cada cambio de espesor y probá 1 piecita en una esquina antes de mandar la plancha entera.</p>
           </div>
         </div>
       </div>
@@ -1111,10 +1121,124 @@
 
   <!-- FOOTER DISCRETO -->
   <footer class="border-t border-slate-200 bg-white mt-auto py-3 px-4 text-center text-[11px] text-slate-500 no-print">
-    <span>Herramienta de Taller <strong id="footerBrandName" class="text-slate-700">ElNodoAzul</strong> • Creality Falcon A1 10W • Todos los valores en ARS son editables y se guardan localmente.</span>
+    <span>
+      Herramienta de Taller
+      <strong id="footerBrandName" class="text-slate-800">ElNodoAzul</strong>
+      — <span id="footerBrandSubtitle" class="text-slate-600">Servicio de diseño industrial</span>
+      • Creality Falcon A1 10W • Valores en ARS guardados localmente.
+    </span>
   </footer>
 
-  <!-- TOAST NOTIFICATION (Reemplaza cualquier alert/confirm) -->
+  <!-- =========================================================================
+       MODAL: GESTOR DE MATERIALES ENTEROS Y PROVEEDORES
+       ========================================================================= -->
+  <div
+    id="materialsModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-5 bg-slate-900/60 backdrop-blur-xs no-print"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="materialsModalTitle"
+  >
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-5xl max-h-[92vh] flex flex-col overflow-hidden">
+      <!-- Cabecera Modal -->
+      <div class="px-5 py-4 border-b border-slate-200 flex items-center justify-between gap-3 bg-slate-50">
+        <div>
+          <h2 id="materialsModalTitle" class="text-base font-bold text-slate-900">Gestor de Materiales Enteros & Proveedores</h2>
+          <p class="text-xs text-slate-500">Cargá tus placas/planchas enteras y proveedores reales para calcular automáticamente el costo exacto por recorte.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            onclick="resetMaterialsCatalog()"
+            class="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-200/70 hover:bg-slate-200 transition"
+          >
+            Restablecer catálogo base
+          </button>
+          <button
+            type="button"
+            onclick="closeMaterialsModal()"
+            class="w-8 h-8 rounded-xl bg-white border border-slate-200 text-slate-500 hover:text-slate-900 flex items-center justify-center transition"
+            aria-label="Cerrar modal"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Cuerpo scrollable -->
+      <div class="flex-1 overflow-y-auto p-5 space-y-5">
+        <!-- Formulario Añadir / Editar Material -->
+        <form id="materialForm" onsubmit="saveMaterialFromForm(event)" class="rounded-2xl bg-brand-soft/60 border border-brand-soft p-4 space-y-3 text-xs">
+          <div class="flex items-center justify-between gap-2">
+            <h3 id="materialFormTitle" class="text-xs font-bold uppercase tracking-wider text-brand-dark">+ Añadir Nuevo Material</h3>
+            <button
+              type="button"
+              id="btnCancelEditMat"
+              onclick="cancelEditMaterial()"
+              class="hidden text-[11px] font-semibold text-slate-600 hover:text-slate-900 underline"
+            >
+              Cancelar edición
+            </button>
+          </div>
+
+          <input type="hidden" id="matFormId" value="" />
+
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+            <div class="sm:col-span-4">
+              <label for="matFormName" class="block font-semibold text-slate-700 mb-1">Nombre del material *</label>
+              <input type="text" id="matFormName" required placeholder="Ej: MDF 3mm / Acrílico Negro 3mm" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white font-medium" />
+            </div>
+            <div class="sm:col-span-2">
+              <label for="matFormWidthM" class="block font-semibold text-slate-700 mb-1">Ancho placa (m) *</label>
+              <input type="number" id="matFormWidthM" required min="0.05" step="0.01" placeholder="1.83" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+            </div>
+            <div class="sm:col-span-2">
+              <label for="matFormHeightM" class="block font-semibold text-slate-700 mb-1">Alto placa (m) *</label>
+              <input type="number" id="matFormHeightM" required min="0.05" step="0.01" placeholder="2.60" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+            </div>
+            <div class="sm:col-span-2">
+              <label for="matFormPrice" class="block font-semibold text-slate-700 mb-1">Precio placa (ARS) *</label>
+              <input type="number" id="matFormPrice" required min="1" step="10" placeholder="26070" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white tabular-nums font-semibold" />
+            </div>
+            <div class="sm:col-span-2">
+              <label for="matFormProvider" class="block font-semibold text-slate-700 mb-1">Proveedor</label>
+              <input type="text" id="matFormProvider" placeholder="Ej: Maderera..." class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white font-medium" />
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-1">
+            <button type="submit" id="btnSubmitMat" class="px-4 py-2 rounded-xl btn-brand text-xs font-semibold shadow-xs">
+              Guardar material
+            </button>
+          </div>
+        </form>
+
+        <!-- Tabla de Materiales Cargados -->
+        <div class="rounded-2xl border border-slate-200 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-[10px] uppercase tracking-wider text-slate-600">
+                  <th class="py-3 px-3.5 font-bold">Material & Proveedor</th>
+                  <th class="py-3 px-3 font-bold">Placa Entera</th>
+                  <th class="py-3 px-3 font-bold">Área (m²)</th>
+                  <th class="py-3 px-3 font-bold">Precio Placa</th>
+                  <th class="py-3 px-3 font-bold">Costo / cm²</th>
+                  <th class="py-3 px-3 font-bold">1 Cama (38×30)</th>
+                  <th class="py-3 px-3.5 font-bold text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="materialsModalTableBody" class="divide-y divide-slate-100 tabular-nums"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION (Sin alert/confirm) -->
   <div
     id="toastContainer"
     class="fixed bottom-5 right-5 z-50 pointer-events-none flex flex-col gap-2 max-w-sm"
@@ -1122,48 +1246,74 @@
   ></div>
 
   <!-- =========================================================================
-       LÓGICA JAVASCRIPT (AUTOCONTENIDA, REACTIVA Y PERSISTENTE)
+       LÓGICA JAVASCRIPT (100% AUTOCONTENIDA, PERSISTENTE Y PDF BINARIO PURO)
        ========================================================================= -->
   <script>
     (function () {
       'use strict';
 
       /* -----------------------------------------------------------------------
-         1. CONSTANTES Y VALORES POR DEFECTO
+         1. CONSTANTES, MARCAS Y VALORES POR DEFECTO
          ----------------------------------------------------------------------- */
-      const STORAGE_KEY = 'ena_sugatina_laser_master_v1';
+      const STORAGE_KEY = 'ena_sugatina_laser_master_v2';
 
-      const MATERIAL_PRESETS = {
-        eva_comun:   { label: 'Goma EVA Común 1mm (1/2 plancha)', cleanName: 'Goma EVA Común 1mm', cost: 600 },
-        eva_glitter: { label: 'Goma EVA Glitter 1mm (1/2 plancha)', cleanName: 'Goma EVA Glitter 1mm', cost: 1300 },
-        mdf_3:       { label: 'MDF 3mm (380×300mm)', cleanName: 'MDF 3mm', cost: 1400 },
-        terciado_3:  { label: 'Terciado 3mm (380×300mm)', cleanName: 'Terciado 3mm', cost: 1800 },
-        chapadur_3:  { label: 'Chapadur 3mm (380×300mm)', cleanName: 'Chapadur 3mm', cost: 1200 },
-        panolenci:   { label: 'Pañolenci 1mm (380×300mm)', cleanName: 'Pañolenci 1mm', cost: 900 },
-        cartulina:   { label: 'Cartulina 240g', cleanName: 'Cartulina 240g', cost: 400 },
-        custom:      { label: 'Material personalizado', cleanName: 'Material a definir', cost: 1000 }
+      const BRAND_CONFIG = {
+        elnodoazul: {
+          name: 'ElNodoAzul',
+          subtitle: 'Servicio de diseño industrial',
+          palette: {
+            primary: '#2563EB',
+            dark: '#1E3A8A',
+            hover: '#1D4ED8',
+            soft: '#EFF6FF',
+            border: '#BFDBFE',
+            textSoft: '#1E40AF'
+          }
+        },
+        sugatina: {
+          name: 'SUGATINA',
+          subtitle: 'Souvenirs, decoraciones y personalizadas',
+          palette: {
+            primary: '#DB2777',
+            dark: '#831843',
+            hover: '#BE185D',
+            soft: '#FDF2F8',
+            border: '#FBCFE8',
+            textSoft: '#9D174D'
+          }
+        }
       };
 
-      const DEFAULT_QUOTE = {
-        clientName: '',
-        productName: '',
-        materialDisplay: 'Goma EVA Común 1mm'
-      };
+      const DEFAULT_MATERIALS = [
+        { id: 'mdf_3',         name: 'MDF 3mm',                       widthM: 1.83, heightM: 2.60, price: 26070, provider: 'Maderera (editar)' },
+        { id: 'terciado_3',    name: 'Terciado 3mm (Álamo/Pino)',     widthM: 1.22, heightM: 2.44, price: 24500, provider: 'Maderera (editar)' },
+        { id: 'chapadur_3',    name: 'Chapadur 3mm',                  widthM: 1.22, heightM: 2.44, price: 15800, provider: 'Maderera (editar)' },
+        { id: 'eva_comun_1',   name: 'Goma EVA Común 1mm',            widthM: 0.40, heightM: 0.60, price: 1200,  provider: 'Librería / Mayorista' },
+        { id: 'eva_comun_2',   name: 'Goma EVA Común 2mm',            widthM: 0.40, heightM: 0.60, price: 2100,  provider: 'Librería / Mayorista' },
+        { id: 'eva_glitter_1', name: 'Goma EVA Glitter 1mm',          widthM: 0.40, heightM: 0.60, price: 2600,  provider: 'Librería / Mayorista' },
+        { id: 'cartulina_240', name: 'Cartulina 240g',                widthM: 0.50, heightM: 0.65, price: 900,   provider: 'Papelera' },
+        { id: 'acrilico_3',    name: 'Acrílico Negro Opaco 3mm',      widthM: 1.00, heightM: 1.00, price: 48000, provider: 'Acrílicos / Gráfica' },
+        { id: 'cuero_2',       name: 'Cuero Vaqueta 2mm',             widthM: 0.50, heightM: 0.50, price: 14000, provider: 'Curtiembre / Talabartería' },
+        { id: 'panolenci_1',   name: 'Pañolenci 1mm',                 widthM: 0.40, heightM: 0.50, price: 1400,  provider: 'Mercería' }
+      ];
 
       const DEFAULT_MACHINE = {
-        machineValue: 750000,
+        machineValue: 1100000,
         lifeHours: 1500,
         maint100h: 25000,
         powerKw: 0.20,
         electricRate: 200,
         safetyPct: 25,
-        laborRate: 4500
+        laborRate: 6000
       };
 
       const DEFAULT_CALC = {
-        materialPreset: 'eva_comun',
-        matCost: 600,
-        wastePct: 20,
+        materialId: 'eva_comun_1',
+        cutW: 38,
+        cutH: 30,
+        matCost: 570,
+        manualMatCost: false,
+        wastePct: 15,
         laserMin: 6,
         laborMin: 15,
         designCost: 0,
@@ -1171,6 +1321,12 @@
         qty: 20,
         wholesaleMult: 1.8,
         retailMult: 2.5
+      };
+
+      const DEFAULT_QUOTE = {
+        clientName: '',
+        productName: '',
+        materialDisplay: 'Goma EVA Común 1mm'
       };
 
       const DEFAULT_QUICK = {
@@ -1223,506 +1379,377 @@
           },
           {
             id: 'grabado_pers',
-            name: 'Grabado personalizado (Madera / Pizarra / PETG)',
+            name: 'Grabado personalizado (Madera / Acrílico / Cuero / PETG)',
             min: 3000,
             max: 6500,
-            note: 'Alto margen en regalos, posavasos, mates y piezas impresas en 3D.'
+            note: 'Alto margen en souvenirs, regalos, etiquetas y piezas impresas en 3D.'
           }
         ]
       };
 
       /* -----------------------------------------------------------------------
-         2. CATÁLOGO COMPLETO DE PARÁMETROS — CREALITY FALCON A1 (10W)
+         2. CATÁLOGO EXHAUSTIVO DE PARÁMETROS — CREALITY FALCON A1 (10W — 455 nm)
          ----------------------------------------------------------------------- */
       const PARAM_CATALOG = [
-        // MADERAS (MDF / TERCIADO / CHAPADUR)
+        // ==================== GOMA EVA COMÚN (1mm, 2mm, 3mm, 5mm) ====================
         {
-          id: 'mdf3_cut',
-          cat: 'Maderas (MDF/Terciado)',
-          name: 'MDF 3 mm',
-          thickness: '3 mm',
-          mode: 'corte',
-          swatches: ['#C49A6C'],
-          speed: '220 – 300',
-          power: '85 – 90%',
-          passes: '1 – 2',
-          air: '100%',
-          care: 'Exigente',
-          presetKey: 'mdf_3',
-          tip: 'Preferir 2 pasadas a 350–400 mm/min al 85% para cuidar el diodo y quemar menos el borde.'
+          id: 'eva1_negro_cut', cat: 'Goma EVA Común', name: 'Goma EVA Común 1 mm — Negro', thickness: '1 mm', mode: 'corte',
+          swatches: ['#111827'], speed: '3000 – 3500', power: '30 – 35%', passes: '1', air: '100%', care: 'Óptimo', matId: 'eva_comun_1',
+          tip: 'Absorbe casi el 100% del haz azul. Sujetá bien los bordes con imanes para que el Air Assist no vuele piezas chicas.'
         },
         {
-          id: 'mdf3_eng',
-          cat: 'Maderas (MDF/Terciado)',
-          name: 'MDF 3 mm',
-          thickness: '3 mm',
-          mode: 'grabado',
-          swatches: ['#C49A6C'],
-          speed: '4000 – 5500',
-          power: '30 – 45%',
-          passes: '1',
-          air: '30 – 50%',
-          care: 'Óptimo',
-          presetKey: 'mdf_3',
-          tip: 'Grabado de relleno: usar Air Assist bajo (30–50%) logra un marrón más oscuro y con mayor contraste.'
+          id: 'eva1_negro_eng', cat: 'Goma EVA Común', name: 'Goma EVA Común 1 mm — Negro', thickness: '1 mm', mode: 'grabado',
+          swatches: ['#111827'], speed: '5000 – 6000', power: '12 – 18%', passes: '1', air: '50%', care: 'Óptimo', matId: 'eva_comun_1',
+          tip: 'Bajo-relieve sutil para detalles de ojos, nervaduras o guías de pegado.'
         },
         {
-          id: 'mdf2_cut',
-          cat: 'Maderas (MDF/Terciado)',
-          name: 'MDF 2 mm / Fibrofácil fino',
-          thickness: '2 mm',
-          mode: 'corte',
-          swatches: ['#D2B087'],
-          speed: '350 – 450',
-          power: '80 – 85%',
-          passes: '1',
-          air: '100%',
-          care: 'Moderado',
-          presetKey: 'mdf_3',
-          tip: 'Corta muy limpio en 1 sola pasada. Ideal para toppers, señalética fina y capas livianas.'
+          id: 'eva1_calidos_cut', cat: 'Goma EVA Común', name: 'Goma EVA Común 1 mm — Oscuros / Cálidos', thickness: '1 mm', mode: 'corte',
+          swatches: ['#78350F', '#DC2626', '#F97316', '#EAB308', '#84CC16', '#15803D'], speed: '2400 – 3000', power: '35 – 40%', passes: '1', air: '100%', care: 'Óptimo', matId: 'eva_comun_1',
+          tip: 'Marrón, rojo, naranja, amarillo, verde lima y verde oscuro. NUNCA usar 2 pasadas en 1mm porque deforma y quema el borde.'
         },
         {
-          id: 'mdf2_eng',
-          cat: 'Maderas (MDF/Terciado)',
-          name: 'MDF 2 mm / Fibrofácil fino',
-          thickness: '2 mm',
-          mode: 'grabado',
-          swatches: ['#D2B087'],
-          speed: '4500 – 5500',
-          power: '25 – 35%',
-          passes: '1',
-          air: '30 – 50%',
-          care: 'Óptimo',
-          presetKey: 'mdf_3',
-          tip: 'Al ser fino, evitá exceso de potencia para que el calor no curve la plancha.'
+          id: 'eva1_calidos_eng', cat: 'Goma EVA Común', name: 'Goma EVA Común 1 mm — Oscuros / Cálidos', thickness: '1 mm', mode: 'grabado',
+          swatches: ['#78350F', '#DC2626', '#EAB308', '#84CC16'], speed: '4500 – 5500', power: '15 – 22%', passes: '1', air: '50%', care: 'Óptimo', matId: 'eva_comun_1',
+          tip: 'Ideal para líneas de expresión en personajes y apliques escolares.'
         },
         {
-          id: 'terciado3_cut',
-          cat: 'Maderas (MDF/Terciado)',
-          name: 'Terciado 3 mm (Álamo / Pino / Guatambú blando)',
-          thickness: '3 mm',
-          mode: 'corte',
-          swatches: ['#DFC5A0', '#B99262'],
-          speed: '250 – 350',
-          power: '85 – 90%',
-          passes: '1 – 2',
-          air: '100%',
-          care: 'Exigente',
-          presetKey: 'terciado_3',
-          tip: 'Ojo con nudos y vetas de pegamento interior; conviene 2 pasadas a 400 mm/min al 85%.'
+          id: 'eva1_pastel_cut', cat: 'Goma EVA Común', name: 'Goma EVA Común 1 mm — Medios / Pastel', thickness: '1 mm', mode: 'corte',
+          swatches: ['#F472B6', '#C084FC', '#7C3AED', '#FDBA74', '#94A3B8'], speed: '1800 – 2200', power: '45 – 50%', passes: '1', air: '100%', care: 'Óptimo', matId: 'eva_comun_1',
+          tip: 'Rosa, lila, violeta, piel y gris. Si un pastel muy claro queda con hilito, bajar velocidad a 1600 mm/min.'
         },
         {
-          id: 'terciado3_eng',
-          cat: 'Maderas (MDF/Terciado)',
-          name: 'Terciado 3 mm (Álamo / Pino)',
-          thickness: '3 mm',
-          mode: 'grabado',
-          swatches: ['#DFC5A0'],
-          speed: '4000 – 5000',
-          power: '25 – 40%',
-          passes: '1',
-          air: '30 – 50%',
-          care: 'Óptimo',
-          presetKey: 'terciado_3',
-          tip: 'La veta natural da gran contraste; lijar suave con lija 320 al terminar quita el halo de humo.'
+          id: 'eva1_pastel_eng', cat: 'Goma EVA Común', name: 'Goma EVA Común 1 mm — Medios / Pastel', thickness: '1 mm', mode: 'grabado',
+          swatches: ['#F472B6', '#C084FC', '#FDBA74', '#94A3B8'], speed: '4000 – 5000', power: '20 – 28%', passes: '1', air: '50%', care: 'Óptimo', matId: 'eva_comun_1',
+          tip: 'Relieve limpio sin oscurecer demasiado el tono claro.'
         },
         {
-          id: 'chapadur3_cut',
-          cat: 'Maderas (MDF/Terciado)',
-          name: 'Chapadur 3 mm',
-          thickness: '3 mm',
-          mode: 'corte',
-          swatches: ['#7A5033'],
-          speed: '220 – 280',
-          power: '85 – 90%',
-          passes: '2',
-          air: '100%',
-          care: 'Exigente',
-          presetKey: 'chapadur_3',
-          tip: 'Muy resinoso: limpiar lente protectora apenas terminés y mantener tapa cerrada + extractor al máximo.'
+          id: 'eva1_dificil_cut', cat: 'Goma EVA Común', name: 'Goma EVA Común 1 mm — Blanco / Celeste / Azul Francia', thickness: '1 mm', mode: 'corte',
+          swatches: ['#FFFFFF', '#BAE6FD', '#2563EB'], speed: '900 – 1200', power: '65 – 70%', passes: '2', air: '100%', care: 'Moderado', matId: 'eva_comun_1',
+          tip: 'Reflejan el láser azul: aplastar bien con imanes (sin panza), usar panal abajo y revisar lente limpia.'
         },
         {
-          id: 'chapadur3_eng',
-          cat: 'Maderas (MDF/Terciado)',
-          name: 'Chapadur 3 mm',
-          thickness: '3 mm',
-          mode: 'grabado',
-          swatches: ['#7A5033'],
-          speed: '4000 – 5000',
-          power: '30 – 45%',
-          passes: '1',
-          air: '40 – 50%',
-          care: 'Óptimo',
-          presetKey: 'chapadur_3',
-          tip: 'Grabar del lado liso; genera humo denso, mantener buena ventilación.'
+          id: 'eva1_dificil_eng', cat: 'Goma EVA Común', name: 'Goma EVA Común 1 mm — Blanco / Celeste / Azul Francia', thickness: '1 mm', mode: 'grabado',
+          swatches: ['#FFFFFF', '#BAE6FD', '#2563EB'], speed: '3500 – 4500', power: '30 – 40%', passes: '1', air: '50%', care: 'Óptimo', matId: 'eva_comun_1',
+          tip: 'Hacer una prueba en esquina: el blanco refleja bastante haz y puede requerir subir 5% la potencia.'
+        },
+        {
+          id: 'eva2_negro_cut', cat: 'Goma EVA Común', name: 'Goma EVA Común 2 mm — Negro / Oscuros / Cálidos', thickness: '2 mm', mode: 'corte',
+          swatches: ['#111827', '#78350F', '#DC2626', '#EAB308', '#84CC16'], speed: '1600 – 2200', power: '45 – 55%', passes: '1', air: '100%', care: 'Óptimo', matId: 'eva_comun_2',
+          tip: 'Foco manual exacto en 2 mm. En negro puro podés subir hasta 2400 mm/min para borde súper fino.'
+        },
+        {
+          id: 'eva2_pastel_cut', cat: 'Goma EVA Común', name: 'Goma EVA Común 2 mm — Medios / Pastel', thickness: '2 mm', mode: 'corte',
+          swatches: ['#F472B6', '#C084FC', '#FDBA74', '#94A3B8'], speed: '1200 – 1600', power: '55 – 65%', passes: '1', air: '100%', care: 'Óptimo', matId: 'eva_comun_2',
+          tip: 'Si queda algún punto sin soltar en curvas cerradas, bajar a 1100 mm/min antes de meter 2 pasadas.'
+        },
+        {
+          id: 'eva2_dificil_cut', cat: 'Goma EVA Común', name: 'Goma EVA Común 2 mm — Blanco / Celeste / Azul Francia', thickness: '2 mm', mode: 'corte',
+          swatches: ['#FFFFFF', '#BAE6FD', '#2563EB'], speed: '700 – 900', power: '75 – 85%', passes: '2', air: '100%', care: 'Exigente', matId: 'eva_comun_2',
+          tip: 'Panal de abeja obligatorio abajo para evitar que el rebote de calor suelde el corte en la base.'
+        },
+        {
+          id: 'eva2_eng', cat: 'Goma EVA Común', name: 'Goma EVA Común 2 mm — Todos los colores (Grabado)', thickness: '2 mm', mode: 'grabado',
+          swatches: ['#111827', '#DC2626', '#F472B6', '#FFFFFF'], speed: '4000 – 5500', power: '15 – 35%', passes: '1', air: '50%', care: 'Óptimo', matId: 'eva_comun_2',
+          tip: 'Usar 15–20% en negro/cálidos, 25% en pastel y 35% en blanco/celeste.'
+        },
+        {
+          id: 'eva3_osc_cut', cat: 'Goma EVA Común', name: 'Goma EVA Común 3 mm — Negro / Oscuros / Cálidos', thickness: '3 mm', mode: 'corte',
+          swatches: ['#111827', '#78350F', '#DC2626', '#15803D'], speed: '1000 – 1400', power: '55 – 65%', passes: '1 – 2', air: '100%', care: 'Moderado', matId: 'eva_comun_2',
+          tip: 'Para bordes verticales sin bisel en 3mm, preferir 2 pasadas rápidas (1800 mm/min al 50%).'
+        },
+        {
+          id: 'eva3_claro_cut', cat: 'Goma EVA Común', name: 'Goma EVA Común 3 mm — Pastel / Blanco / Azul', thickness: '3 mm', mode: 'corte',
+          swatches: ['#F472B6', '#FFFFFF', '#BAE6FD', '#2563EB'], speed: '600 – 850', power: '75 – 85%', passes: '2 – 3', air: '100%', care: 'Exigente', matId: 'eva_comun_2',
+          tip: 'Ideal para letras corpóreas de souvenirs; ventilar bien y mantener Air Assist al 100%.'
+        },
+        {
+          id: 'eva5_osc_cut', cat: 'Goma EVA Común', name: 'Goma EVA Común 5 mm (Alta Densidad) — Oscuros / Cálidos', thickness: '5 mm', mode: 'corte',
+          swatches: ['#111827', '#78350F', '#DC2626', '#15803D'], speed: '700 – 1000', power: '70 – 80%', passes: '2 – 3', air: '100%', care: 'Moderado', matId: 'eva_comun_2',
+          tip: 'Hacer múltiples pasadas rápidas en vez de una lenta; si bajás demasiado la velocidad se derrite en V.'
+        },
+        {
+          id: 'eva5_claro_cut', cat: 'Goma EVA Común', name: 'Goma EVA Común 5 mm — Pastel / Blanco / Azul', thickness: '5 mm', mode: 'corte',
+          swatches: ['#F472B6', '#FFFFFF', '#2563EB'], speed: '500 – 700', power: '80 – 85%', passes: '3 – 4', air: '100%', care: 'Exigente', matId: 'eva_comun_2',
+          tip: 'Bajar el foco 1–1,5 mm a mitad de pasadas ayuda a atravesar los 5 mm en colores reflejantes.'
+        },
+        {
+          id: 'eva35_eng', cat: 'Goma EVA Común', name: 'Goma EVA Común 3–5 mm — Grabado / Sellos', thickness: '3 – 5 mm', mode: 'grabado',
+          swatches: ['#111827', '#DC2626', '#F472B6', '#FFFFFF'], speed: '3500 – 5000', power: '20 – 38%', passes: '1 – 2', air: '60%', care: 'Óptimo', matId: 'eva_comun_2',
+          tip: 'Excelente para hacer sellos escolares o relieves profundos en 2 pasadas.'
         },
 
-        // GOMA EVA COMÚN
+        // ==================== GOMA EVA GLITTER (1-1.8mm y 2mm) ====================
         {
-          id: 'eva1_negro_cut',
-          cat: 'Goma EVA Común',
-          name: 'Goma EVA Común 1 mm — Negro',
-          thickness: '1 mm',
-          mode: 'corte',
-          swatches: ['#111827'],
-          speed: '3000 – 3500',
-          power: '30 – 35%',
-          passes: '1',
-          air: '100%',
-          care: 'Óptimo',
-          presetKey: 'eva_comun',
-          tip: 'Absorbe casi el 100% del haz azul. Sujetar bordes con imanes para que el Air Assist no vuele piezas chicas.'
+          id: 'glit1_osc_cut', cat: 'Goma EVA Glitter', name: 'EVA Glitter 1–1.8 mm — Negro / Rojo / Dorado / Marrón / Verde / Fucsia', thickness: '1 – 1.8 mm', mode: 'corte',
+          swatches: ['#111827', '#DC2626', '#D97706', '#78350F', '#16A34A', '#DB2777'], speed: '1800 – 2400', power: '45 – 55%', passes: '1', air: '100%', care: 'Óptimo', matId: 'eva_glitter_1',
+          tip: 'Tip PRO: Cortar BOCA ABAJO en modo espejo para que el dorso absorba el haz y el glitter no disperse el rayo.'
         },
         {
-          id: 'eva1_negro_eng',
-          cat: 'Goma EVA Común',
-          name: 'Goma EVA Común 1 mm — Negro',
-          thickness: '1 mm',
-          mode: 'grabado',
-          swatches: ['#111827'],
-          speed: '5000 – 6000',
-          power: '12 – 18%',
-          passes: '1',
-          air: '50%',
-          care: 'Óptimo',
-          presetKey: 'eva_comun',
-          tip: 'Deja bajo-relieve sutil para detalles de ojos, nervaduras o líneas guía de pegado.'
+          id: 'glit1_med_cut', cat: 'Goma EVA Glitter', name: 'EVA Glitter 1–1.8 mm — Rosa / Plateado / Violeta / Azul', thickness: '1 – 1.8 mm', mode: 'corte',
+          swatches: ['#F472B6', '#94A3B8', '#8B5CF6', '#2563EB'], speed: '1400 – 1800', power: '55 – 65%', passes: '1 – 2', air: '100%', care: 'Moderado', matId: 'eva_glitter_1',
+          tip: 'Siempre boca abajo en modo espejo; el plateado espejado rebota mucho si se corta boca arriba.'
         },
         {
-          id: 'eva1_calidos_cut',
-          cat: 'Goma EVA Común',
-          name: 'Goma EVA Común 1 mm — Oscuros / Cálidos',
-          thickness: '1 mm',
-          mode: 'corte',
-          swatches: ['#78350F', '#DC2626', '#F97316', '#EAB308', '#84CC16', '#15803D'],
-          speed: '2400 – 3000',
-          power: '35 – 40%',
-          passes: '1',
-          air: '100%',
-          care: 'Óptimo',
-          presetKey: 'eva_comun',
-          tip: 'Marrón, Rojo, Naranja, Amarillo, Verde Lima y Verde Oscuro. Nunca usar 2 pasadas porque derrite el borde.'
+          id: 'glit1_bla_cut', cat: 'Goma EVA Glitter', name: 'EVA Glitter 1–1.8 mm — Blanco / Tornasolado / Celeste', thickness: '1 – 1.8 mm', mode: 'corte',
+          swatches: ['#FFFFFF', '#E0F2FE', '#F5D0FE'], speed: '1000 – 1200', power: '60 – 75%', passes: '2', air: '100%', care: 'Moderado', matId: 'eva_glitter_1',
+          tip: 'Boca abajo en espejo + panal abajo. Al terminar pasar pañito apenas húmedo por los cantos si quedó hollín.'
         },
         {
-          id: 'eva1_calidos_eng',
-          cat: 'Goma EVA Común',
-          name: 'Goma EVA Común 1 mm — Oscuros / Cálidos',
-          thickness: '1 mm',
-          mode: 'grabado',
-          swatches: ['#78350F', '#DC2626', '#EAB308', '#84CC16'],
-          speed: '4500 – 5500',
-          power: '15 – 22%',
-          passes: '1',
-          air: '50%',
-          care: 'Óptimo',
-          presetKey: 'eva_comun',
-          tip: 'Ideal para marcar líneas de expresión en apliques escolares y personajes.'
+          id: 'glit2_osc_cut', cat: 'Goma EVA Glitter', name: 'EVA Glitter 2 mm — Oscuros / Cálidos / Dorado / Fucsia', thickness: '2 mm', mode: 'corte',
+          swatches: ['#111827', '#DC2626', '#D97706', '#DB2777'], speed: '1300 – 1700', power: '55 – 65%', passes: '1 – 2', air: '100%', care: 'Moderado', matId: 'eva_glitter_1',
+          tip: 'Cortar boca abajo en modo espejo; ajustar foco a 2 mm exactos.'
         },
         {
-          id: 'eva1_pastel_cut',
-          cat: 'Goma EVA Común',
-          name: 'Goma EVA Común 1 mm — Medios / Pastel',
-          thickness: '1 mm',
-          mode: 'corte',
-          swatches: ['#F472B6', '#C084FC', '#7C3AED', '#FDBA74'],
-          speed: '1800 – 2200',
-          power: '45 – 50%',
-          passes: '1',
-          air: '100%',
-          care: 'Óptimo',
-          presetKey: 'eva_comun',
-          tip: 'Rosa, Lila, Violeta y Piel. Si un tono pastel muy claro queda agarrado, bajar velocidad a 1600 mm/min.'
+          id: 'glit2_claro_cut', cat: 'Goma EVA Glitter', name: 'EVA Glitter 2 mm — Rosa / Plateado / Blanco / Tornasolado', thickness: '2 mm', mode: 'corte',
+          swatches: ['#F472B6', '#94A3B8', '#FFFFFF', '#E0F2FE'], speed: '800 – 1100', power: '70 – 80%', passes: '2', air: '100%', care: 'Exigente', matId: 'eva_glitter_1',
+          tip: 'Boca abajo en espejo + imanes firmes + Air Assist 100%.'
         },
         {
-          id: 'eva1_pastel_eng',
-          cat: 'Goma EVA Común',
-          name: 'Goma EVA Común 1 mm — Medios / Pastel',
-          thickness: '1 mm',
-          mode: 'grabado',
-          swatches: ['#F472B6', '#C084FC', '#FDBA74'],
-          speed: '4000 – 5000',
-          power: '20 – 28%',
-          passes: '1',
-          air: '50%',
-          care: 'Óptimo',
-          presetKey: 'eva_comun',
-          tip: 'Relieve limpio sin oscurecer demasiado el borde.'
-        },
-        {
-          id: 'eva1_blanco_cut',
-          cat: 'Goma EVA Común',
-          name: 'Goma EVA Común 1 mm — Blanco / Celeste / Azul Francia',
-          thickness: '1 mm',
-          mode: 'corte',
-          swatches: ['#FFFFFF', '#BAE6FD', '#2563EB'],
-          speed: '900 – 1200',
-          power: '65 – 70%',
-          passes: '2',
-          air: '100%',
-          care: 'Moderado',
-          presetKey: 'eva_comun',
-          tip: 'Aplastar bien con imanes (sin panza), usar panal de abeja abajo y verificar lente protectora impecable.'
-        },
-        {
-          id: 'eva1_blanco_eng',
-          cat: 'Goma EVA Común',
-          name: 'Goma EVA Común 1 mm — Blanco / Celeste claro',
-          thickness: '1 mm',
-          mode: 'grabado',
-          swatches: ['#FFFFFF', '#BAE6FD'],
-          speed: '3500 – 4500',
-          power: '30 – 40%',
-          passes: '1',
-          air: '50%',
-          care: 'Óptimo',
-          presetKey: 'eva_comun',
-          tip: 'Al reflejar el azul, probar en una esquina antes de grabar tandas completas.'
-        },
-        {
-          id: 'eva2_calidos_cut',
-          cat: 'Goma EVA Común',
-          name: 'Goma EVA Común 2 mm — Oscuros / Cálidos',
-          thickness: '2 mm',
-          mode: 'corte',
-          swatches: ['#111827', '#DC2626', '#78350F', '#15803D'],
-          speed: '1600 – 2000',
-          power: '45 – 55%',
-          passes: '1',
-          air: '100%',
-          care: 'Óptimo',
-          presetKey: 'eva_comun',
-          tip: 'Ajustar el foco manual a 2 mm exactos para evitar corte en bisel.'
-        },
-        {
-          id: 'eva2_calidos_eng',
-          cat: 'Goma EVA Común',
-          name: 'Goma EVA Común 2 mm — Oscuros / Cálidos',
-          thickness: '2 mm',
-          mode: 'grabado',
-          swatches: ['#111827', '#DC2626', '#78350F'],
-          speed: '4500 – 5500',
-          power: '15 – 22%',
-          passes: '1',
-          air: '50%',
-          care: 'Óptimo',
-          presetKey: 'eva_comun',
-          tip: 'Excelente profundidad de grabado en 2 mm sin atravesar la pieza.'
-        },
-        {
-          id: 'eva2_blanco_cut',
-          cat: 'Goma EVA Común',
-          name: 'Goma EVA Común 2 mm — Blanco / Celeste claro',
-          thickness: '2 mm',
-          mode: 'corte',
-          swatches: ['#FFFFFF', '#BAE6FD'],
-          speed: '700 – 900',
-          power: '75 – 85%',
-          passes: '2',
-          air: '100%',
-          care: 'Exigente',
-          presetKey: 'eva_comun',
-          tip: 'El más resistente en goma EVA: panal abajo, imanes bien cerca del corte y Air Assist al 100%.'
+          id: 'glit_eng', cat: 'Goma EVA Glitter', name: 'EVA Glitter (1–2 mm) — Todos los colores (Grabado boca arriba)', thickness: '1 – 2 mm', mode: 'grabado',
+          swatches: ['#111827', '#D97706', '#F472B6', '#FFFFFF'], speed: '3500 – 4800', power: '20 – 40%', passes: '1', air: '50%', care: 'Óptimo', matId: 'eva_glitter_1',
+          tip: 'Boca arriba sobre el brillo: 20–28% en oscuros/dorado, 30–35% en medios, 38–42% en blanco/tornasolado.'
         },
 
-        // GOMA EVA CON GLITTER
+        // ==================== CARTULINAS & CARTÓN ====================
         {
-          id: 'glit_osc_cut',
-          cat: 'Goma EVA Glitter',
-          name: 'EVA Glitter — Negro / Rojo / Marrón / Dorado / Verde / Fucsia',
-          thickness: '1 – 1.8 mm',
-          mode: 'corte',
-          swatches: ['#111827', '#DC2626', '#D97706', '#16A34A', '#DB2777'],
-          speed: '1800 – 2400',
-          power: '45 – 55%',
-          passes: '1',
-          air: '100%',
-          care: 'Óptimo',
-          presetKey: 'eva_glitter',
-          tip: 'Tip PRO: Cortar BOCA ABAJO en modo espejo para que el glitter no rebote el haz y salga un borde perfecto.'
+          id: 'cart_esc_col_cut', cat: 'Cartulinas & Cartón', name: 'Cartulina Escolar 120–150g — Colores', thickness: '0.15 mm', mode: 'corte',
+          swatches: ['#DC2626', '#EAB308', '#16A34A', '#111827'], speed: '2800 – 3500', power: '25 – 35%', passes: '1', air: '80 – 100%', care: 'Óptimo', matId: 'cartulina_240',
+          tip: 'Sujetar las 4 esquinas con imanes o cinta de papel; demasiada potencia quema las puntas finas.'
         },
         {
-          id: 'glit_osc_eng',
-          cat: 'Goma EVA Glitter',
-          name: 'EVA Glitter — Oscuros / Cálidos (Boca arriba)',
-          thickness: '1 – 1.8 mm',
-          mode: 'grabado',
-          swatches: ['#111827', '#DC2626', '#D97706', '#DB2777'],
-          speed: '4000 – 5000',
-          power: '20 – 30%',
-          passes: '1',
-          air: '50%',
-          care: 'Óptimo',
-          presetKey: 'eva_glitter',
-          tip: 'Grabado boca arriba sobre el glitter; retira suavemente el brillo dejando textura mate.'
+          id: 'cart_esc_bla_cut', cat: 'Cartulinas & Cartón', name: 'Cartulina Escolar 120–150g — Blanca', thickness: '0.15 mm', mode: 'corte',
+          swatches: ['#FFFFFF'], speed: '2000 – 2500', power: '40 – 50%', passes: '1', air: '100%', care: 'Óptimo', matId: 'cartulina_240',
+          tip: 'Apoyar sobre panal o rejilla para que el humo escape por debajo y no manche el blanco.'
         },
         {
-          id: 'glit_med_cut',
-          cat: 'Goma EVA Glitter',
-          name: 'EVA Glitter — Rosa / Plateado / Violeta / Azul',
-          thickness: '1 – 1.8 mm',
-          mode: 'corte',
-          swatches: ['#F472B6', '#94A3B8', '#8B5CF6', '#2563EB'],
-          speed: '1400 – 1800',
-          power: '55 – 65%',
-          passes: '1 – 2',
-          air: '100%',
-          care: 'Moderado',
-          presetKey: 'eva_glitter',
-          tip: 'Modo espejo boca abajo mejora muchísimo el corte porque el dorso liso absorbe mejor el láser.'
+          id: 'cart_240_neg_cut', cat: 'Cartulinas & Cartón', name: 'Cartulina Gruesa / Opalina 180–300g — Negra', thickness: '0.3 mm', mode: 'corte',
+          swatches: ['#111827'], speed: '2200 – 2800', power: '30 – 40%', passes: '1', air: '100%', care: 'Óptimo', matId: 'cartulina_240',
+          tip: 'Corta rapidísimo y sin manchas visibles. Ideal para toppers, siluetas y tarjetas caladas.'
         },
         {
-          id: 'glit_med_eng',
-          cat: 'Goma EVA Glitter',
-          name: 'EVA Glitter — Rosa / Plateado / Violeta / Azul',
-          thickness: '1 – 1.8 mm',
-          mode: 'grabado',
-          swatches: ['#F472B6', '#94A3B8', '#8B5CF6'],
-          speed: '3800 – 4500',
-          power: '25 – 35%',
-          passes: '1',
-          air: '50%',
-          care: 'Óptimo',
-          presetKey: 'eva_glitter',
-          tip: 'Mantener el foco bien medido por el espesor extra de la capa de brillo.'
+          id: 'cart_240_col_cut', cat: 'Cartulinas & Cartón', name: 'Cartulina Gruesa / Opalina / Kraft 180–300g — Color / Kraft', thickness: '0.3 mm', mode: 'corte',
+          swatches: ['#B45309', '#DC2626', '#DB2777', '#1E3A8A'], speed: '1800 – 2400', power: '35 – 45%', passes: '1', air: '100%', care: 'Óptimo', matId: 'cartulina_240',
+          tip: 'El papel Kraft corta excelente y deja un borde marrón tostado muy prolijo.'
         },
         {
-          id: 'glit_bla_cut',
-          cat: 'Goma EVA Glitter',
-          name: 'EVA Glitter — Blanco / Tornasolado / Celeste',
-          thickness: '1 – 1.8 mm',
-          mode: 'corte',
-          swatches: ['#FFFFFF', '#E0F2FE', '#F5D0FE'],
-          speed: '1000 – 1200',
-          power: '55 – 70%',
-          passes: '2',
-          air: '100%',
-          care: 'Moderado',
-          presetKey: 'eva_glitter',
-          tip: 'Cortar boca abajo en espejo y pasar un trapito húmedo suave por los bordes si queda hollín.'
+          id: 'cart_240_bla_cut', cat: 'Cartulinas & Cartón', name: 'Cartulina Gruesa / Opalina 180–300g — Blanca', thickness: '0.3 mm', mode: 'corte',
+          swatches: ['#FFFFFF'], speed: '1200 – 1600', power: '50 – 60%', passes: '1', air: '100%', care: 'Óptimo', matId: 'cartulina_240',
+          tip: 'Air Assist al 100% + panal debajo para evitar bordes amarillentos por humo retenido.'
         },
         {
-          id: 'glit_bla_eng',
-          cat: 'Goma EVA Glitter',
-          name: 'EVA Glitter — Blanco / Tornasolado / Celeste',
-          thickness: '1 – 1.8 mm',
-          mode: 'grabado',
-          swatches: ['#FFFFFF', '#E0F2FE'],
-          speed: '3000 – 4000',
-          power: '35 – 45%',
-          passes: '1',
-          air: '50%',
-          care: 'Óptimo',
-          presetKey: 'eva_glitter',
-          tip: 'Marca suave para líneas guía; evitar pasadas repetidas que amarilleen el blanco.'
+          id: 'cart_met_cut', cat: 'Cartulinas & Cartón', name: 'Cartulina Metalizada / Espejada / Glitter 250–300g', thickness: '0.35 mm', mode: 'corte',
+          swatches: ['#D97706', '#CBD5E1', '#F472B6'], speed: '1000 – 1400', power: '55 – 65%', passes: '1 – 2', air: '100%', care: 'Moderado', matId: 'cartulina_240',
+          tip: 'OBLIGATORIO cortar BOCA ABAJO en modo espejo (por el dorso blanco/cartón) para que el espejo no refleje el haz hacia la lente.'
+        },
+        {
+          id: 'carton_gris1_cut', cat: 'Cartulinas & Cartón', name: 'Cartón Gris / Piedra 1 mm', thickness: '1 mm', mode: 'corte',
+          swatches: ['#94A3B8', '#64748B'], speed: '700 – 900', power: '75 – 85%', passes: '1 – 2', air: '100%', care: 'Moderado', matId: 'cartulina_240',
+          tip: 'Ideal para tapas de agendas, cajas rígidas y bases de souvenirs. Mejor 2 pasadas a 1000 mm/min al 80%.'
+        },
+        {
+          id: 'carton_gris2_cut', cat: 'Cartulinas & Cartón', name: 'Cartón Gris / Piedra 1.5 – 2 mm', thickness: '1.5 – 2 mm', mode: 'corte',
+          swatches: ['#64748B'], speed: '450 – 650', power: '80 – 85%', passes: '2', air: '100%', care: 'Exigente', matId: 'cartulina_240',
+          tip: 'Supervisar siempre: el cartón grueso puede prender brasa si baja mucho la velocidad sin buen aire.'
+        },
+        {
+          id: 'carton_gris_eng', cat: 'Cartulinas & Cartón', name: 'Cartón Gris / Kraft — Grabado', thickness: '1 – 2 mm', mode: 'grabado',
+          swatches: ['#94A3B8', '#B45309'], speed: '4500 – 5500', power: '20 – 30%', passes: '1', air: '50%', care: 'Óptimo', matId: 'cartulina_240',
+          tip: 'Da un contraste oscuro muy limpio para logos en cajas y packaging.'
+        },
+        {
+          id: 'carton_corr_cut', cat: 'Cartulinas & Cartón', name: 'Cartón Corrugado Microcanal 1.5 – 3 mm', thickness: '1.5 – 3 mm', mode: 'corte',
+          swatches: ['#B45309', '#D97706'], speed: '600 – 900', power: '70 – 80%', passes: '1 – 2', air: '100%', care: 'Moderado', matId: 'cartulina_240',
+          tip: 'NUNCA dejar sin vigilancia: las ondas internas de aire facilitan llamaradas si no hay Air Assist al 100%.'
+        },
+        {
+          id: 'cart_doblez_eng', cat: 'Cartulinas & Cartón', name: 'Marcado de Doblez / Plegado (Scoring)', thickness: '0.2 – 1.5 mm', mode: 'grabado',
+          swatches: ['#FFFFFF', '#B45309', '#94A3B8'], speed: '3500 – 4500', power: '12 – 20%', passes: '1', air: '50%', care: 'Óptimo', matId: 'cartulina_240',
+          tip: 'Usar línea punteada o baja potencia en modo "Grabado de líneas" para plegar cajas y tarjetas sin romper el papel.'
         },
 
-        // TELAS & CARTULINA
+        // ==================== MDF & TERCIADO ====================
         {
-          id: 'pano_col_cut',
-          cat: 'Telas & Cartulina',
-          name: 'Pañolenci / Fieltro 1 mm — Colores',
-          thickness: '1 mm',
-          mode: 'corte',
-          swatches: ['#DC2626', '#16A34A', '#2563EB', '#111827'],
-          speed: '3000 – 3500',
-          power: '75 – 85%',
-          passes: '1',
-          air: '100%',
-          care: 'Moderado',
-          presetKey: 'panolenci',
+          id: 'mdf2_cut', cat: 'MDF & Terciado', name: 'MDF 2 mm (Fibrofácil fino)', thickness: '2 mm', mode: 'corte',
+          swatches: ['#D2B087'], speed: '350 – 450', power: '80 – 85%', passes: '1', air: '100%', care: 'Moderado', matId: 'mdf_3',
+          tip: 'Corta limpio en 1 pasada. Excelente para toppers, nombres calados y capas decorativas.'
+        },
+        {
+          id: 'mdf2_eng', cat: 'MDF & Terciado', name: 'MDF 2 mm (Fibrofácil fino)', thickness: '2 mm', mode: 'grabado',
+          swatches: ['#D2B087'], speed: '4500 – 5500', power: '25 – 35%', passes: '1', air: '30 – 50%', care: 'Óptimo', matId: 'mdf_3',
+          tip: 'Evitar exceso de calor para que la placa fina no se arquee.'
+        },
+        {
+          id: 'mdf3_cut', cat: 'MDF & Terciado', name: 'MDF 3 mm Crudo', thickness: '3 mm', mode: 'corte',
+          swatches: ['#C49A6C'], speed: '320 – 400', power: '85%', passes: '2', air: '100%', care: 'Exigente', matId: 'mdf_3',
+          tip: 'También corta en 1 pasada a 220 mm/min al 90%, pero 2 pasadas al 85% cuidan mucho más el diodo y queman menos el canto.'
+        },
+        {
+          id: 'mdf3_eng', cat: 'MDF & Terciado', name: 'MDF 3 mm Crudo', thickness: '3 mm', mode: 'grabado',
+          swatches: ['#C49A6C'], speed: '4000 – 5500', power: '30 – 45%', passes: '1', air: '30 – 50%', care: 'Óptimo', matId: 'mdf_3',
+          tip: 'Air Assist bajo (30–50%) logra un marrón intenso y uniforme; limpiar halo de humo con lija 320 o trapito húmedo.'
+        },
+        {
+          id: 'mdf5_cut', cat: 'MDF & Terciado', name: 'MDF 5 mm Crudo', thickness: '5 mm', mode: 'corte',
+          swatches: ['#A67C52'], speed: '220 – 280', power: '85 – 90%', passes: '3 – 4', air: '100%', care: 'Exigente', matId: 'mdf_3',
+          tip: 'Límite práctico de 10W: hacer 3–4 pasadas y bajar el cabezal 1,5 mm tras la 2ª pasada para mantener el foco en el fondo.'
+        },
+        {
+          id: 'mdf5_eng', cat: 'MDF & Terciado', name: 'MDF 5 mm Crudo', thickness: '5 mm', mode: 'grabado',
+          swatches: ['#A67C52'], speed: '4000 – 5500', power: '30 – 45%', passes: '1', air: '30 – 50%', care: 'Óptimo', matId: 'mdf_3',
+          tip: 'Graba exactamente igual que el de 3 mm; ideal para carteles robustos y bases pesadas.'
+        },
+        {
+          id: 'mdf3_mel_cut', cat: 'MDF & Terciado', name: 'MDF 3 mm Enchapado / Melamina / Pintado (1 o 2 caras)', thickness: '3 mm', mode: 'corte',
+          swatches: ['#FFFFFF', '#111827', '#78350F'], speed: '260 – 340', power: '85 – 90%', passes: '2 – 3', air: '100%', care: 'Exigente', matId: 'mdf_3',
+          tip: 'Colocar cinta de enmascarar (cinta de papel) sobre la cara blanca/pintada antes de cortar para que no quede mancha de humo.'
+        },
+        {
+          id: 'mdf3_mel_eng', cat: 'MDF & Terciado', name: 'MDF 3 mm Enchapado / Melamina / Pintado', thickness: '3 mm', mode: 'grabado',
+          swatches: ['#FFFFFF', '#111827', '#78350F'], speed: '3500 – 4500', power: '35 – 50%', passes: '1', air: '50%', care: 'Óptimo', matId: 'mdf_3',
+          tip: 'En MDF pintado negro o enchapado madera, el grabado deja al descubierto el MDF marrón con gran contraste.'
+        },
+        {
+          id: 'terc3_cut', cat: 'MDF & Terciado', name: 'Terciado 3 mm (Álamo / Pino / Guatambú blando)', thickness: '3 mm', mode: 'corte',
+          swatches: ['#DFC5A0', '#B99262'], speed: '350 – 450', power: '85%', passes: '2', air: '100%', care: 'Exigente', matId: 'terciado_3',
+          tip: 'Corta más rápido que el MDF, pero ojo con nudos o pegamento interno; 2 pasadas aseguran corte limpio en toda la placa.'
+        },
+        {
+          id: 'terc3_eng', cat: 'MDF & Terciado', name: 'Terciado 3 mm (Álamo / Pino / Guatambú)', thickness: '3 mm', mode: 'grabado',
+          swatches: ['#DFC5A0', '#B99262'], speed: '4000 – 5000', power: '25 – 40%', passes: '1', air: '30 – 50%', care: 'Óptimo', matId: 'terciado_3',
+          tip: 'Resalta muy bien la veta natural; probar potencia baja en álamo porque es madera blanda.'
+        },
+        {
+          id: 'terc5_cut', cat: 'MDF & Terciado', name: 'Terciado 4 – 5 mm Blando (Álamo / Pino)', thickness: '4 – 5 mm', mode: 'corte',
+          swatches: ['#DFC5A0'], speed: '240 – 300', power: '85 – 90%', passes: '3 – 4', air: '100%', care: 'Exigente', matId: 'terciado_3',
+          tip: 'Evitar terciados fenólicos o con colas oscuras; usar panal de abeja y Air Assist al 100%.'
+        },
+        {
+          id: 'terc5_eng', cat: 'MDF & Terciado', name: 'Terciado 4 – 5 mm Blando', thickness: '4 – 5 mm', mode: 'grabado',
+          swatches: ['#DFC5A0'], speed: '4000 – 5000', power: '25 – 40%', passes: '1', air: '30 – 50%', care: 'Óptimo', matId: 'terciado_3',
+          tip: 'Ideal para placas de puertas, cartelería rústica y tablas decorativas.'
+        },
+
+        // ==================== CHAPADUR ====================
+        {
+          id: 'chap3_cut', cat: 'Chapadur', name: 'Chapadur 3 mm Crudo', thickness: '3 mm', mode: 'corte',
+          swatches: ['#7A5033'], speed: '240 – 300', power: '85 – 90%', passes: '2', air: '100%', care: 'Exigente', matId: 'chapadur_3',
+          tip: 'Muy resinoso: limpiar lente protectora al terminar cada sesión y mantener extractor al máximo.'
+        },
+        {
+          id: 'chap3_eng', cat: 'Chapadur', name: 'Chapadur 3 mm Crudo', thickness: '3 mm', mode: 'grabado',
+          swatches: ['#7A5033'], speed: '4000 – 5000', power: '30 – 45%', passes: '1', air: '40 – 50%', care: 'Óptimo', matId: 'chapadur_3',
+          tip: 'Grabar siempre del lado liso; deja tono negro/marrón bien nítido.'
+        },
+        {
+          id: 'chap3_plus_cut', cat: 'Chapadur', name: 'Chapadur 3 mm Plus (Blanco o Color en 1 cara)', thickness: '3 mm', mode: 'corte',
+          swatches: ['#FFFFFF', '#111827', '#DC2626', '#7A5033'], speed: '220 – 280', power: '85 – 90%', passes: '2 – 3', air: '100%', care: 'Exigente', matId: 'chapadur_3',
+          tip: 'Cortar BOCA ABAJO (por el dorso marrón en modo espejo) y enmascarar la cara blanca para que no se manche de resina.'
+        },
+        {
+          id: 'chap3_plus_eng', cat: 'Chapadur', name: 'Chapadur 3 mm Plus (Blanco o Color en 1 cara)', thickness: '3 mm', mode: 'grabado',
+          swatches: ['#FFFFFF', '#111827', '#DC2626'], speed: '3500 – 4500', power: '35 – 50%', passes: '1', air: '50%', care: 'Óptimo', matId: 'chapadur_3',
+          tip: 'Al grabar sobre la cara pintada/blanca, quema la pintura y revela el marrón oscuro debajo.'
+        },
+
+        // ==================== ACRÍLICOS (PMMA) ====================
+        {
+          id: 'acr_neg2_cut', cat: 'Acrílicos', name: 'Acrílico Negro Opaco 2 mm', thickness: '2 mm', mode: 'corte',
+          swatches: ['#111827'], speed: '250 – 320', power: '85 – 90%', passes: '1 – 2', air: '100%', care: 'Moderado', matId: 'acrilico_3',
+          tip: 'Quitar el film plástico protector antes de cortar (o dejar papel si trae) y ventilar muy bien.'
+        },
+        {
+          id: 'acr_neg3_cut', cat: 'Acrílicos', name: 'Acrílico Negro Opaco 3 mm', thickness: '3 mm', mode: 'corte',
+          swatches: ['#111827'], speed: '180 – 240', power: '85 – 90%', passes: '2', air: '100%', care: 'Exigente', matId: 'acrilico_3',
+          tip: 'El negro opaco corta impecable en diodo 10W con canto pulido brillante. Preferir 2 pasadas rápidas al 85%.'
+        },
+        {
+          id: 'acr_neg_eng', cat: 'Acrílicos', name: 'Acrílico Negro Opaco (2 – 3 mm)', thickness: '2 – 3 mm', mode: 'grabado',
+          swatches: ['#111827'], speed: '4000 – 5500', power: '25 – 35%', passes: '1', air: '80 – 100%', care: 'Óptimo', matId: 'acrilico_3',
+          tip: 'Deja un grabado blanco esmerilado con altísimo contraste; ideal para carteles QR y placas.'
+        },
+        {
+          id: 'acr_col23_cut', cat: 'Acrílicos', name: 'Acrílico Colores Opacos Cálidos/Oscuros (2 – 3 mm)', thickness: '2 – 3 mm', mode: 'corte',
+          swatches: ['#DC2626', '#F97316', '#EAB308', '#15803D', '#78350F'], speed: '160 – 260', power: '85 – 90%', passes: '2 – 3', air: '100%', care: 'Exigente', matId: 'acrilico_3',
+          tip: 'Rojo, naranja, amarillo, verde oscuro y marrón opacos. En 2 mm: 2 pasadas a 250; en 3 mm: 2–3 pasadas a 180.'
+        },
+        {
+          id: 'acr_col23_eng', cat: 'Acrílicos', name: 'Acrílico Colores Opacos Cálidos/Oscuros (2 – 3 mm)', thickness: '2 – 3 mm', mode: 'grabado',
+          swatches: ['#DC2626', '#F97316', '#EAB308', '#15803D'], speed: '4000 – 5000', power: '25 – 38%', passes: '1', air: '80%', care: 'Óptimo', matId: 'acrilico_3',
+          tip: 'Grabado claro esmerilado muy prolijo para toppers y señalética.'
+        },
+        {
+          id: 'acr_esp_cut', cat: 'Acrílicos', name: 'Acrílico Espejado (Dorado / Plateado / Rosa) 2 – 3 mm', thickness: '2 – 3 mm', mode: 'corte',
+          swatches: ['#D97706', '#CBD5E1', '#F472B6'], speed: '160 – 220', power: '85 – 90%', passes: '2 – 3', air: '100%', care: 'Exigente', matId: 'acrilico_3',
+          tip: 'SIEMPRE cortar BOCA ABAJO (por el dorso gris/opaco en modo espejo) para que la capa trasera absorba el haz y no dañe el láser.'
+        },
+        {
+          id: 'acr_esp_eng', cat: 'Acrílicos', name: 'Acrílico Espejado (Dorado / Plateado / Rosa) 2 – 3 mm', thickness: '2 – 3 mm', mode: 'grabado',
+          swatches: ['#D97706', '#CBD5E1', '#F472B6'], speed: '4000 – 5000', power: '25 – 35%', passes: '1', air: '60%', care: 'Óptimo', matId: 'acrilico_3',
+          tip: 'Grabar por el dorso en modo espejo remueve el plateado trasero y deja un efecto transparente súper profesional desde el frente.'
+        },
+        {
+          id: 'acr_transp_eng', cat: 'Acrílicos', name: 'Acrílico Transparente / Blanco / Azul — SOLO GRABADO', thickness: '2 – 5 mm', mode: 'grabado',
+          swatches: ['#FFFFFF', '#E0F2FE', '#2563EB'], speed: '3500 – 4500', power: '30 – 45%', passes: '1', air: '50%', care: 'Moderado', matId: 'acrilico_3',
+          tip: 'NO SE PUEDEN CORTAR con diodo azul 455 nm (atraviesa el transparente y rebota en blanco/azul). Para GRABAR: pintar con témpera negra lavable, dejar secar, grabar y lavar con agua.'
+        },
+
+        // ==================== CUEROS & ECOCUERO ====================
+        {
+          id: 'cuero1_cut', cat: 'Cueros & Ecocuero', name: 'Cuero Vacuno Curtido Vegetal / Vaqueta 1 – 1.5 mm', thickness: '1 – 1.5 mm', mode: 'corte',
+          swatches: ['#B45309', '#78350F', '#111827'], speed: '450 – 650', power: '75 – 85%', passes: '1 – 2', air: '100%', care: 'Moderado', matId: 'cuero_2',
+          tip: 'Ideal para etiquetas de ropa, llaveros y tiras. Limpiar los cantos con un paño húmedo para quitar el hollín y olor.'
+        },
+        {
+          id: 'cuero2_cut', cat: 'Cueros & Ecocuero', name: 'Cuero Vacuno / Vaqueta 2 – 3 mm', thickness: '2 – 3 mm', mode: 'corte',
+          swatches: ['#78350F', '#451A03', '#111827'], speed: '280 – 400', power: '85 – 90%', passes: '2 – 3', air: '100%', care: 'Exigente', matId: 'cuero_2',
+          tip: 'Preferir 2–3 pasadas con Air Assist al 100% para evitar bordes excesivamente carbonizados.'
+        },
+        {
+          id: 'cuero_eng', cat: 'Cueros & Ecocuero', name: 'Cuero Vacuno / Vaqueta (1 – 3 mm)', thickness: '1 – 3 mm', mode: 'grabado',
+          swatches: ['#B45309', '#78350F', '#111827'], speed: '4500 – 6000', power: '18 – 30%', passes: '1', air: '50 – 80%', care: 'Óptimo', matId: 'cuero_2',
+          tip: 'Graba con definición fotográfica en cuero vegetal natural. Sellar luego con cera o crema neutra.'
+        },
+        {
+          id: 'gamuza_cut', cat: 'Cueros & Ecocuero', name: 'Gamuza / Descarne 1 – 2 mm', thickness: '1 – 2 mm', mode: 'corte',
+          swatches: ['#D97706', '#78350F', '#475569'], speed: '500 – 750', power: '75 – 85%', passes: '1 – 2', air: '100%', care: 'Moderado', matId: 'cuero_2',
+          tip: 'Al ser más porosa que la vaqueta corta un poco más rápido; mantener buena extracción de humo.'
+        },
+        {
+          id: 'gamuza_eng', cat: 'Cueros & Ecocuero', name: 'Gamuza / Descarne 1 – 2 mm', thickness: '1 – 2 mm', mode: 'grabado',
+          swatches: ['#D97706', '#78350F', '#475569'], speed: '4500 – 5500', power: '15 – 25%', passes: '1', air: '50%', care: 'Óptimo', matId: 'cuero_2',
+          tip: 'Potencia baja para aplanar y oscurecer el pelo sin quemar en profundidad.'
+        },
+        {
+          id: 'ecocuero_pu_cut', cat: 'Cueros & Ecocuero', name: 'Ecocuero / Cuerina PU (LIBRE DE PVC) 1 mm', thickness: '1 mm', mode: 'corte',
+          swatches: ['#111827', '#78350F', '#DB2777', '#F8FAFC'], speed: '900 – 1400', power: '55 – 70%', passes: '1', air: '100%', care: 'Moderado', matId: 'cuero_2',
+          tip: 'ADVERTENCIA CRÍTICA DE SEGURIDAD: Usar SOLO Poliuretano (PU) certificado libre de PVC. NUNCA cortar cuerina de PVC/vinilo porque libera gas cloro altamente tóxico y corroe el láser.'
+        },
+        {
+          id: 'ecocuero_pu_eng', cat: 'Cueros & Ecocuero', name: 'Ecocuero / Cuerina PU (LIBRE DE PVC) 1 mm', thickness: '1 mm', mode: 'grabado',
+          swatches: ['#111827', '#78350F', '#DB2777'], speed: '4500 – 6000', power: '15 – 25%', passes: '1', air: '60%', care: 'Óptimo', matId: 'cuero_2',
+          tip: 'SOLO PU LIBRE DE PVC. Muchos ecocueros PU bicolores revelan un tono dorado, plateado o negro al grabarse.'
+        },
+
+        // ==================== TELAS & 3D ====================
+        {
+          id: 'pano_col_cut', cat: 'Telas & 3D', name: 'Pañolenci / Fieltro 1 mm — Colores', thickness: '1 mm', mode: 'corte',
+          swatches: ['#DC2626', '#16A34A', '#2563EB', '#111827'], speed: '3000 – 3500', power: '75 – 85%', passes: '1', air: '100%', care: 'Moderado', matId: 'panolenci_1',
           tip: 'El láser sella el borde y evita que se deshilache. Tensar bien con imanes para que el aire no mueva el paño.'
         },
         {
-          id: 'pano_col_eng',
-          cat: 'Telas & Cartulina',
-          name: 'Pañolenci / Fieltro 1 mm — Colores (Grabado suave)',
-          thickness: '1 mm',
-          mode: 'grabado',
-          swatches: ['#DC2626', '#16A34A', '#111827'],
-          speed: '5000 – 6000',
-          power: '15 – 22%',
-          passes: '1',
-          air: '50%',
-          care: 'Óptimo',
-          presetKey: 'panolenci',
+          id: 'pano_col_eng', cat: 'Telas & 3D', name: 'Pañolenci / Fieltro 1 mm — Colores (Grabado suave)', thickness: '1 mm', mode: 'grabado',
+          swatches: ['#DC2626', '#16A34A', '#111827'], speed: '5000 – 6000', power: '15 – 22%', passes: '1', air: '50%', care: 'Óptimo', matId: 'panolenci_1',
           tip: 'Deja textura marcada en la fibra sintética sin perforar la tela.'
         },
         {
-          id: 'pano_bla_cut',
-          cat: 'Telas & Cartulina',
-          name: 'Pañolenci / Fieltro 1 mm — Blanco / Pastel',
-          thickness: '1 mm',
-          mode: 'corte',
-          swatches: ['#FFFFFF', '#FCE7F3', '#FEF3C7'],
-          speed: '1800 – 2200',
-          power: '85 – 90%',
-          passes: '1',
-          air: '100%',
-          care: 'Exigente',
-          presetKey: 'panolenci',
+          id: 'pano_bla_cut', cat: 'Telas & 3D', name: 'Pañolenci / Fieltro 1 mm — Blanco / Pastel', thickness: '1 mm', mode: 'corte',
+          swatches: ['#FFFFFF', '#FCE7F3', '#FEF3C7'], speed: '1800 – 2200', power: '85 – 90%', passes: '1', air: '100%', care: 'Exigente', matId: 'panolenci_1',
           tip: 'Limpiar la chapa base antes de apoyar para que no se manche el blanco por debajo.'
         },
         {
-          id: 'cart_col_cut',
-          cat: 'Telas & Cartulina',
-          name: 'Cartulina 180–300g / Papel Kraft (Color)',
-          thickness: '0.2 – 0.4 mm',
-          mode: 'corte',
-          swatches: ['#B45309', '#DC2626', '#1E3A8A', '#111827'],
-          speed: '1800 – 2500',
-          power: '35 – 45%',
-          passes: '1',
-          air: '100%',
-          care: 'Óptimo',
-          presetKey: 'cartulina',
-          tip: 'Sujetar en las 4 esquinas con imanes o cinta de papel suave; Air Assist al 100% evita bordes chamuscados.'
-        },
-        {
-          id: 'cart_bla_cut',
-          cat: 'Telas & Cartulina',
-          name: 'Cartulina 180–300g — Blanca',
-          thickness: '0.2 – 0.4 mm',
-          mode: 'corte',
-          swatches: ['#FFFFFF'],
-          speed: '1200 – 1600',
-          power: '50 – 60%',
-          passes: '1',
-          air: '100%',
-          care: 'Óptimo',
-          presetKey: 'cartulina',
-          tip: 'Si se tuesta el dorso, apoyar sobre panal o levantarla ligeramente de la chapa metálica.'
-        },
-        {
-          id: 'cart_eng',
-          cat: 'Telas & Cartulina',
-          name: 'Cartulina / Kraft — Grabado / Marcado de Doblez',
-          thickness: '0.2 – 0.4 mm',
-          mode: 'grabado',
-          swatches: ['#B45309', '#FFFFFF'],
-          speed: '4000 – 5000',
-          power: '12 – 18%',
-          passes: '1',
-          air: '50%',
-          care: 'Óptimo',
-          presetKey: 'cartulina',
-          tip: 'Ideal para líneas de pliegue en packaging, cajas y tarjetas sin cortar el papel.'
-        },
-
-        // 3D / PETG
-        {
-          id: 'petg_eng',
-          cat: '3D / PETG',
-          name: 'Filamento PETG (Impresión 3D) — Oscuro / Opaco vs. Blanco',
-          thickness: 'Pieza 3D',
-          mode: 'grabado',
-          swatches: ['#1F2937', '#2563EB', '#FFFFFF'],
-          speed: '4000 – 5000',
-          power: '20 – 35%',
-          passes: '1',
-          air: '100%',
-          care: 'Óptimo',
-          presetKey: 'custom',
-          tip: 'SOLO GRABADO (no cortar). En PETG blanco aplicar capa fina de témpera negra lavable y lavar al terminar; usar mínimo 3–4 capas sólidas superiores.'
+          id: 'petg_eng', cat: 'Telas & 3D', name: 'Filamento PETG (Impresión 3D) — Oscuro / Opaco vs. Blanco', thickness: 'Pieza 3D', mode: 'grabado',
+          swatches: ['#1F2937', '#2563EB', '#FFFFFF'], speed: '4000 – 5000', power: '20 – 35%', passes: '1', air: '100%', care: 'Óptimo', matId: 'acrilico_3',
+          tip: 'SOLO GRABADO (no cortar). En PETG blanco aplicar capa fina de témpera negra lavable, grabar y lavar con agua; usar mínimo 3–4 capas sólidas superiores.'
         }
       ];
 
@@ -1732,14 +1759,14 @@
       let state = {
         brand: 'elnodoazul',
         activeTab: 'cotizador',
+        materials: JSON.parse(JSON.stringify(DEFAULT_MATERIALS)),
         machine: { ...DEFAULT_MACHINE },
         calc: { ...DEFAULT_CALC },
         quote: { ...DEFAULT_QUOTE },
         quick: { ...DEFAULT_QUICK },
         market: JSON.parse(JSON.stringify(DEFAULT_MARKET)),
         paramCat: 'Todos',
-        paramMode: 'all',
-        machineConfigOpenMobile: true
+        paramMode: 'all'
       };
 
       /* -----------------------------------------------------------------------
@@ -1765,6 +1792,7 @@
         try {
           const toSave = {
             brand: state.brand,
+            materials: state.materials,
             machine: state.machine,
             calc: state.calc,
             quote: state.quote,
@@ -1773,7 +1801,7 @@
           };
           localStorage.setItem(STORAGE_KEY, JSON.stringify(toSave));
         } catch (err) {
-          // Modo iframe restringido o navegación privada: operar en memoria sin romper
+          // Modo iframe restringido o navegación privada
         }
       }
 
@@ -1782,7 +1810,10 @@
           const raw = localStorage.getItem(STORAGE_KEY);
           if (!raw) return;
           const parsed = JSON.parse(raw);
-          if (parsed.brand) state.brand = parsed.brand;
+          if (parsed.brand && BRAND_CONFIG[parsed.brand]) state.brand = parsed.brand;
+          if (Array.isArray(parsed.materials) && parsed.materials.length > 0) {
+            state.materials = parsed.materials;
+          }
           if (parsed.machine) state.machine = { ...DEFAULT_MACHINE, ...parsed.machine };
           if (parsed.calc) state.calc = { ...DEFAULT_CALC, ...parsed.calc };
           if (parsed.quote) state.quote = { ...DEFAULT_QUOTE, ...parsed.quote };
@@ -1797,14 +1828,10 @@
             };
           }
         } catch (err) {
-          // Si localStorage falla o está corrupto, continuar con valores por defecto
+          // Continuar con valores por defecto
         }
       }
 
-      /**
-       * Copia texto de manera 100% compatible con iframes (Google Sites)
-       * usando textarea oculto + document.execCommand('copy')
-       */
       function copyToClipboard(text, successMsg) {
         try {
           const ta = document.createElement('textarea');
@@ -1821,7 +1848,7 @@
           if (ok) {
             showToast(successMsg || 'Copiado al portapapeles', 'success');
           } else {
-            showToast('No se pudo copiar automáticamente. Seleccioná y copiá el texto.', 'warn');
+            showToast('No se pudo copiar automáticamente.', 'warn');
           }
         } catch (err) {
           showToast('Error al copiar al portapapeles.', 'warn');
@@ -1856,31 +1883,33 @@
       /* -----------------------------------------------------------------------
          5. CAMBIO DE MARCA Y NAVEGACIÓN DE PESTAÑAS
          ----------------------------------------------------------------------- */
-      window.setBrand = function (brand) {
-        state.brand = brand === 'sugatina' ? 'sugatina' : 'elnodoazul';
+      window.setBrand = function (brandKey) {
+        state.brand = brandKey === 'sugatina' ? 'sugatina' : 'elnodoazul';
+        const cfg = BRAND_CONFIG[state.brand];
         document.body.setAttribute('data-brand', state.brand);
 
-        const isSug = state.brand === 'sugatina';
-        const brandDisplay = isSug ? 'SUGATINA' : 'ElNodoAzul';
+        document.getElementById('brandBadge').textContent = cfg.name;
+        document.getElementById('brandSubtitleHeader').textContent = cfg.subtitle;
+        document.getElementById('footerBrandName').textContent = cfg.name;
+        document.getElementById('footerBrandSubtitle').textContent = cfg.subtitle;
 
-        document.getElementById('brandBadge').textContent = brandDisplay;
-        document.getElementById('footerBrandName').textContent = brandDisplay;
         const quoteBrandEl = document.getElementById('quoteBrandIndicator');
-        if (quoteBrandEl) quoteBrandEl.textContent = brandDisplay;
+        if (quoteBrandEl) quoteBrandEl.textContent = `${cfg.name} — ${cfg.subtitle}`;
+
         const printTitle = document.getElementById('printSheetTitle');
         if (printTitle) {
-          printTitle.textContent = `Ficha Maestra de Parámetros — Creality Falcon A1 10W | ${brandDisplay}`;
+          printTitle.textContent = `Ficha Maestra de Parámetros — Creality Falcon A1 10W | ${cfg.name} — ${cfg.subtitle}`;
         }
 
         const btnBlue = document.getElementById('btnBrandBlue');
-        const btnOrange = document.getElementById('btnBrandOrange');
+        const btnPink = document.getElementById('btnBrandPink');
 
-        if (isSug) {
-          btnOrange.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 bg-white text-orange-600 shadow-xs';
+        if (state.brand === 'sugatina') {
+          btnPink.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 bg-white text-pink-600 shadow-xs';
           btnBlue.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-slate-600 hover:text-blue-700';
         } else {
           btnBlue.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 bg-white text-blue-700 shadow-xs';
-          btnOrange.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-slate-600 hover:text-orange-600';
+          btnPink.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 text-slate-600 hover:text-pink-600';
         }
 
         saveState();
@@ -1905,13 +1934,12 @@
           }
         });
 
-        // Recalcular vistas dependientes al entrar
         if (tabId === 'rapida') renderQuickTable();
         if (tabId === 'mercado') renderMarketSimulator();
       };
 
       window.toggleMachineConfig = function () {
-        if (window.innerWidth >= 1024) return; // Siempre visible en desktop
+        if (window.innerWidth >= 1024) return;
         const body = document.getElementById('machineConfigBody');
         const chev = document.getElementById('machineConfigChevron');
         body.classList.toggle('hidden');
@@ -1919,7 +1947,261 @@
       };
 
       /* -----------------------------------------------------------------------
-         6. CÁLCULOS DE AMORTIZACIÓN Y PRESUPUESTO (PESTAÑA 1)
+         6. GESTOR DE MATERIALES ENTEROS Y PROVEEDORES (CRUD + CÁLCULO POR ÁREA)
+         ----------------------------------------------------------------------- */
+      function getMaterialById(id) {
+        return state.materials.find(m => m.id === id) || null;
+      }
+
+      function computeProportionalMaterialCost(mat, cutWcm, cutHcm) {
+        if (!mat) return state.calc.matCost;
+        const sheetAreaCm2 = (mat.widthM * 100) * (mat.heightM * 100);
+        if (sheetAreaCm2 <= 0) return 0;
+        const cutAreaCm2 = Math.max(0, cutWcm) * Math.max(0, cutHcm);
+        return Math.round((cutAreaCm2 / sheetAreaCm2) * mat.price);
+      }
+
+      function renderMaterialSelectOptions() {
+        const sel = document.getElementById('calcMaterialSelect');
+        if (!sel) return;
+        sel.innerHTML = '';
+
+        state.materials.forEach(mat => {
+          const opt = document.createElement('option');
+          opt.value = mat.id;
+          opt.textContent = `${mat.name} (${formatNum(mat.widthM, 2)}×${formatNum(mat.heightM, 2)}m — ${formatARS(mat.price, 0)})`;
+          sel.appendChild(opt);
+        });
+
+        const customOpt = document.createElement('option');
+        customOpt.value = '__manual__';
+        customOpt.textContent = 'Personalizado (ingresar costo manual)';
+        sel.appendChild(customOpt);
+
+        // Validar selección vigente
+        if (state.calc.materialId !== '__manual__' && !getMaterialById(state.calc.materialId)) {
+          state.calc.materialId = state.materials[0] ? state.materials[0].id : '__manual__';
+        }
+        sel.value = state.calc.materialId;
+        updateSelectedMaterialInfoBox();
+      }
+
+      function updateSelectedMaterialInfoBox() {
+        const box = document.getElementById('selectedMaterialInfoBox');
+        const mat = getMaterialById(state.calc.materialId);
+        if (!box) return;
+
+        if (!mat) {
+          box.classList.add('hidden');
+          return;
+        }
+        box.classList.remove('hidden');
+
+        const areaM2 = mat.widthM * mat.heightM;
+        const pricePerM2 = areaM2 > 0 ? mat.price / areaM2 : 0;
+
+        document.getElementById('infoMatProvider').textContent = mat.provider || 'Sin proveedor';
+        document.getElementById('infoMatDims').textContent = `${formatNum(mat.widthM, 2)} m × ${formatNum(mat.heightM, 2)} m (${formatNum(areaM2, 2)} m²)`;
+        document.getElementById('infoMatPrice').textContent = formatARS(mat.price, 0);
+        document.getElementById('infoMatPerM2').textContent = `${formatARS(pricePerM2, 0)}/m²`;
+      }
+
+      window.onSelectCatalogMaterial = function () {
+        const val = document.getElementById('calcMaterialSelect').value;
+        state.calc.materialId = val;
+        const mat = getMaterialById(val);
+
+        if (mat) {
+          state.calc.manualMatCost = false;
+          state.calc.matCost = computeProportionalMaterialCost(mat, state.calc.cutW, state.calc.cutH);
+          document.getElementById('calcMatCost').value = state.calc.matCost;
+
+          state.quote.materialDisplay = mat.name;
+          document.getElementById('quoteMaterialDisplay').value = mat.name;
+        }
+
+        updateSelectedMaterialInfoBox();
+        saveState();
+        renderTab1();
+      };
+
+      window.applyQuickCutSize = function (wCm, hCm) {
+        state.calc.cutW = wCm;
+        state.calc.cutH = hCm;
+        document.getElementById('calcCutW').value = wCm;
+        document.getElementById('calcCutH').value = hCm;
+
+        const mat = getMaterialById(state.calc.materialId);
+        if (mat) {
+          state.calc.manualMatCost = false;
+          state.calc.matCost = computeProportionalMaterialCost(mat, wCm, hCm);
+          document.getElementById('calcMatCost').value = state.calc.matCost;
+        }
+        saveState();
+        renderTab1();
+      };
+
+      window.applyFullSheetCutSize = function () {
+        const mat = getMaterialById(state.calc.materialId);
+        if (!mat) return;
+        const wCm = Math.round(mat.widthM * 1000) / 10;
+        const hCm = Math.round(mat.heightM * 1000) / 10;
+        window.applyQuickCutSize(wCm, hCm);
+      };
+
+      /* --- Modal CRUD Materiales y Proveedores --- */
+      window.openMaterialsModal = function () {
+        const modal = document.getElementById('materialsModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        renderMaterialsModalTable();
+      };
+
+      window.closeMaterialsModal = function () {
+        const modal = document.getElementById('materialsModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        cancelEditMaterial();
+      };
+
+      function renderMaterialsModalTable() {
+        const tbody = document.getElementById('materialsModalTableBody');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        state.materials.forEach(mat => {
+          const areaM2 = mat.widthM * mat.heightM;
+          const areaCm2 = areaM2 * 10000;
+          const costPerCm2 = areaCm2 > 0 ? mat.price / areaCm2 : 0;
+          const bedCost = costPerCm2 * (38 * 30); // Cama Falcon A1 38×30cm
+
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-50/80 transition';
+          tr.innerHTML = `
+            <td class="py-3 px-3.5">
+              <div class="font-bold text-slate-900">${mat.name}</div>
+              <div class="text-[11px] text-slate-500">${mat.provider || 'Sin proveedor'}</div>
+            </td>
+            <td class="py-3 px-3 font-medium text-slate-700">${formatNum(mat.widthM, 2)} m × ${formatNum(mat.heightM, 2)} m</td>
+            <td class="py-3 px-3 text-slate-600">${formatNum(areaM2, 2)} m²</td>
+            <td class="py-3 px-3 font-bold text-slate-900">${formatARS(mat.price, 0)}</td>
+            <td class="py-3 px-3 text-slate-600">${formatARS(costPerCm2, 3)}</td>
+            <td class="py-3 px-3 font-bold text-brand-dark">${formatARS(bedCost, 0)}</td>
+            <td class="py-3 px-3.5 text-right whitespace-nowrap space-x-1.5">
+              <button type="button" onclick="editMaterial('${mat.id}')" class="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-[11px] font-semibold transition">Editar</button>
+              <button type="button" onclick="deleteMaterial('${mat.id}')" class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] font-semibold transition">Eliminar</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      window.saveMaterialFromForm = function (e) {
+        e.preventDefault();
+        const idInput = document.getElementById('matFormId').value.trim();
+        const name = document.getElementById('matFormName').value.trim();
+        const widthM = parseFloat(document.getElementById('matFormWidthM').value);
+        const heightM = parseFloat(document.getElementById('matFormHeightM').value);
+        const price = parseFloat(document.getElementById('matFormPrice').value);
+        const provider = document.getElementById('matFormProvider').value.trim() || 'Proveedor general';
+
+        if (!name || !(widthM > 0) || !(heightM > 0) || !(price > 0)) {
+          showToast('Completá nombre, medidas y precio válidos.', 'warn');
+          return;
+        }
+
+        if (idInput) {
+          const idx = state.materials.findIndex(m => m.id === idInput);
+          if (idx !== -1) {
+            state.materials[idx] = { id: idInput, name, widthM, heightM, price, provider };
+            if (state.calc.materialId === idInput && !state.calc.manualMatCost) {
+              state.calc.matCost = computeProportionalMaterialCost(state.materials[idx], state.calc.cutW, state.calc.cutH);
+              document.getElementById('calcMatCost').value = state.calc.matCost;
+              state.quote.materialDisplay = name;
+              document.getElementById('quoteMaterialDisplay').value = name;
+            }
+            showToast(`Material actualizado: ${name}`, 'success');
+          }
+        } else {
+          const newId = 'mat_' + Date.now();
+          const newMat = { id: newId, name, widthM, heightM, price, provider };
+          state.materials.unshift(newMat);
+          // Seleccionarlo directamente para usar
+          state.calc.materialId = newId;
+          state.calc.manualMatCost = false;
+          state.calc.matCost = computeProportionalMaterialCost(newMat, state.calc.cutW, state.calc.cutH);
+          document.getElementById('calcMatCost').value = state.calc.matCost;
+          state.quote.materialDisplay = name;
+          document.getElementById('quoteMaterialDisplay').value = name;
+          showToast(`Material agregado: ${name}`, 'success');
+        }
+
+        cancelEditMaterial();
+        saveState();
+        renderMaterialSelectOptions();
+        renderMaterialsModalTable();
+        renderAll();
+      };
+
+      window.editMaterial = function (id) {
+        const mat = getMaterialById(id);
+        if (!mat) return;
+        document.getElementById('matFormId').value = mat.id;
+        document.getElementById('matFormName').value = mat.name;
+        document.getElementById('matFormWidthM').value = mat.widthM;
+        document.getElementById('matFormHeightM').value = mat.heightM;
+        document.getElementById('matFormPrice').value = mat.price;
+        document.getElementById('matFormProvider').value = mat.provider || '';
+        document.getElementById('materialFormTitle').textContent = `Editando: ${mat.name}`;
+        document.getElementById('btnSubmitMat').textContent = 'Actualizar material';
+        document.getElementById('btnCancelEditMat').classList.remove('hidden');
+        document.getElementById('matFormName').focus();
+      };
+
+      window.cancelEditMaterial = function () {
+        document.getElementById('matFormId').value = '';
+        document.getElementById('materialForm').reset();
+        document.getElementById('materialFormTitle').textContent = '+ Añadir Nuevo Material';
+        document.getElementById('btnSubmitMat').textContent = 'Guardar material';
+        document.getElementById('btnCancelEditMat').classList.add('hidden');
+      };
+
+      window.deleteMaterial = function (id) {
+        if (state.materials.length <= 1) {
+          showToast('Debe quedar al menos 1 material en el catálogo.', 'warn');
+          return;
+        }
+        const mat = getMaterialById(id);
+        state.materials = state.materials.filter(m => m.id !== id);
+        if (state.calc.materialId === id) {
+          state.calc.materialId = state.materials[0].id;
+          state.calc.manualMatCost = false;
+          state.calc.matCost = computeProportionalMaterialCost(state.materials[0], state.calc.cutW, state.calc.cutH);
+          document.getElementById('calcMatCost').value = state.calc.matCost;
+        }
+        saveState();
+        renderMaterialSelectOptions();
+        renderMaterialsModalTable();
+        renderAll();
+        showToast(`Material eliminado: ${mat ? mat.name : ''}`, 'success');
+      };
+
+      window.resetMaterialsCatalog = function () {
+        state.materials = JSON.parse(JSON.stringify(DEFAULT_MATERIALS));
+        state.calc.materialId = state.materials[0].id;
+        state.calc.manualMatCost = false;
+        state.calc.matCost = computeProportionalMaterialCost(state.materials[0], state.calc.cutW, state.calc.cutH);
+        document.getElementById('calcMatCost').value = state.calc.matCost;
+        cancelEditMaterial();
+        saveState();
+        renderMaterialSelectOptions();
+        renderMaterialsModalTable();
+        renderAll();
+        showToast('Catálogo base de 10 materiales restablecido.', 'success');
+      };
+
+      /* -----------------------------------------------------------------------
+         7. CÁLCULOS DE AMORTIZACIÓN Y PRESUPUESTO (PESTAÑA 1)
          ----------------------------------------------------------------------- */
       function getMachineMetrics() {
         const m = state.machine;
@@ -1930,7 +2212,6 @@
         const pureMin = pureHour / 60;
         const safeHour = pureHour * (1 + (m.safetyPct / 100));
         const safeMin = safeHour / 60;
-
         return { amortH, maintH, elecH, pureHour, pureMin, safeHour, safeMin };
       }
 
@@ -1939,14 +2220,10 @@
         const c = state.calc;
         const qty = Math.max(1, parseInt(c.qty, 10) || 1);
 
-        // Material + merma
         const materialTotal = c.matCost * (1 + (c.wastePct / 100));
-        // Tiempo Falcon + 25% real por frenados del cabezal
         const realLaserMin = c.laserMin * 1.25;
         const machineTotal = realLaserMin * metrics.safeMin;
-        // Mano de obra activa
         const laborTotal = (c.laborMin / 60) * state.machine.laborRate;
-        // Extras (diseño + insumos)
         const extrasTotal = c.designCost + c.extrasCost;
 
         const totalCost = materialTotal + machineTotal + laborTotal + extrasTotal;
@@ -1982,7 +2259,6 @@
         const metrics = getMachineMetrics();
         const b = getBudgetBreakdown();
 
-        // KPIs Máquina
         document.getElementById('kpiPureHour').textContent = `${formatARS(metrics.pureHour, 2)}/h`;
         document.getElementById('kpiPureMin').textContent = `${formatARS(metrics.pureMin, 2)}/min`;
         document.getElementById('kpiSafeHour').textContent = `${formatARS(metrics.safeHour, 2)}/h`;
@@ -1992,10 +2268,8 @@
         document.getElementById('brkMaintH').textContent = formatARS(metrics.maintH, 2);
         document.getElementById('brkElecH').textContent = formatARS(metrics.elecH, 2);
 
-        // Hint tiempo real
         document.getElementById('realLaserMinHint').textContent = `Real (+25%): ${formatNum(b.realLaserMin, 1)} min`;
 
-        // Multiplicadores
         const wPct = Math.round((state.calc.wholesaleMult - 1) * 100);
         const rPct = Math.round((state.calc.retailMult - 1) * 100);
         document.getElementById('wholesaleMultLabel').textContent = `${state.calc.wholesaleMult.toFixed(1)}x (+${wPct}%)`;
@@ -2003,7 +2277,6 @@
         document.getElementById('badgeWholesaleMult').textContent = `${state.calc.wholesaleMult.toFixed(1)}x`;
         document.getElementById('badgeRetailMult').textContent = `${state.calc.retailMult.toFixed(1)}x`;
 
-        // Costo Real & Barra Proporcional
         document.getElementById('resTotalCost').textContent = formatARS(b.totalCost, 0);
         document.getElementById('resUnitCost').textContent = formatARS(b.unitCost, 0);
         document.getElementById('resQtySummary').textContent = `Pack × ${b.qty} u.`;
@@ -2019,7 +2292,6 @@
         document.getElementById('valLabCost').textContent = formatARS(b.laborTotal, 0);
         document.getElementById('valExtCost').textContent = formatARS(b.extrasTotal, 0);
 
-        // Precios Finales
         document.getElementById('resWholesaleTotal').textContent = formatARS(b.wholesaleTotal, 0);
         document.getElementById('resWholesaleUnit').textContent = `${formatARS(b.wholesaleUnit, 0)} / u.`;
         document.getElementById('resWholesaleProfit').textContent = `+ ${formatARS(b.wholesaleProfit, 0)}`;
@@ -2029,20 +2301,6 @@
         document.getElementById('resRetailProfit').textContent = `+ ${formatARS(b.retailProfit, 0)}`;
       }
 
-      window.applyMaterialPreset = function () {
-        const key = document.getElementById('calcMaterialPreset').value;
-        state.calc.materialPreset = key;
-        if (key !== 'custom' && MATERIAL_PRESETS[key]) {
-          state.calc.matCost = MATERIAL_PRESETS[key].cost;
-          document.getElementById('calcMatCost').value = state.calc.matCost;
-          state.quote.materialDisplay = MATERIAL_PRESETS[key].cleanName;
-          const matDispEl = document.getElementById('quoteMaterialDisplay');
-          if (matDispEl) matDispEl.value = state.quote.materialDisplay;
-        }
-        saveState();
-        renderTab1();
-      };
-
       window.resetMachineDefaults = function () {
         state.machine = { ...DEFAULT_MACHINE };
         syncInputsFromState();
@@ -2051,33 +2309,30 @@
         showToast('Configuración de amortización restablecida.', 'success');
       };
 
-      /**
-       * Recopila los datos limpios del presupuesto para WhatsApp, JPG y PDF
-       */
+      /* -----------------------------------------------------------------------
+         7B. PRESUPUESTO SIMPLE (WHATSAPP + JPG + PDF BINARIO PURO)
+         ----------------------------------------------------------------------- */
       function getQuotePayload(tier) {
         const b = getBudgetBreakdown();
-        const isSug = state.brand === 'sugatina';
-        const brandName = isSug ? 'SUGATINA' : 'ElNodoAzul';
+        const cfg = BRAND_CONFIG[state.brand];
         const isWholesale = tier === 'wholesale';
         const total = isWholesale ? b.wholesaleTotal : b.retailTotal;
         const deposit = total * 0.5;
-        const presetInfo = MATERIAL_PRESETS[state.calc.materialPreset] || MATERIAL_PRESETS.custom;
+        const selectedMat = getMaterialById(state.calc.materialId);
 
         const clientName = (state.quote.clientName || '').trim();
-        const productName = (state.quote.productName || '').trim() || 'Trabajo a medida';
-        const materialName = (state.quote.materialDisplay || '').trim() || presetInfo.cleanName;
+        const productName = (state.quote.productName || '').trim() || 'Trabajo personalizado';
+        const materialName = (state.quote.materialDisplay || '').trim() || (selectedMat ? selectedMat.name : 'Material a definir');
 
         const now = new Date();
-        const dateStr = now.toLocaleDateString('es-AR', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric'
-        });
+        const dateStr = now.toLocaleDateString('es-AR', { day: '2-digit', month: '2-digit', year: 'numeric' });
         const quoteCode = `P-${String(now.getFullYear()).slice(-2)}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}-${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
 
         return {
-          isSug,
-          brandName,
+          brandKey: state.brand,
+          brandName: cfg.name,
+          brandSubtitle: cfg.subtitle,
+          palette: cfg.palette,
           tierLabel: isWholesale ? 'MAYORISTA' : 'MINORISTA',
           clientName,
           productName,
@@ -2102,27 +2357,23 @@
       window.copyWhatsAppQuote = function (tier) {
         const q = getQuotePayload(tier);
         const lines = [
-          `*PRESUPUESTO — ${q.brandName}*`,
+          `*${q.brandName} — ${q.brandSubtitle}*`,
           `────────────────────`
         ];
-
         if (q.clientName) {
           lines.push(`• *Cliente:* ${q.clientName}`);
         }
         lines.push(`• *Producto:* ${q.productName}`);
         lines.push(`• *Material:* ${q.materialName}`);
         lines.push(`• *Cantidad:* ${q.qty} ${q.qty === 1 ? 'pieza' : 'piezas'}`);
-        lines.push(`• *Precio total:* *${formatARS(q.total, 0)}*`);
+        lines.push(`• *Precio Total:* *${formatARS(q.total, 0)}*`);
         lines.push(`────────────────────`);
         lines.push(`Para confirmar: seña del 50% (*${formatARS(q.deposit, 0)}*)`);
         lines.push(`Presupuesto válido por 2 días.`);
 
-        copyToClipboard(lines.join('\n'), `Presupuesto simple (${q.tierLabel}) copiado para WhatsApp.`);
+        copyToClipboard(lines.join('\n'), `Presupuesto (${q.tierLabel}) copiado para WhatsApp.`);
       };
 
-      /* -----------------------------------------------------------------------
-         6B. GENERACIÓN DE COMPROBANTE EN CANVAS ALTA RESOLUCIÓN (JPG & PDF)
-         ----------------------------------------------------------------------- */
       function drawRoundedRect(ctx, x, y, w, h, r) {
         const radius = Math.min(r, w / 2, h / 2);
         ctx.beginPath();
@@ -2154,24 +2405,19 @@
       function buildQuoteCanvas(tier) {
         const q = getQuotePayload(tier);
         const W = 1080;
-        const H = 1150;
+        const H = 1350;
         const canvas = document.createElement('canvas');
         canvas.width = W;
         canvas.height = H;
         const ctx = canvas.getContext('2d');
-
-        // Paleta de marca activa
-        const palette = q.isSug
-          ? { primary: '#EA580C', dark: '#9A3412', soft: '#FFF7ED', border: '#FED7AA', textSoft: '#C2410C' }
-          : { primary: '#2563EB', dark: '#1E3A8A', soft: '#EFF6FF', border: '#BFDBFE', textSoft: '#1E40AF' };
-
+        const palette = q.palette;
         const fontStack = 'Poppins, system-ui, -apple-system, Segoe UI, Roboto, sans-serif';
 
-        // Fondo limpio
+        // Fondo
         ctx.fillStyle = '#F8FAFC';
         ctx.fillRect(0, 0, W, H);
 
-        // Tarjeta principal Swiss-grid
+        // Tarjeta principal
         const pad = 48;
         const cardX = pad;
         const cardY = pad;
@@ -2179,23 +2425,23 @@
         const cardH = H - pad * 2;
 
         ctx.save();
-        ctx.shadowColor = 'rgba(15, 23, 42, 0.08)';
-        ctx.shadowBlur = 28;
-        ctx.shadowOffsetY = 10;
-        drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 32);
+        ctx.shadowColor = 'rgba(15, 23, 42, 0.09)';
+        ctx.shadowBlur = 32;
+        ctx.shadowOffsetY = 12;
+        drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 34);
         ctx.fillStyle = '#FFFFFF';
         ctx.fill();
         ctx.restore();
 
-        drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 32);
+        drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 34);
         ctx.lineWidth = 2;
         ctx.strokeStyle = '#E2E8F0';
         ctx.stroke();
 
-        // Encabezado con color de marca (recortado dentro de los bordes superiores)
-        const headerH = 220;
+        // Encabezado con color de marca
+        const headerH = 250;
         ctx.save();
-        drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 32);
+        drawRoundedRect(ctx, cardX, cardY, cardW, cardH, 34);
         ctx.clip();
 
         const grad = ctx.createLinearGradient(cardX, cardY, cardX + cardW, cardY + headerH);
@@ -2204,50 +2450,52 @@
         ctx.fillStyle = grad;
         ctx.fillRect(cardX, cardY, cardW, headerH);
 
-        // Acento geométrico sutil en encabezado
-        ctx.fillStyle = 'rgba(255,255,255,0.07)';
+        ctx.fillStyle = 'rgba(255,255,255,0.08)';
         ctx.beginPath();
-        ctx.arc(cardX + cardW - 70, cardY + 30, 150, 0, Math.PI * 2);
+        ctx.arc(cardX + cardW - 60, cardY + 30, 175, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
 
-        // Texto de encabezado izquierda (Marca)
         const innerX = cardX + 56;
         const innerW = cardW - 112;
 
+        // Izquierda encabezado: Marca + Subtítulo
         ctx.fillStyle = 'rgba(255,255,255,0.82)';
         ctx.font = `600 20px ${fontStack}`;
-        ctx.fillText('PRESUPUESTO', innerX, cardY + 76);
+        ctx.fillText('PRESUPUESTO', innerX, cardY + 72);
 
         ctx.fillStyle = '#FFFFFF';
-        ctx.font = `700 54px ${fontStack}`;
+        ctx.font = `700 58px ${fontStack}`;
         ctx.fillText(q.brandName, innerX, cardY + 142);
 
-        ctx.fillStyle = 'rgba(255,255,255,0.88)';
-        ctx.font = `400 22px ${fontStack}`;
-        ctx.fillText('Taller de Corte & Grabado Láser', innerX, cardY + 182);
+        ctx.fillStyle = 'rgba(255,255,255,0.92)';
+        ctx.font = `500 23px ${fontStack}`;
+        const subLines = wrapCanvasText(ctx, q.brandSubtitle, innerW - 260).slice(0, 2);
+        subLines.forEach((ln, idx) => {
+          ctx.fillText(ln, innerX, cardY + 184 + idx * 30);
+        });
 
-        // Etiqueta derecha (Fecha + N° Presupuesto)
+        // Derecha encabezado: Código y Fecha
         ctx.textAlign = 'right';
-        drawRoundedRect(ctx, cardX + cardW - 290, cardY + 54, 234, 44, 22);
-        ctx.fillStyle = 'rgba(255,255,255,0.18)';
+        drawRoundedRect(ctx, cardX + cardW - 294, cardY + 52, 238, 44, 22);
+        ctx.fillStyle = 'rgba(255,255,255,0.20)';
         ctx.fill();
 
         ctx.fillStyle = '#FFFFFF';
         ctx.font = `600 18px ${fontStack}`;
-        ctx.fillText(q.quoteCode, cardX + cardW - 76, cardY + 83);
+        ctx.fillText(q.quoteCode, cardX + cardW - 76, cardY + 81);
 
         ctx.fillStyle = 'rgba(255,255,255,0.92)';
-        ctx.font = `500 21px ${fontStack}`;
-        ctx.fillText(`Fecha: ${q.dateStr}`, cardX + cardW - 56, cardY + 144);
+        ctx.font = `500 22px ${fontStack}`;
+        ctx.fillText(`Fecha: ${q.dateStr}`, cardX + cardW - 56, cardY + 148);
 
-        ctx.fillStyle = 'rgba(255,255,255,0.75)';
+        ctx.fillStyle = 'rgba(255,255,255,0.78)';
         ctx.font = `600 17px ${fontStack}`;
-        ctx.fillText(`LISTA ${q.tierLabel}`, cardX + cardW - 56, cardY + 178);
+        ctx.fillText(`LISTA ${q.tierLabel}`, cardX + cardW - 56, cardY + 184);
         ctx.textAlign = 'left';
 
-        // Bloque de Datos del Cliente y Trabajo
-        let y = cardY + headerH + 46;
+        // Datos del trabajo
+        let y = cardY + headerH + 58;
         const rows = [
           { label: 'CLIENTE', value: q.clientName || 'Consumidor Final' },
           { label: 'PRODUCTO / TRABAJO', value: q.productName },
@@ -2257,58 +2505,58 @@
 
         rows.forEach((row, idx) => {
           ctx.fillStyle = '#64748B';
-          ctx.font = `600 17px ${fontStack}`;
+          ctx.font = `600 18px ${fontStack}`;
           ctx.fillText(row.label, innerX, y);
 
           ctx.fillStyle = '#0F172A';
-          ctx.font = `600 28px ${fontStack}`;
+          ctx.font = `600 31px ${fontStack}`;
           const wrapped = wrapCanvasText(ctx, row.value, innerW).slice(0, 2);
           wrapped.forEach((line, lIdx) => {
-            ctx.fillText(line, innerX, y + 36 + lIdx * 34);
+            ctx.fillText(line, innerX, y + 40 + lIdx * 38);
           });
 
-          const blockHeight = 56 + (wrapped.length - 1) * 34;
+          const blockHeight = 64 + (wrapped.length - 1) * 38;
           if (idx < rows.length - 1) {
             ctx.beginPath();
-            ctx.moveTo(innerX, y + blockHeight);
-            ctx.lineTo(innerX + innerW, y + blockHeight);
+            ctx.moveTo(innerX, y + blockHeight + 8);
+            ctx.lineTo(innerX + innerW, y + blockHeight + 8);
             ctx.lineWidth = 1.5;
             ctx.strokeStyle = '#E2E8F0';
             ctx.stroke();
           }
-          y += blockHeight + 28;
+          y += blockHeight + 42;
         });
 
         // Recuadro destacado: PRECIO TOTAL
-        const totalBoxY = cardY + cardH - 365;
-        const totalBoxH = 148;
+        const totalBoxY = cardY + cardH - 400;
+        const totalBoxH = 162;
 
-        drawRoundedRect(ctx, innerX, totalBoxY, innerW, totalBoxH, 22);
+        drawRoundedRect(ctx, innerX, totalBoxY, innerW, totalBoxH, 24);
         ctx.fillStyle = palette.soft;
         ctx.fill();
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 3;
         ctx.strokeStyle = palette.primary;
         ctx.stroke();
 
         ctx.fillStyle = palette.textSoft;
-        ctx.font = `700 20px ${fontStack}`;
-        ctx.fillText('PRECIO TOTAL', innerX + 32, totalBoxY + 52);
+        ctx.font = `700 21px ${fontStack}`;
+        ctx.fillText('PRECIO TOTAL', innerX + 34, totalBoxY + 54);
 
         ctx.fillStyle = palette.dark;
-        ctx.font = `700 62px ${fontStack}`;
-        ctx.fillText(formatARS(q.total, 0), innerX + 32, totalBoxY + 118);
+        ctx.font = `700 68px ${fontStack}`;
+        ctx.fillText(formatARS(q.total, 0), innerX + 34, totalBoxY + 128);
 
         ctx.textAlign = 'right';
         ctx.fillStyle = '#475569';
         ctx.font = `500 20px ${fontStack}`;
-        ctx.fillText('Pesos Argentinos (ARS)', innerX + innerW - 32, totalBoxY + 110);
+        ctx.fillText('Pesos Argentinos (ARS)', innerX + innerW - 34, totalBoxY + 120);
         ctx.textAlign = 'left';
 
-        // Bloque de Confirmación (Seña del 50%)
-        const confY = totalBoxY + totalBoxH + 24;
-        const confH = 92;
+        // Bloque Seña 50%
+        const confY = totalBoxY + totalBoxH + 26;
+        const confH = 98;
 
-        drawRoundedRect(ctx, innerX, confY, innerW, confH, 18);
+        drawRoundedRect(ctx, innerX, confY, innerW, confH, 20);
         ctx.fillStyle = '#F1F5F9';
         ctx.fill();
         ctx.lineWidth = 1.5;
@@ -2316,37 +2564,129 @@
         ctx.stroke();
 
         ctx.fillStyle = '#334155';
-        ctx.font = `600 22px ${fontStack}`;
-        ctx.fillText('Para confirmar el pedido: seña del 50%', innerX + 28, confY + 54);
+        ctx.font = `600 23px ${fontStack}`;
+        ctx.fillText('Para confirmar: seña del 50%', innerX + 30, confY + 58);
 
         ctx.textAlign = 'right';
         ctx.fillStyle = '#0F172A';
-        ctx.font = `700 32px ${fontStack}`;
-        ctx.fillText(formatARS(q.deposit, 0), innerX + innerW - 28, confY + 57);
+        ctx.font = `700 34px ${fontStack}`;
+        ctx.fillText(formatARS(q.deposit, 0), innerX + innerW - 30, confY + 61);
         ctx.textAlign = 'left';
 
-        // Pie claro: Validez por 2 días
-        const footerY = cardY + cardH - 40;
-        ctx.fillStyle = '#64748B';
-        ctx.font = `600 22px ${fontStack}`;
+        // Pie de tarjeta: Validez 2 días
+        const footerY = cardY + cardH - 44;
+        ctx.fillStyle = '#475569';
+        ctx.font = `600 23px ${fontStack}`;
         ctx.fillText('Presupuesto válido por 2 días.', innerX, footerY);
 
         ctx.textAlign = 'right';
         ctx.fillStyle = '#94A3B8';
         ctx.font = `500 18px ${fontStack}`;
-        ctx.fillText(q.brandName, innerX + innerW, footerY);
+        ctx.fillText(`${q.brandName}`, innerX + innerW, footerY);
         ctx.textAlign = 'left';
 
         return { canvas, payload: q };
       }
 
+      /**
+       * Generador PDF 1.4 binario puro en JavaScript (cero dependencias externas)
+       * Empaqueta la imagen JPEG generada por Canvas centrada en una hoja A4.
+       */
+      function createPdfBlobFromJpegDataUrl(dataUrl, imgW, imgH) {
+        const base64 = dataUrl.split(',')[1];
+        const binStr = atob(base64);
+        const jpegBytes = new Uint8Array(binStr.length);
+        for (let i = 0; i < binStr.length; i++) {
+          jpegBytes[i] = binStr.charCodeAt(i);
+        }
+
+        const enc = new TextEncoder();
+        const chunks = [];
+        let byteLength = 0;
+        const offsets = [0]; // Índice 0 reservado para objeto libre
+
+        function pushStr(str) {
+          const bytes = enc.encode(str);
+          chunks.push(bytes);
+          byteLength += bytes.length;
+        }
+
+        function pushBytes(u8) {
+          chunks.push(u8);
+          byteLength += u8.length;
+        }
+
+        // Cabecera PDF 1.4 con marcador binario
+        pushStr('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n');
+
+        // Medidas página A4 en puntos (72 dpi)
+        const pageW = 595.28;
+        const pageH = 841.89;
+        const margin = 28;
+        const maxW = pageW - margin * 2;
+        const maxH = pageH - margin * 2;
+        const ratio = imgW / imgH;
+
+        let drawW = maxW;
+        let drawH = drawW / ratio;
+        if (drawH > maxH) {
+          drawH = maxH;
+          drawW = drawH * ratio;
+        }
+        const offsetX = ((pageW - drawW) / 2).toFixed(2);
+        const offsetY = ((pageH - drawH) / 2).toFixed(2);
+
+        // Obj 1: Catalog
+        offsets.push(byteLength);
+        pushStr('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+
+        // Obj 2: Pages
+        offsets.push(byteLength);
+        pushStr('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
+
+        // Obj 3: Page
+        offsets.push(byteLength);
+        pushStr(
+          `3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageW} ${pageH}] ` +
+          `/Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>\nendobj\n`
+        );
+
+        // Obj 4: Image XObject (DCTDecode = JPEG nativo)
+        offsets.push(byteLength);
+        pushStr(
+          `4 0 obj\n<< /Type /XObject /Subtype /Image /Width ${imgW} /Height ${imgH} ` +
+          `/ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpegBytes.length} >>\nstream\n`
+        );
+        pushBytes(jpegBytes);
+        pushStr('\nendstream\nendobj\n');
+
+        // Obj 5: Content stream
+        const contentStream = `q\n${drawW.toFixed(2)} 0 0 ${drawH.toFixed(2)} ${offsetX} ${offsetY} cm\n/Im0 Do\nQ\n`;
+        const contentBytes = enc.encode(contentStream);
+        offsets.push(byteLength);
+        pushStr(`5 0 obj\n<< /Length ${contentBytes.length} >>\nstream\n`);
+        pushBytes(contentBytes);
+        pushStr('endstream\nendobj\n');
+
+        // Tabla xref
+        const xrefOffset = byteLength;
+        pushStr(`xref\n0 ${offsets.length}\n`);
+        pushStr('0000000000 65535 f \n');
+        for (let i = 1; i < offsets.length; i++) {
+          pushStr(String(offsets[i]).padStart(10, '0') + ' 00000 n \n');
+        }
+
+        // Trailer
+        pushStr(`trailer\n<< /Size ${offsets.length} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`);
+
+        return new Blob(chunks, { type: 'application/pdf' });
+      }
+
       window.downloadQuoteJPG = async function (tier) {
         try {
-          if (document.fonts && document.fonts.ready) {
-            await document.fonts.ready;
-          }
+          if (document.fonts && document.fonts.ready) await document.fonts.ready;
           const { canvas, payload } = buildQuoteCanvas(tier);
-          const dataUrl = canvas.toDataURL('image/jpeg', 0.95);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.94);
           const clientPart = sanitizeFilenamePart(payload.clientName || payload.productName);
           const filename = `Presupuesto_${payload.brandName}_${clientPart}.jpg`;
 
@@ -2359,64 +2699,44 @@
 
           showToast(`Imagen JPG descargada: ${filename}`, 'success');
         } catch (err) {
-          showToast('No se pudo generar el JPG. Verificá los permisos de descarga.', 'warn');
+          showToast('No se pudo generar el JPG.', 'warn');
         }
       };
 
       window.downloadQuotePDF = async function (tier) {
         try {
-          if (!window.jspdf || !window.jspdf.jsPDF) {
-            showToast('Librería PDF aún cargando o sin conexión. Probá descargar JPG.', 'warn');
-            return;
-          }
-          if (document.fonts && document.fonts.ready) {
-            await document.fonts.ready;
-          }
+          if (document.fonts && document.fonts.ready) await document.fonts.ready;
           const { canvas, payload } = buildQuoteCanvas(tier);
-          const imgData = canvas.toDataURL('image/jpeg', 0.95);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.94);
+          const pdfBlob = createPdfBlobFromJpegDataUrl(dataUrl, canvas.width, canvas.height);
 
-          const { jsPDF } = window.jspdf;
-          const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-          const pageW = pdf.internal.pageSize.getWidth();
-          const pageH = pdf.internal.pageSize.getHeight();
-
-          // Centrar tarjeta nítida en hoja A4 con márgenes limpios
-          const margin = 12;
-          const maxW = pageW - margin * 2;
-          const maxH = pageH - margin * 2;
-          const ratio = canvas.width / canvas.height;
-
-          let drawW = maxW;
-          let drawH = drawW / ratio;
-          if (drawH > maxH) {
-            drawH = maxH;
-            drawW = drawH * ratio;
-          }
-          const offsetX = (pageW - drawW) / 2;
-          const offsetY = (pageH - drawH) / 2;
-
-          pdf.addImage(imgData, 'JPEG', offsetX, offsetY, drawW, drawH, undefined, 'FAST');
-
+          const url = URL.createObjectURL(pdfBlob);
           const clientPart = sanitizeFilenamePart(payload.clientName || payload.productName);
           const filename = `Presupuesto_${payload.brandName}_${clientPart}.pdf`;
-          pdf.save(filename);
+
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          setTimeout(() => URL.revokeObjectURL(url), 4000);
 
           showToast(`Archivo PDF descargado: ${filename}`, 'success');
         } catch (err) {
-          showToast('No se pudo generar el PDF. Probá nuevamente o descargá en JPG.', 'warn');
+          showToast('No se pudo generar el PDF.', 'warn');
         }
       };
 
       /* -----------------------------------------------------------------------
-         7. PESTAÑA 2: TABLA PRÁCTICA RÁPIDA "SIN ARCHIVO"
+         8. PESTAÑA 2: TABLA PRÁCTICA RÁPIDA "SIN ARCHIVO"
          ----------------------------------------------------------------------- */
-      // Configuración realista por material para Falcon A1 10W (tiempo base en 10×10cm corte simple)
       const QUICK_MAT_DATA = {
-        mdf_3:       { name: 'MDF 3 mm', sheetCost: 1400, baseSimpleMin10: 3.5, engraveMinPer100cm2: 14 },
-        terciado_3:  { name: 'Terciado 3 mm', sheetCost: 1800, baseSimpleMin10: 3.2, engraveMinPer100cm2: 13 },
-        eva_comun:   { name: 'Goma EVA Común 1 mm', sheetCost: 600, baseSimpleMin10: 0.9, engraveMinPer100cm2: 8 },
-        eva_glitter: { name: 'Goma EVA Glitter 1 mm', sheetCost: 1300, baseSimpleMin10: 1.5, engraveMinPer100cm2: 10 },
-        panolenci:   { name: 'Pañolenci 1 mm', sheetCost: 900, baseSimpleMin10: 1.0, engraveMinPer100cm2: 8 }
+        mdf_3:         { name: 'MDF 3 mm', fallbackBedCost: 625, baseSimpleMin10: 3.5, engraveMinPer100cm2: 14 },
+        terciado_3:    { name: 'Terciado 3 mm', fallbackBedCost: 940, baseSimpleMin10: 3.2, engraveMinPer100cm2: 13 },
+        eva_comun_1:   { name: 'Goma EVA Común 1 mm', fallbackBedCost: 570, baseSimpleMin10: 0.9, engraveMinPer100cm2: 8 },
+        eva_glitter_1: { name: 'Goma EVA Glitter 1 mm', fallbackBedCost: 1235, baseSimpleMin10: 1.5, engraveMinPer100cm2: 10 },
+        panolenci_1:   { name: 'Pañolenci 1 mm', fallbackBedCost: 800, baseSimpleMin10: 1.0, engraveMinPer100cm2: 8 }
       };
 
       const QUICK_SIZES = [
@@ -2440,24 +2760,27 @@
         state.quick.includeDesign = includeDesign;
         saveState();
 
-        const mat = QUICK_MAT_DATA[matKey] || QUICK_MAT_DATA.mdf_3;
+        const qm = QUICK_MAT_DATA[matKey] || QUICK_MAT_DATA.mdf_3;
+        const catalogMat = getMaterialById(matKey);
+        const bedAreaCm2 = 38 * 30;
+        const bedCost = catalogMat
+          ? computeProportionalMaterialCost(catalogMat, 38, 30)
+          : qm.fallbackBedCost;
+
         const metrics = getMachineMetrics();
         const mult = priceList === 'wholesale' ? state.calc.wholesaleMult : state.calc.retailMult;
-        const bedAreaCm2 = 38 * 30; // 1140 cm²
 
         const tbody = document.getElementById('quickTableBody');
         tbody.innerHTML = '';
         lastQuickRows = [];
 
-        QUICK_SIZES.forEach((sz, idx) => {
-          // Costo de fracción de plancha + 25% merma mínima de recorte
+        QUICK_SIZES.forEach(sz => {
           const areaFraction = Math.min(1, (sz.areaCm2 / bedAreaCm2) * 1.25);
-          const matCost = mat.sheetCost * areaFraction;
+          const matCost = bedCost * areaFraction;
 
-          // 3 Complejidades
-          const simpleMin = Math.max(1, mat.baseSimpleMin10 * sz.perimFactor * 1.25);
+          const simpleMin = Math.max(1, qm.baseSimpleMin10 * sz.perimFactor * 1.25);
           const complexMin = simpleMin * 1.75;
-          const engraveExtraMin = (sz.areaCm2 / 100) * mat.engraveMinPer100cm2 * 0.40 * 1.25; // ~40% área rellena
+          const engraveExtraMin = (sz.areaCm2 / 100) * qm.engraveMinPer100cm2 * 0.40 * 1.25;
           const engraveTotalMin = simpleMin + engraveExtraMin;
 
           const calcFinalPrice = (mins, laborExtraFactor) => {
@@ -2466,7 +2789,6 @@
             const baseCost = matCost + machineCost + laborCost;
             let price = baseCost * mult;
             if (includeDesign) price += designFee;
-            // Redondear prolijo a múltiplos de 50 ARS
             return Math.ceil(price / 50) * 50;
           };
 
@@ -2506,8 +2828,8 @@
 
         const footerNote = document.getElementById('quickTableFooterNote');
         footerNote.innerHTML = `
-          <span>Material: <strong>${mat.name}</strong> • Lista: <strong>${priceList === 'wholesale' ? `Mayorista (${state.calc.wholesaleMult.toFixed(1)}x)` : `Minorista (${state.calc.retailMult.toFixed(1)}x)`}</strong></span>
-          <span>${includeDesign ? `Incluye ${formatARS(designFee, 0)} de diseño/vectorización.` : `Sin vectorización incluida (sumar + ${formatARS(designFee, 0)} si el cliente no trae archivo, bonificable en packs grandes).`}</span>
+          <span>Material: <strong>${qm.name}</strong> (base cama 38×30: ${formatARS(bedCost, 0)}) • Lista: <strong>${priceList === 'wholesale' ? `Mayorista (${state.calc.wholesaleMult.toFixed(1)}x)` : `Minorista (${state.calc.retailMult.toFixed(1)}x)`}</strong></span>
+          <span>${includeDesign ? `Incluye ${formatARS(designFee, 0)} de diseño/vectorización.` : `Sin vectorización incluida (sumar + ${formatARS(designFee, 0)} si el cliente no trae archivo).`}</span>
         `;
 
         updateQuickTemplatePreview();
@@ -2520,12 +2842,12 @@
         if (!row) return;
 
         const mat = QUICK_MAT_DATA[state.quick.material] || QUICK_MAT_DATA.mdf_3;
-        const brandName = state.brand === 'sugatina' ? 'SUGATINA' : 'ElNodoAzul';
+        const cfg = BRAND_CONFIG[state.brand];
         const designLine = state.quick.includeDesign
           ? '(incluyendo diseño básico)'
           : `(si necesitás que armemos el vector desde cero, se suma ${formatARS(state.quick.designFee, 0)} por única vez)`;
 
-        const text = `¡Hola! Desde *${brandName}* te paso una referencia rápida:\n\nUna pieza en *${mat.name}* en medida *${row.label}* ronda entre *${formatARS(row.simple.price, 0)}* (corte simple) y *${formatARS(row.complex.price, 0)}* (con calado fino), o hasta *${formatARS(row.engrave.price, 0)}* si lleva grabado relleno ${designLine}.\n\nSi te sirve el rango, confirmando la seña del 50% armamos el archivo a medida y te paso la vista previa exacta antes de cortar. Presupuesto orientativo válido por 2 días. ¿Qué cantidad necesitarías?`;
+        const text = `¡Hola! Desde *${cfg.name}* (${cfg.subtitle}) te paso una referencia rápida:\n\nUna pieza en *${mat.name}* en medida *${row.label}* ronda entre *${formatARS(row.simple.price, 0)}* (corte simple) y *${formatARS(row.complex.price, 0)}* (con calado fino), o hasta *${formatARS(row.engrave.price, 0)}* si lleva grabado relleno ${designLine}.\n\nPara confirmar se requiere seña del 50%. Presupuesto válido por 2 días. ¿Qué cantidad necesitarías?`;
 
         document.getElementById('quickTemplatePreview').textContent = text;
       };
@@ -2536,7 +2858,7 @@
       };
 
       /* -----------------------------------------------------------------------
-         8. PESTAÑA 3: SIMULADOR CO2 VS. FALCON A1 + REFERENCIAS EDITABLES
+         9. PESTAÑA 3: SIMULADOR CO2 VS. FALCON A1 + REFERENCIAS EDITABLES
          ----------------------------------------------------------------------- */
       window.renderMarketSimulator = function () {
         const scenario = document.getElementById('simScenario').value;
@@ -2589,7 +2911,7 @@
           const co2Total = Math.max(co2MinDrop, co2Min * co2Rate + 720);
           const falconMin = 7.5;
           const falconMachineCost = falconMin * metrics.safeMin;
-          const falconTotalCost = 720 + falconMachineCost + ((15 / 60) * state.machine.laborRate);
+          const falconTotalCost = 655 + falconMachineCost + ((15 / 60) * state.machine.laborRate);
           const packPrice = Math.ceil((falconTotalCost * state.calc.wholesaleMult) / 100) * 100;
 
           html = `
@@ -2608,7 +2930,7 @@
                 <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Alta rentabilidad</span>
               </div>
               <div class="text-2xl font-bold text-emerald-800 tabular-nums">${formatARS(packPrice, 0)} <span class="text-xs font-medium text-emerald-700">(${formatARS(packPrice / 20, 0)} / aplique)</span></div>
-              <p class="text-xs text-emerald-900">Corta toda la media plancha en <strong>${falconMin} min</strong> con costo de máquina de apenas <strong>${formatARS(falconMachineCost, 0)}</strong>. Entregás precisión perfecta y ganás margen real en packs mayoristas.</p>
+              <p class="text-xs text-emerald-900">Corta toda la cama en <strong>${falconMin} min</strong> con costo de máquina de apenas <strong>${formatARS(falconMachineCost, 0)}</strong>. Entregás precisión perfecta y ganás margen real en packs mayoristas.</p>
             </div>
           `;
           bannerClasses = 'bg-emerald-50 border-emerald-200 text-emerald-950';
@@ -2616,7 +2938,7 @@
         } else {
           const falconMin = 12;
           const falconMachineCost = falconMin * metrics.safeMin;
-          const matAndFinish = 1800; // MDF + pintura/armado
+          const matAndFinish = 1800;
           const labor = (25 / 60) * state.machine.laborRate;
           const totalCost = matAndFinish + falconMachineCost + labor;
           const retailPrice = Math.ceil((totalCost * state.calc.retailMult) / 100) * 100;
@@ -2698,15 +3020,18 @@
       };
 
       /* -----------------------------------------------------------------------
-         9. PESTAÑA 4: GUÍA MAESTRA DE PARÁMETROS (FILTROS, TARJETAS Y SALTO)
+         10. PESTAÑA 4: GUÍA MAESTRA DE PARÁMETROS (FILTROS, TARJETAS Y SALTO)
          ----------------------------------------------------------------------- */
       const PARAM_CATEGORIES = [
         'Todos',
-        'Maderas (MDF/Terciado)',
         'Goma EVA Común',
         'Goma EVA Glitter',
-        'Telas & Cartulina',
-        '3D / PETG'
+        'Cartulinas & Cartón',
+        'MDF & Terciado',
+        'Chapadur',
+        'Acrílicos',
+        'Cueros & Ecocuero',
+        'Telas & 3D'
       ];
 
       function renderParamCategoryPills() {
@@ -2760,7 +3085,7 @@
         if (filtered.length === 0) {
           grid.innerHTML = `
             <div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">
-              No se encontraron parámetros para "${query}". Probá buscando "MDF", "blanco", "glitter" o "pañolenci".
+              No se encontraron parámetros para "${query}". Probá buscando "MDF", "acrílico", "cuero", "glitter" o "blanco".
             </div>
           `;
           return;
@@ -2781,15 +3106,19 @@
           }
 
           const swatchesHtml = item.swatches.map(hex => {
-            const borderCls = hex.toUpperCase() === '#FFFFFF' ? 'border-slate-300' : 'border-black/15';
+            const borderCls = ['#FFFFFF', '#F8FAFC'].includes(hex.toUpperCase()) ? 'border-slate-300' : 'border-black/15';
             return `<span class="w-3.5 h-3.5 rounded-full border ${borderCls} inline-block shrink-0 shadow-2xs" style="background-color:${hex}"></span>`;
           }).join('');
+
+          const isWarningTip = item.tip.includes('ADVERTENCIA') || item.tip.includes('NO SE PUEDEN CORTAR');
+          const tipBoxClass = isWarningTip
+            ? 'text-[11px] leading-relaxed text-rose-900 bg-rose-50 rounded-xl p-2.5 border border-rose-200'
+            : 'text-[11px] leading-relaxed text-slate-600 bg-slate-50/80 rounded-xl p-2.5 border border-slate-100';
 
           const card = document.createElement('article');
           card.className = 'bg-white rounded-2xl border border-slate-200 shadow-xs p-4 flex flex-col justify-between gap-3 card-print print-break-avoid hover:border-slate-300 transition';
           card.innerHTML = `
             <div class="space-y-3">
-              <!-- Top badges -->
               <div class="flex items-start justify-between gap-2">
                 <div class="flex items-center gap-1.5 flex-wrap">
                   ${modeBadge}
@@ -2798,14 +3127,12 @@
                 ${careBadge}
               </div>
 
-              <!-- Title + Color dots -->
               <div>
                 <div class="flex items-center gap-1.5 mb-1">${swatchesHtml}</div>
                 <h3 class="text-sm font-bold text-slate-900 leading-snug">${item.name}</h3>
                 <span class="text-[11px] text-slate-400 font-medium">${item.cat}</span>
               </div>
 
-              <!-- Grid de Parámetros -->
               <div class="grid grid-cols-2 gap-2 text-xs tabular-nums">
                 <div class="p-2 rounded-xl bg-slate-50 border border-slate-200/70">
                   <span class="block text-[10px] text-slate-500">Velocidad</span>
@@ -2825,15 +3152,14 @@
                 </div>
               </div>
 
-              <!-- Tip de acabado -->
-              <p class="text-[11px] leading-relaxed text-slate-600 bg-slate-50/80 rounded-xl p-2.5 border border-slate-100">
-                <strong class="text-slate-800">Tip:</strong> ${item.tip}
+              <p class="${tipBoxClass}">
+                <strong class="${isWarningTip ? 'text-rose-950' : 'text-slate-800'}">${isWarningTip ? 'Importante:' : 'Tip:'}</strong> ${item.tip}
               </p>
             </div>
 
             <button
               type="button"
-              onclick="useParamInCalculator('${item.presetKey}', '${item.name.replace(/'/g, "\\'")}')"
+              onclick="useParamInCalculator('${item.matId}', '${item.name.replace(/'/g, "\\'")}')"
               class="no-print w-full py-2 px-3 rounded-xl bg-brand-soft hover:bg-brand hover:text-white text-brand-soft text-xs font-semibold border border-brand-soft transition flex items-center justify-center gap-1.5"
             >
               <span>Usar en Cotizador</span>
@@ -2846,13 +3172,17 @@
         });
       };
 
-      window.useParamInCalculator = function (presetKey, materialLabel) {
-        const key = MATERIAL_PRESETS[presetKey] ? presetKey : 'custom';
-        state.calc.materialPreset = key;
-        if (key !== 'custom') {
-          state.calc.matCost = MATERIAL_PRESETS[key].cost;
+      window.useParamInCalculator = function (matId, materialLabel) {
+        const mat = getMaterialById(matId);
+        if (mat) {
+          state.calc.materialId = mat.id;
+          state.calc.manualMatCost = false;
+          state.calc.matCost = computeProportionalMaterialCost(mat, state.calc.cutW, state.calc.cutH);
+        } else {
+          state.calc.materialId = '__manual__';
         }
-        state.quote.materialDisplay = materialLabel || MATERIAL_PRESETS[key].cleanName;
+        state.quote.materialDisplay = materialLabel;
+        renderMaterialSelectOptions();
         syncInputsFromState();
         saveState();
         renderTab1();
@@ -2862,7 +3192,7 @@
       };
 
       /* -----------------------------------------------------------------------
-         10. SINCRONIZACIÓN DE INPUTS Y EVENTOS REACTIVOS
+         11. SINCRONIZACIÓN DE INPUTS Y EVENTOS REACTIVOS
          ----------------------------------------------------------------------- */
       function syncInputsFromState() {
         // Máquina
@@ -2875,7 +3205,9 @@
         document.getElementById('cfgLaborRate').value = state.machine.laborRate;
 
         // Cotizador
-        document.getElementById('calcMaterialPreset').value = state.calc.materialPreset;
+        document.getElementById('calcMaterialSelect').value = state.calc.materialId;
+        document.getElementById('calcCutW').value = state.calc.cutW;
+        document.getElementById('calcCutH').value = state.calc.cutH;
         document.getElementById('calcMatCost').value = state.calc.matCost;
         document.getElementById('calcWastePct').value = state.calc.wastePct;
         document.getElementById('calcLaserMin').value = state.calc.laserMin;
@@ -2886,7 +3218,7 @@
         document.getElementById('calcWholesaleMult').value = state.calc.wholesaleMult;
         document.getElementById('calcRetailMult').value = state.calc.retailMult;
 
-        // Datos del cliente para presupuesto
+        // Cliente
         document.getElementById('quoteClient').value = state.quote.clientName;
         document.getElementById('quoteProduct').value = state.quote.productName;
         document.getElementById('quoteMaterialDisplay').value = state.quote.materialDisplay;
@@ -2924,7 +3256,55 @@
           });
         });
 
-        // Datos del cliente para presupuesto
+        // Recorte Ancho / Alto (cm) -> recalcula costo proporcional automáticamente
+        ['calcCutW', 'calcCutH'].forEach(id => {
+          const el = document.getElementById(id);
+          el.addEventListener('input', () => {
+            const val = Math.max(0, parseFloat(el.value) || 0);
+            if (id === 'calcCutW') state.calc.cutW = val;
+            else state.calc.cutH = val;
+
+            const mat = getMaterialById(state.calc.materialId);
+            if (mat) {
+              state.calc.manualMatCost = false;
+              state.calc.matCost = computeProportionalMaterialCost(mat, state.calc.cutW, state.calc.cutH);
+              document.getElementById('calcMatCost').value = state.calc.matCost;
+            }
+            saveState();
+            renderTab1();
+          });
+        });
+
+        // Costo material manual (permite sobrescribir libremente)
+        document.getElementById('calcMatCost').addEventListener('input', (e) => {
+          state.calc.matCost = Math.max(0, parseFloat(e.target.value) || 0);
+          state.calc.manualMatCost = true;
+          saveState();
+          renderTab1();
+        });
+
+        // Otros inputs de cálculo
+        const calcBindings = [
+          ['calcWastePct', 'wastePct'],
+          ['calcLaserMin', 'laserMin'],
+          ['calcLaborMin', 'laborMin'],
+          ['calcDesignCost', 'designCost'],
+          ['calcExtrasCost', 'extrasCost'],
+          ['calcQty', 'qty'],
+          ['calcWholesaleMult', 'wholesaleMult'],
+          ['calcRetailMult', 'retailMult']
+        ];
+
+        calcBindings.forEach(([id, key]) => {
+          const el = document.getElementById(id);
+          el.addEventListener('input', () => {
+            state.calc[key] = Math.max(0, parseFloat(el.value) || 0);
+            saveState();
+            renderAll();
+          });
+        });
+
+        // Datos del cliente
         const quoteBindings = [
           ['quoteClient', 'clientName'],
           ['quoteProduct', 'productName'],
@@ -2933,23 +3313,27 @@
 
         quoteBindings.forEach(([id, key]) => {
           const el = document.getElementById(id);
-          if (!el) return;
           el.addEventListener('input', () => {
             state.quote[key] = el.value;
             saveState();
           });
         });
 
-        // Quick design fee
+        // Diseño tabla rápida
         document.getElementById('quickDesignFee').addEventListener('input', () => {
           renderQuickTable();
         });
 
-        // Market CO2 inputs
+        // Mercado CO2
         ['co2RateMin', 'co2MinDrop'].forEach(id => {
           document.getElementById(id).addEventListener('input', () => {
             renderMarketSimulator();
           });
+        });
+
+        // Cerrar modal al hacer clic fuera
+        document.getElementById('materialsModal').addEventListener('click', (e) => {
+          if (e.target.id === 'materialsModal') closeMaterialsModal();
         });
       }
 
@@ -2960,10 +3344,11 @@
       }
 
       /* -----------------------------------------------------------------------
-         11. INICIALIZACIÓN AL CARGAR LA PÁGINA
+         12. INICIALIZACIÓN AL CARGAR LA PÁGINA
          ----------------------------------------------------------------------- */
       window.addEventListener('DOMContentLoaded', () => {
         loadState();
+        renderMaterialSelectOptions();
         syncInputsFromState();
         bindReactiveInputs();
         setBrand(state.brand);
